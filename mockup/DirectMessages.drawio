@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-03-13T13:54:32.747Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="8poH8Dm-GxjYSj8tbe4l" version="20.8.23" type="github">
+<mxfile host="app.diagrams.net" modified="2023-03-13T14:06:58.739Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="3Dd9PdR8P00sdYVmj3EB" version="20.8.23" type="github">
   <diagram name="Página-1" id="4dHzZsptHQg3HBI9nLZd">
-    <mxGraphModel dx="1323" dy="770" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="794" dy="462" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -95,7 +95,7 @@
           <mxGeometry x="12.462078272604588" y="388.1910418564086" width="27.79336813010106" height="27.79336813010106" as="geometry" />
         </mxCell>
         <mxCell id="f9uXbdRx_iF1wwkuBuDu-36" value="Trending now" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="f9uXbdRx_iF1wwkuBuDu-40" vertex="1">
-          <mxGeometry x="14.661268556005409" y="448.03305703117377" width="139.28205128205155" height="25.872938808345" as="geometry" />
+          <mxGeometry x="10.4" y="450" width="143.94" height="25.87" as="geometry" />
         </mxCell>
         <mxCell id="f9uXbdRx_iF1wwkuBuDu-37" value="" style="shape=link;html=1;rounded=0;fontFamily=Helvetica;fontSize=23;" parent="f9uXbdRx_iF1wwkuBuDu-40" edge="1">
           <mxGeometry width="100" relative="1" as="geometry">
@@ -118,19 +118,19 @@
         <mxCell id="grURZ6qr8ntuf9e2Mi8L-4" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-128.png;fontFamily=Helvetica;fontSize=23;" parent="1" vertex="1">
           <mxGeometry x="18" y="226" width="50" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="grURZ6qr8ntuf9e2Mi8L-5" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10283&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
+        <mxCell id="grURZ6qr8ntuf9e2Mi8L-5" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10542&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
           <mxGeometry x="110" y="226" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="grURZ6qr8ntuf9e2Mi8L-6" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-128.png;fontFamily=Helvetica;fontSize=23;" parent="1" vertex="1">
           <mxGeometry x="18" y="316" width="50" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="grURZ6qr8ntuf9e2Mi8L-7" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10283&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
+        <mxCell id="grURZ6qr8ntuf9e2Mi8L-7" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10982&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
           <mxGeometry x="110" y="316" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="grURZ6qr8ntuf9e2Mi8L-8" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-128.png;fontFamily=Helvetica;fontSize=23;" parent="1" vertex="1">
           <mxGeometry x="18" y="410" width="50" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="grURZ6qr8ntuf9e2Mi8L-9" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10283&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
+        <mxCell id="grURZ6qr8ntuf9e2Mi8L-9" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10873&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
           <mxGeometry x="110" y="410" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="grURZ6qr8ntuf9e2Mi8L-12" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-128.png;fontFamily=Helvetica;fontSize=23;" parent="1" vertex="1">
@@ -142,13 +142,13 @@
         <mxCell id="grURZ6qr8ntuf9e2Mi8L-14" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-128.png;fontFamily=Helvetica;fontSize=23;" parent="1" vertex="1">
           <mxGeometry x="18" y="612" width="50" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="grURZ6qr8ntuf9e2Mi8L-15" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10283&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
+        <mxCell id="grURZ6qr8ntuf9e2Mi8L-15" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10734&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
           <mxGeometry x="110" y="612" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="grURZ6qr8ntuf9e2Mi8L-16" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn1.iconfinder.com/data/icons/ui-essential-17/32/UI_Essential_Outline_1_essential-app-ui-avatar-profile-user-account-128.png;fontFamily=Helvetica;fontSize=23;" parent="1" vertex="1">
           <mxGeometry x="18" y="712" width="50" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="grURZ6qr8ntuf9e2Mi8L-17" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10283&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
+        <mxCell id="grURZ6qr8ntuf9e2Mi8L-17" value="&lt;font style=&quot;font-size: 19px;&quot;&gt;@Guest10012&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=23;fontFamily=Helvetica;" parent="1" vertex="1">
           <mxGeometry x="110" y="712" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="grURZ6qr8ntuf9e2Mi8L-18" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;A little preview of the last message sent&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontFamily=Helvetica;" parent="1" vertex="1">
