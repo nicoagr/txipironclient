@@ -10,16 +10,37 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Main class of the application. This will be the starting point.
+ * It will call the FXML files and load the controllers.
+ * Also, starts by default with the "Account Manager" scene.
+ * It will have the "Window" class to contain all JavaFX windows we create.
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Marcos Chouciño
+ * @author Xiomara Cáceces
+ * @version 1.0
+ */
 public class TxipironClient extends Application {
 
     private Window authWindow;
     private Window mainWindow;
 
+    /**
+     * An abstracted class that will contain the UI and the controller of a window
+     */
     static class Window {
         Parent ui;
         WindowController controller;
     }
 
+    /**
+     * Generic method. Will be used to start and create all windows
+     * @param fxmlFile (String) - Name of the FXML file to load
+     * @return Window - The window class created
+     * @throws IOException - When the FXML file is not found
+     */
     private Window load(String fxmlFile) throws IOException {
         Window window = new Window();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
@@ -32,6 +53,14 @@ public class TxipironClient extends Application {
     private Stage stage;
     private Scene scene;
 
+    /**
+     * Loading point of the application.
+     * Starts by loading all windows and setting the "acccount manager" to be shown.
+     * Will set the title for the application and also the icon.
+     *
+     * @param stage (Stage) - Automatically Passes it
+     * @throws IOException - When the FXML/Image file is not found
+     */
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
@@ -46,13 +75,23 @@ public class TxipironClient extends Application {
         stage.show();
     }
 
+    /**
+     * Starting point of the java application.
+     * Will call the javafx launch() method.
+     * @param args
+     */
     public static void main(String[] args) {
         launch();
     }
 
+    /**
+     * Dinamically Change Scenes on-the-fly.
+     * Will change the scene to the one passed as parameter.
+     * @param sceneName (String) - Name of the scene to change to
+     */
     public void changeScene(String sceneName) {
         switch (sceneName) {
-            case "Loading" -> {
+            case "Auth" -> {
                 stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
                 scene.setRoot(authWindow.ui);
             }
