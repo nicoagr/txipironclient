@@ -1,4 +1,4 @@
 package eus.ehu.txipironesmastodonfx.domain;
 
-public class User {
+public class Account {
 }

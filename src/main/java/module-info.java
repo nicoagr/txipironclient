@@ -5,6 +5,7 @@ module eus.ehu.txipironesmastodonfx {
     requires org.kordamp.bootstrapfx.core;
 
     opens eus.ehu.txipironesmastodonfx to javafx.fxml;
-    exports eus.ehu.txipironesmastodonfx.fx;
-    opens eus.ehu.txipironesmastodonfx.fx to javafx.fxml;
+    exports eus.ehu.txipironesmastodonfx.controllers;
+    exports eus.ehu.txipironesmastodonfx to javafx.graphics;
+    opens eus.ehu.txipironesmastodonfx.controllers to javafx.fxml;
 }

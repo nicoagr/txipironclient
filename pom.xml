@@ -64,7 +64,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>eus.ehu.txipironesmastodonfx/eus.ehu.txipironesmastodonfx.fx.TxipironClient
+                            <mainClass>eus.ehu.txipironesmastodonfx/eus.ehu.txipironesmastodonfx.controllers.TxipironClient
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
