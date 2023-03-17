@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class TxipironClient extends Application {
 
         scene = new Scene(authWindow.ui);
         stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
+        stage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/dark_filled_1000.jpg"));
         stage.setScene(scene);
         stage.show();
     }
