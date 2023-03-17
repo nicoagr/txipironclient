@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-03-17T12:13:02.197Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="8yMWdUZh-zx53c293-cX" version="21.0.6" type="github">
+<mxfile host="app.diagrams.net" modified="2023-03-17T12:25:57.859Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" etag="djtfSCYjdI4140GhonCb" version="21.0.6" type="github">
   <diagram name="Página-1" id="jnCLHHjoLDvOgdgm4IYI">
     <mxGraphModel dx="1050" dy="549" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -42,6 +42,9 @@
         </mxCell>
         <mxCell id="U3Fy55FS9ZZKSRqM0M4v-14" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-plus-outline-128.png" vertex="1" parent="1">
           <mxGeometry x="172" y="323" width="84" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="U3Fy55FS9ZZKSRqM0M4v-15" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn2.iconfinder.com/data/icons/font-awesome/1792/power-off-128.png" vertex="1" parent="1">
+          <mxGeometry x="640" y="440" width="48" height="48" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
