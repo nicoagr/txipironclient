@@ -62,20 +62,17 @@ public class AuthWindowController implements WindowController {
             try {
                 DBAccessManager.createDbFile();
             } catch (IOException io) {
-                errStop("Error! Couldn't create database. Please check if the program has directory write permissions");
+                errStop("Error! Couldn't create db file. " + io.getMessage());
                 return;
             }
         }
-        if (!DBAccessManager.checkTables()) {
-            try {
-                DBAccessManager.createTables();
-            } catch (SQLException s) {
-                errStop("Error! Couldn't create database tables. Please check permissions on the file.");
-                return;
-            }
+        try {
+            DBAccessManager.checkAndCreateTables();
+        } catch (SQLException e) {
+            errStop("Error! Couldn't create db tables. " + e.getMessage());
+            return;
         }
 
-        loginBtn.setVisible(true);
     }
 
 
