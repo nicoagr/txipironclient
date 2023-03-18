@@ -44,6 +44,14 @@ public class DBAccessManager {
     }
 
 
+    /**
+     * This method will create the tables needed for the application.
+     * If the tables already exist, it will send the queries,
+     * but because its CREATE TABLE IF NOT EXIST practically
+     * it will do nothing.
+     *
+     * @throws SQLException - If the queries can't be executed
+     */
     public static void checkAndCreateTables() throws SQLException {
         // If we have a INTEGER PRIMARY KEY,
         // in sqllite it will auto increment.
@@ -107,6 +115,14 @@ public class DBAccessManager {
         executeQuery(followingsql, null);
     }
 
+    /**
+     * Generic Method to execute an SQL query in the database.
+     *
+     * @param query  (String) - The query to execute
+     * @param params (List<Object>) - The parameters to substitute in the query
+     * @return ResultSet - The result of the query, null if there is no result
+     * @throws SQLException - If the query returns some error
+     */
     private static ResultSet executeQuery(String query, List<Object> params) throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPointer.getPath());
         // Create a PreparedStatement with the query and set the parameters values
