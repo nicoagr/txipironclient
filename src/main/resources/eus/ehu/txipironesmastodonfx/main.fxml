@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.scene.layout.BorderPane?>
-
-
-<BorderPane maxHeight="700" maxWidth="1200" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.controllers.MainWindowController" />
+<BorderPane maxHeight="700" maxWidth="1200" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0"
+            prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController"/>

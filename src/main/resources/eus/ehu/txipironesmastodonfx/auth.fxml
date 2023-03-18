@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <VBox fx:id="vbox" alignment="CENTER" maxHeight="600.0" maxWidth="900.0" minHeight="440.0" minWidth="750.0"
       prefHeight="500.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="eus.ehu.txipironesmastodonfx.controllers.AuthWindowController">
+      fx:controller="eus.ehu.txipironesmastodonfx.controllers.auth.AuthWindowController">
    <ImageView fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@light_transparent_125.png"/>
    </ImageView>

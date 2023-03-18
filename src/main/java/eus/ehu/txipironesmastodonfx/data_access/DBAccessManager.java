@@ -1,8 +1,11 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
+import eus.ehu.txipironesmastodonfx.domain.Account;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +61,7 @@ public class DBAccessManager {
         // see https://stackoverflow.com/a/7906029
         String accsql = """
                 CREATE TABLE IF NOT EXISTS accounts (
-                ref INT NOT NULL,
+                ref INTEGER PRIMARY KEY,
                 svarname VARCHAR(255) NOT NULL,
                 id VARCHAR(255) NOT NULL,
                 acct VARCHAR(255) NOT NULL,
@@ -69,8 +72,7 @@ public class DBAccessManager {
                 followers_count INT,
                 following_count INT,
                 note VARCHAR(2048),
-                last_status_at VARCHAR(255),
-                CONSTRAINT acc_pk_userid PRIMARY KEY (ref)
+                last_status_at VARCHAR(255)
                 );""";
         String tootsql = """
                 CREATE TABLE IF NOT EXISTS toots (
@@ -116,6 +118,23 @@ public class DBAccessManager {
     }
 
     /**
+     * Returns all accounts contained in the database.
+     *
+     * @return (List < Account >) - The list of accounts
+     * @throws SQLException - If the query fails to execute
+     */
+    public static List<Account> getAccounts() throws SQLException {
+        List<Account> accounts = new ArrayList<>();
+        ResultSet rs = executeQuery("SELECT * FROM accounts", null);
+        while (rs.next()) {
+            Account acc = new Account(rs.getString("id"), rs.getString("acct"), rs.getString("avatar"), rs.getString("header"), rs.getInt("statuses_count"), rs.getInt("followers_count"), rs.getInt("following_count"), rs.getString("note"), rs.getString("last_status_at"), rs.getString("display_name"));
+            accounts.add(acc);
+        }
+        rs.close();
+        return accounts;
+    }
+
+    /**
      * Generic Method to execute an SQL query in the database.
      *
      * @param query  (String) - The query to execute
@@ -131,9 +150,9 @@ public class DBAccessManager {
         if (params != null) {
             for (Object o : params) {
                 if (o instanceof String) {
-                    stmt.setString(params.indexOf(o), (String) o);
+                    stmt.setString(params.indexOf(o) + 1, (String) o);
                 } else if (o instanceof Integer) {
-                    stmt.setInt(params.indexOf(o), (Integer) o);
+                    stmt.setInt(params.indexOf(o) + 1, (Integer) o);
                 }
             }
         }
@@ -143,9 +162,8 @@ public class DBAccessManager {
         if (hasResultSet) {
             rs = stmt.getResultSet();
         }
-        // Close resources
-        stmt.close();
-        conn.close();
+        // Important - Do not close resources
+        // If we close them, we can't use the ResultSet
         return rs;
     }
 }

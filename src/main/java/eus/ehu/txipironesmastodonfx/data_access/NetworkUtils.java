@@ -18,6 +18,7 @@ public class NetworkUtils {
         try {
             final URL url = new URL("https://mastodon.social/api/v1/timelines/public");
             final URLConnection conn = url.openConnection();
+            conn.setConnectTimeout(3000);
             conn.connect();
             conn.getInputStream().close();
             return true;
@@ -28,5 +29,4 @@ public class NetworkUtils {
             return false;
         }
     }
-
 }
