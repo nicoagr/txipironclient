@@ -109,7 +109,7 @@ public class AuthWindowController implements WindowController {
         // Clear ListView
         listViewItems.clear();
         // Add accounts to ListView
-        listViewItems.addAll(accounts);
+        // listViewItems.addAll(accounts);
         // Add "Add Account" cell to ListView
         //listViewItems.add("Add Account");
     }
