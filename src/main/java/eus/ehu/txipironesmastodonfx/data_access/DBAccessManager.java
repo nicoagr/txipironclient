@@ -80,13 +80,31 @@ public class DBAccessManager {
                   content VARCHAR(2048),
                   account_id VARCHAR(255),
                   reblog_id INT,
-                  CONSTRAINT toots_pk_ref PRIMARY KEY (id),
+                  CONSTRAINT toots_pk_id PRIMARY KEY (id),
                   CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE,
                   CONSTRAINT toots_fk_reblog_id FOREIGN KEY (reblog_id) REFERENCES toots(id) ON DELETE CASCADE ON UPDATE CASCADE
                 );""";
+        String followersql = """
+                CREATE TABLE IF NOT EXISTS follower (
+                  ref INT NOT NULL,
+                  id VARCHAR(255) NOT NULL,
+                  acct VARCHAR(255) NOT NULL,
+                  avatar VARCHAR(1024) NOT NULL,
+                  CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
+                  );""";
+        String followingsql = """
+                CREATE TABLE IF NOT EXISTS following (
+                  ref INT NOT NULL,
+                  id VARCHAR(255) NOT NULL,
+                  acct VARCHAR(255) NOT NULL,
+                  avatar VARCHAR(1024) NOT NULL,
+                  CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
+                  );""";
         // Execute querys
         executeQuery(accsql, null);
         executeQuery(tootsql, null);
+        executeQuery(followersql, null);
+        executeQuery(followingsql, null);
     }
 
     private static ResultSet executeQuery(String query, List<Object> params) throws SQLException {

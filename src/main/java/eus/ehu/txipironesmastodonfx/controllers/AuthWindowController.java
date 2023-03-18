@@ -54,10 +54,12 @@ public class AuthWindowController implements WindowController {
 
     @FXML
     void initialize() {
+        // Check for internet connection
         if (!NetworkUtils.hasInternet()) {
             errStop("Error! No internet connection / Mastodon API Unreachable");
             return;
         }
+        // Check if db file exists
         if (!DBAccessManager.isDbReachable()) {
             try {
                 DBAccessManager.createDbFile();
@@ -66,12 +68,16 @@ public class AuthWindowController implements WindowController {
                 return;
             }
         }
+        // Check if db tables are created
         try {
             DBAccessManager.checkAndCreateTables();
         } catch (SQLException e) {
             errStop("Error! Couldn't create db tables. " + e.getMessage());
             return;
         }
+        // Check if there are accounts in the db
+
+        // add "Add Account" cell to ListView
 
     }
 
