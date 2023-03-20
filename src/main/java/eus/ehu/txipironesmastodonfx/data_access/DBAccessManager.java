@@ -2,6 +2,8 @@ package eus.ehu.txipironesmastodonfx.data_access;
 
 import eus.ehu.txipironesmastodonfx.domain.Account;
 
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -39,11 +41,10 @@ public class DBAccessManager {
      * If it exists, it will overwrite it.
      * SO BE CAREFUL WHEN CALLING!
      *
-     * @return boolean - True if the file was created, false if it already existed
      * @throws IOException - If the file can't be created
      */
-    public static boolean createDbFile() throws IOException {
-        return dbPointer.createNewFile();
+    public static void createDbFile() throws IOException {
+        dbPointer.createNewFile();
     }
 
 
@@ -128,10 +129,27 @@ public class DBAccessManager {
         ResultSet rs = executeQuery("SELECT * FROM accounts", null);
         while (rs.next()) {
             Account acc = new Account(rs.getString("id"), rs.getString("acct"), rs.getString("avatar"), rs.getString("header"), rs.getInt("statuses_count"), rs.getInt("followers_count"), rs.getInt("following_count"), rs.getString("note"), rs.getString("last_status_at"), rs.getString("display_name"));
-            accounts.add(acc);
+            if (SysUtils.isSysVariableUsed(rs.getString("svarname"))) {
+                accounts.add(acc);
+            } else {
+                // if we don't have the variable, we remove the account
+                // from the database
+                String ref = rs.getString("ref");
+                rs.close();
+                removeAccountFromDb(ref);
+            }
         }
         rs.close();
         return accounts;
+    }
+
+    /**
+     * Removes an account from the database.
+     *
+     * @param ref (String) - The reference of the account to remove
+     */
+    private static void removeAccountFromDb(String ref) throws SQLException {
+        executeQuery("DELETE FROM accounts WHERE ref = ?", List.of(ref));
     }
 
     /**
@@ -139,10 +157,10 @@ public class DBAccessManager {
      *
      * @param query  (String) - The query to execute
      * @param params (List<Object>) - The parameters to substitute in the query
-     * @return ResultSet - The result of the query, null if there is no result
+     * @return CachedRowSet - The result of the query, null if there is no result
      * @throws SQLException - If the query returns some error
      */
-    private static ResultSet executeQuery(String query, List<Object> params) throws SQLException {
+    private static CachedRowSet executeQuery(String query, List<Object> params) throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPointer.getPath());
         // Create a PreparedStatement with the query and set the parameters values
         PreparedStatement stmt = conn.prepareStatement(query);
@@ -158,12 +176,17 @@ public class DBAccessManager {
         }
         // Execute the query (and process the results)
         boolean hasResultSet = stmt.execute();
-        ResultSet rs = null;
+        ResultSet rs;
+        CachedRowSet crs = null;
         if (hasResultSet) {
             rs = stmt.getResultSet();
+            crs = RowSetProvider.newFactory().createCachedRowSet();
+            crs.populate(rs);
+            rs.close();
         }
-        // Important - Do not close resources
-        // If we close them, we can't use the ResultSet
-        return rs;
+        // Close Resources
+        conn.close();
+        stmt.close();
+        return crs;
     }
 }
