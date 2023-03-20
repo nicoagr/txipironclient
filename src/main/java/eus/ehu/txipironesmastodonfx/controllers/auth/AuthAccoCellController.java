@@ -1,5 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.auth;
 
+import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class AuthAccoCellController {
     @FXML
@@ -22,6 +24,7 @@ public class AuthAccoCellController {
 
     @FXML
     private Label userNameTxt;
+    private AuthWindowController master;
 
     public AuthAccoCellController(Account account) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml"));
@@ -40,6 +43,22 @@ public class AuthAccoCellController {
 
     public AnchorPane getUI() {
         return anchorPane;
+    }
+
+    public void setReference(AuthWindowController thisclass) {
+        this.master = thisclass;
+    }
+
+    @FXML
+    void removeAccBtnClick() {
+        // Remove account from database
+        try {
+            DBAccessManager.removeAccountFromDbId(accIdTxt.getText());
+            // Refresh listview
+            master.updateListView();
+        } catch (SQLException e) {
+            // if an error occurs, do nothing
+        }
     }
 }
 

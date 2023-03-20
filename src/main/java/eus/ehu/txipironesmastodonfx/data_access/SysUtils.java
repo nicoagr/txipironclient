@@ -1,5 +1,7 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
+import java.io.IOException;
+
 public class SysUtils {
 
     public static boolean isSysVariableUsed(String var) {
@@ -14,4 +16,20 @@ public class SysUtils {
         return prefix + i;
     }
 
+    public static void setSysVariable(String destinationSysVar, String token) throws IOException, UnsupportedOperationException {
+        String os = System.getProperty("os.name").toLowerCase();
+
+        if (os.contains("win")) {
+            // Set environment variable on Windows
+            ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "setx " + destinationSysVar + " " + token);
+            pb.start();
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+            // Set environment variable on Linux or macOS
+            ProcessBuilder pb = new ProcessBuilder("sh", "-c", "export " + destinationSysVar + "=" + token);
+            pb.start();
+        } else {
+            // Unsupported operating system
+            throw new UnsupportedOperationException("Unsupported operating system: " + os);
+        }
+    }
 }

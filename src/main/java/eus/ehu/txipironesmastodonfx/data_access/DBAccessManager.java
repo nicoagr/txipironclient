@@ -129,15 +129,29 @@ public class DBAccessManager {
         CachedRowSet rs = executeQuery("SELECT * FROM accounts", null);
         while (rs.next()) {
             Account acc = new Account(rs.getString("id"), rs.getString("acct"), rs.getString("avatar"), rs.getString("header"), rs.getInt("statuses_count"), rs.getInt("followers_count"), rs.getInt("following_count"), rs.getString("note"), rs.getString("last_status_at"), rs.getString("display_name"));
-            if (SysUtils.isSysVariableUsed(rs.getString("svarname"))) {
-                accounts.add(acc);
-            } else {
-                // if we don't have the variable, we remove the account
-                // from the database
-                removeAccountFromDb(rs.getString("ref"));
-            }
+            accounts.add(acc);
         }
         return accounts;
+    }
+
+    /**
+     * Checks if the account is in the db.
+     * We can be sure that the parameter (id) is safe
+     * because there will not be two mastodon accounts
+     * with the same id. (in the same server)
+     *
+     * @param id (String) - The id of the account
+     * @return (boolean) - True if the account is in the db, false otherwise
+     * @throws SQLException - If the query fails to execute
+     */
+    public static boolean isAccountInDb(String id) throws SQLException {
+        CachedRowSet rs = executeQuery("SELECT id FROM accounts WHERE id = ?", List.of(id));
+        while (rs.next()) {
+            if (rs.getString("id").equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -145,8 +159,38 @@ public class DBAccessManager {
      *
      * @param ref (String) - The reference of the account to remove
      */
-    private static void removeAccountFromDb(String ref) throws SQLException {
+    private static void removeAccountFromDbRef(String ref) throws SQLException {
         executeQuery("DELETE FROM accounts WHERE ref = ?", List.of(ref));
+    }
+
+    /**
+     * Removes an account from the database.
+     *
+     * @param id (String) - The id of the account to remove
+     */
+    public static void removeAccountFromDbId(String id) throws SQLException {
+        executeQuery("DELETE FROM accounts WHERE id = ?", List.of(id));
+    }
+
+    /**
+     * This method will add an account to the database.
+     * It will first fetch the account data from the api,
+     * then it will insert it in the database and finally if
+     * the insertion went well it will set the destination sys variable.
+     *
+     * @param destinationSysVar (String) - The destination sys variable
+     * @param id                (String) - The id of the account
+     * @param token             (String) - The mastodon access token of the account
+     * @throws SQLException                  - If the query fails to execute
+     * @throws IOException                   - If the setting of the system variable fails
+     * @throws UnsupportedOperationException - If the operating system is unsupported (cannot set sysenv)
+     */
+    public static void addAccount(String destinationSysVar, String id, String token) throws SQLException, IOException, UnsupportedOperationException {
+        // Get Account Data from api
+        Account acc = APIAccessManager.getAccount(id, token);
+        // Insert the account in the database
+        executeQuery("INSERT INTO accounts (svarname, id, acct, avatar, header, display_name, statuses_count, followers_count, following_count, note, last_status_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", List.of(destinationSysVar, acc.id, acc.acct, acc.avatar, acc.header, acc.display_name, acc.statuses_count, acc.followers_count, acc.following_count, acc.note, acc.last_status_at));        // set destination sys variable into system
+        SysUtils.setSysVariable(destinationSysVar, token);
     }
 
     /**

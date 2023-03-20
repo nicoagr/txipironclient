@@ -95,7 +95,7 @@ public class AuthWindowController implements WindowController {
      * It will also add the "Add Account" cell.
      * And finally, it will link the observable list to the listview.
      */
-    private void updateListView() {
+    protected void updateListView() {
         // set items for accountListView
         accountListView.setItems(listViewItems);
         // Download accounts from db
@@ -147,6 +147,7 @@ public class AuthWindowController implements WindowController {
         }
         // modify the ListView's cell factory to use our custom cells and styles
         accountListView.getStyleClass().add("list-cell");
+        AuthWindowController thisclass = this;
         accountListView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Object item, boolean empty) {
@@ -156,10 +157,14 @@ public class AuthWindowController implements WindowController {
                     setGraphic(null);
                 } else if (item instanceof Account) {
                     setText(null);
-                    setGraphic(new AuthAccoCellController((Account) item).getUI());
+                    AuthAccoCellController a = new AuthAccoCellController((Account) item);
+                    a.setReference(thisclass);
+                    setGraphic(a.getUI());
                 } else if (item instanceof String && item.equals("Add Account")) {
                     setText(null);
-                    setGraphic(new AuthNewAccoCellController().getUI());
+                    AuthNewAccoCellController b = new AuthNewAccoCellController();
+                    b.setReference(thisclass);
+                    setGraphic(b.getUI());
                 }
             }
         });
@@ -169,7 +174,8 @@ public class AuthWindowController implements WindowController {
             int selectedIndex = accountListView.getSelectionModel().getSelectedIndex();
             // if the selected cell is an account, enable the login button
             // if the selected cell is not an account, disable the login button
-            loginBtn.setDisable(!(listViewItems.get(selectedIndex) instanceof Account));
+            if (selectedIndex >= 0 && selectedIndex < listViewItems.size())
+                loginBtn.setDisable(!(listViewItems.get(selectedIndex) instanceof Account));
         });
         // Update ListView
         updateListView();

@@ -17,4 +17,5 @@ module eus.ehu.txipironesmastodonfx {
     exports eus.ehu.txipironesmastodonfx.controllers.auth;
     opens eus.ehu.txipironesmastodonfx.controllers.auth to javafx.fxml;
     exports eus.ehu.txipironesmastodonfx.domain;
+    opens eus.ehu.txipironesmastodonfx.data_access to com.google.gson;
 }
