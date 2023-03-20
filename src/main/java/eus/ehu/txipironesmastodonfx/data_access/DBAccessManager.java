@@ -126,7 +126,7 @@ public class DBAccessManager {
      */
     public static List<Account> getAccounts() throws SQLException {
         List<Account> accounts = new ArrayList<>();
-        ResultSet rs = executeQuery("SELECT * FROM accounts", null);
+        CachedRowSet rs = executeQuery("SELECT * FROM accounts", null);
         while (rs.next()) {
             Account acc = new Account(rs.getString("id"), rs.getString("acct"), rs.getString("avatar"), rs.getString("header"), rs.getInt("statuses_count"), rs.getInt("followers_count"), rs.getInt("following_count"), rs.getString("note"), rs.getString("last_status_at"), rs.getString("display_name"));
             if (SysUtils.isSysVariableUsed(rs.getString("svarname"))) {
@@ -134,12 +134,9 @@ public class DBAccessManager {
             } else {
                 // if we don't have the variable, we remove the account
                 // from the database
-                String ref = rs.getString("ref");
-                rs.close();
-                removeAccountFromDb(ref);
+                removeAccountFromDb(rs.getString("ref"));
             }
         }
-        rs.close();
         return accounts;
     }
 
