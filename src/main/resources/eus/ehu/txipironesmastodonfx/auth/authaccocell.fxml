@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="499.0" minHeight="-Infinity" minWidth="499.0"
+            prefHeight="100.0" prefWidth="499.0" xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <ImageView fx:id="avatarImg" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="13.0" pickOnBounds="true"
+               preserveRatio="true"/>
+    <Label fx:id="userNameTxt" layoutX="171.0" layoutY="32.0" text="\@username">
+        <font>
+            <Font size="24.0"/>
+        </font>
+    </Label>
+    <Label fx:id="accIdTxt" layoutX="195.0" layoutY="67.0" text="Account id">
+        <font>
+            <Font size="10.0"/>
+        </font>
+    </Label>
+</AnchorPane>

@@ -65,12 +65,13 @@ public class TxipironClient extends Application {
     public void start(Stage stage) throws IOException {
         this.stage = stage;
 
-        authWindow = load("auth.fxml");
+        authWindow = load("auth/auth.fxml");
         mainWindow = load("main.fxml");
 
         scene = new Scene(authWindow.ui);
+        scene.getStylesheets().add(getClass().getResource("styles/listView.css").toExternalForm());
         stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
-        stage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/dark_filled_1000.jpg"));
+        stage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg"));
         stage.setScene(scene);
         stage.show();
     }
@@ -78,7 +79,9 @@ public class TxipironClient extends Application {
     /**
      * Starting point of the java application.
      * Will call the javafx launch() method.
-     * @param args
+     * We'll ignore all arguments passed on to the application
+     *
+     * @param args (String[]) - Arguments passed to the application
      */
     public static void main(String[] args) {
         launch();

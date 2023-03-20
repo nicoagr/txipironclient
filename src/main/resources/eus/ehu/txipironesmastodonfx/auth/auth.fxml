@@ -6,11 +6,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<VBox fx:id="vbox" alignment="CENTER" maxHeight="600.0" maxWidth="900.0" minHeight="440.0" minWidth="750.0"
-      prefHeight="500.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:id="vbox" alignment="CENTER" maxHeight="7500.0" maxWidth="990.0" minHeight="440.0" minWidth="750.0"
+      prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="eus.ehu.txipironesmastodonfx.controllers.auth.AuthWindowController">
    <ImageView fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@light_transparent_125.png"/>
+      <Image url="@../logos/light_transparent_125.png"/>
    </ImageView>
    <Label text="Txipiron Client">
       <font>
@@ -25,7 +25,7 @@
          <Insets bottom="10.0"/>
       </VBox.margin>
    </Label>
-   <ListView fx:id="accountListView" maxWidth="500.0" prefHeight="200.0" prefWidth="200.0"/>
+   <ListView fx:id="accountListView" maxWidth="530.0" prefHeight="350.0" prefWidth="530.0"/>
    <Label fx:id="errorLabel">
       <VBox.margin>
          <Insets top="10.0"/>
@@ -34,7 +34,8 @@
          <Font size="15.0"/>
       </font>
    </Label>
-   <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#loginBtnClick" text="Login with Selected Account">
+   <Button fx:id="loginBtn" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#loginBtnClick"
+           text="Login with Selected Account">
       <font>
          <Font size="13.0"/>
       </font>

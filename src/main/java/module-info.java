@@ -4,6 +4,8 @@ module eus.ehu.txipironesmastodonfx {
 
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires com.google.gson;
+    requires okhttp3;
 
     opens eus.ehu.txipironesmastodonfx to javafx.fxml;
     exports eus.ehu.txipironesmastodonfx.controllers;

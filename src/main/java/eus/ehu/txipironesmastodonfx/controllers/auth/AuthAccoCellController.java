@@ -23,13 +23,8 @@ public class AuthAccoCellController {
     @FXML
     private Label userNameTxt;
 
-    // It needs an empty constructor to be able to load the fxml file
-    public AuthAccoCellController() {
-
-    }
-
     public AuthAccoCellController(Account account) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("authaccocell.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml"));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
