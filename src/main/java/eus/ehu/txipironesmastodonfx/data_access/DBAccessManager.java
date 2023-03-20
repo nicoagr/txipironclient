@@ -44,8 +44,8 @@ public class DBAccessManager {
      * @return boolean - True if the file was created, false if it already existed
      * @throws IOException - If the file can't be created
      */
-    public static boolean createDbFile() throws IOException {
-        return dbPointer.createNewFile();
+    public static void createDbFile() throws IOException {
+        dbPointer.createNewFile();
     }
 
 
