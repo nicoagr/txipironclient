@@ -41,7 +41,6 @@ public class DBAccessManager {
      * If it exists, it will overwrite it.
      * SO BE CAREFUL WHEN CALLING!
      *
-     * @return boolean - True if the file was created, false if it already existed
      * @throws IOException - If the file can't be created
      */
     public static void createDbFile() throws IOException {
@@ -183,9 +182,11 @@ public class DBAccessManager {
             rs = stmt.getResultSet();
             crs = RowSetProvider.newFactory().createCachedRowSet();
             crs.populate(rs);
+            rs.close();
         }
-        // Important - Do not close resources
-        // If we close them, we can't use the ResultSet
+        // Close Resources
+        conn.close();
+        stmt.close();
         return crs;
     }
 }
