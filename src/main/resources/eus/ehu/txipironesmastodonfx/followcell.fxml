@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="100.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.domain.Follow">
+<AnchorPane fx:id="anchor" prefHeight="100.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="Id" layoutX="111.0" layoutY="14.0" prefHeight="17.0" prefWidth="109.0" text="Id" wrapText="true" />
@@ -16,6 +16,6 @@
          </font>
       </Label>
       <Label fx:id="info" layoutX="111.0" layoutY="52.0" prefHeight="35.0" prefWidth="578.0" text="User's info." />
-      <Button fx:id="followbutton" layoutX="630.0" layoutY="10.0" mnemonicParsing="false" onAction="#followAction" prefHeight="45.0" prefWidth="122.0" text="Follow//TODO" />
+      <Button layoutX="630.0" layoutY="10.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="122.0" text="Follow//TODO" />
    </children>
 </AnchorPane>
