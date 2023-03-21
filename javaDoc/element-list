@@ -1,0 +1,8 @@
+module:eus.ehu.txipironesmastodonfx
+eus.ehu.txipironesmastodonfx
+eus.ehu.txipironesmastodonfx.controllers
+eus.ehu.txipironesmastodonfx.controllers.auth
+eus.ehu.txipironesmastodonfx.controllers.main
+eus.ehu.txipironesmastodonfx.controllers.windowControllers
+eus.ehu.txipironesmastodonfx.data_access
+eus.ehu.txipironesmastodonfx.domain

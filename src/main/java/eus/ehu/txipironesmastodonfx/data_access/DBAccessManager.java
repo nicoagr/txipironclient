@@ -93,6 +93,8 @@ public class DBAccessManager {
                   reblogged BOOLEAN,
                   content VARCHAR(2048),
                   account_id VARCHAR(255),
+                  avatar VARCHAR(1024),
+                  acct VARCHAR(255),
                   CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
                 );""";
         String followersql = """
@@ -251,8 +253,9 @@ public class DBAccessManager {
             params.add(t.reblogged);
             params.add(t.content);
             params.add(t.account != null ? t.account.id : null);
-
-            executeQuery("INSERT INTO toots (ref, id, created_at, in_reply_to_id, sensitive, uri, replies_count, reblogs_count, favourites_count, favourited, reblogged, content, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?);", params);
+            params.add(t.account.acct);
+            params.add(t.account.avatar);
+            executeQuery("INSERT INTO toots (ref, id, created_at, in_reply_to_id, sensitive, uri, replies_count, reblogs_count, favourites_count, favourited, reblogged, content, account_id, acct, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?);", params);
         }
     }
 
@@ -340,5 +343,51 @@ public class DBAccessManager {
         stmt.close();
         return crs;
     }
+
+    /**
+     * Method to get the list of toots of an account.
+     * @param ref (int) - The ref of the account
+     * @return List<Toot> - The list of toots of the account
+     */
+    public List<Toot> getUserToots(int ref) throws SQLException {
+
+        List<Toot> toots = new ArrayList<>();
+        CachedRowSet rs = executeQuery("SELECT * FROM toots WHERE ref = ?;", List.of(ref));
+
+        while(rs.next()){
+            Toot t = new Toot();
+            t.id = rs.getString("id");
+            t.created_at = rs.getString("created_at");
+            t.in_reply_to_id = rs.getString("in_reply_to_id");
+            t.sensitive = rs.getBoolean("sensitive");
+            t.uri = rs.getString("uri");
+            t.replies_count = rs.getInt("replies_count");
+            t.reblogs_count = rs.getInt("reblogs_count");
+            t.favourites_count = rs.getInt("favourites_count");
+            t.favourited = rs.getBoolean("favourited");
+            t.reblogged = rs.getBoolean("reblogged");
+            t.content = rs.getString("content");
+            t.account.acct = rs.getString("acct");
+            t.account.avatar = rs.getString("avatar");
+            t.account.id = rs.getString("account_id");
+            toots.add(t);
+        }
+
+
+
+
+        return toots;
+    }
+
+    /**
+     * Method to get the list of followers of an account.
+     * @param ref (int) - The ref of the account
+     * @return List<Follow> - The list of followers of the account
+     */
+   /* public String getUserAvatar(Integer ref){
+
+    }
+    */
+
 
 }
