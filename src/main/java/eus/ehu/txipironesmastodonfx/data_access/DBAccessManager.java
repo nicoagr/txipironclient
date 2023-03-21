@@ -3,6 +3,7 @@ package eus.ehu.txipironesmastodonfx.data_access;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
+import javafx.scene.image.Image;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -339,4 +340,5 @@ public class DBAccessManager {
         stmt.close();
         return crs;
     }
+
 }

@@ -1,8 +1,13 @@
 package eus.ehu.txipironesmastodonfx.controllers.main;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
-import eus.ehu.txipironesmastodonfx.controllers.WindowController;
+import eus.ehu.txipironesmastodonfx.controllers.*;
+import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Controller class for the main window.
@@ -15,6 +20,24 @@ import javafx.fxml.FXML;
 public class MainWindowController implements WindowController {
     private TxipironClient mainApp;
     private Integer ref;
+    @FXML
+    private Button changeAcctBtn;
+    @FXML
+    private Label copyright;
+    @FXML
+    private Button followers;
+    @FXML
+    private Button following;
+    @FXML
+    private Button home;
+    @FXML
+    private ImageView icon;
+    @FXML
+    private ImageView logo;
+    @FXML
+    private Label searchbar;
+    @FXML
+    private Button searchbutton;
 
     /**
      * Sets a reference to the main application
@@ -42,6 +65,27 @@ public class MainWindowController implements WindowController {
     @Override
     public void setRef(Integer ref) {
         this.ref = ref;
-        System.out.println(ref);
+        Image avatar = DBAccessManager.getUserAvatar(ref);
+        icon.setImage(avatar);
+    }
+
+    @FXML
+    void followerListView() {
+
+    }
+
+    @FXML
+    void followingListView() {
+
+    }
+
+    @FXML
+    void homeListView() {
+
+    }
+
+    @FXML
+    void initialize() {
+        copyright.setText("");
     }
 }
