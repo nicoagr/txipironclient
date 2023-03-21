@@ -4,8 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.domain.Account">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="803.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.domain.Account">
    <children>
       <Label fx:id="info" layoutX="14.0" layoutY="16.0" prefHeight="67.0" prefWidth="322.0" text="List view's information">
          <font>
