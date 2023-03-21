@@ -395,6 +395,56 @@ public class DBAccessManager {
 
     }
 
+    /**
+     * Method to get the list of followers of an account.
+     * @param ref (int) - The ref of the account
+     * @return List<Follow> - The list of followers of the account
+     */
+    public List<Follow> getUserFollowers(int ref) throws SQLException {
+        List<Follow> follows = new ArrayList<>();
+        CachedRowSet rs = executeQuery("SELECT * FROM Followers WHERE ref = ?;", List.of(ref));
+
+        while (rs.next()) {
+            Follow f = new Follow();
+            f.id = rs.getString("id");
+            f.acct = rs.getString("acct");
+            f.avatar = rs.getString("avatar");
+            follows.add(f);
+        }
+
+        return follows;
+    }
+
+    public List<Follow> getUserFollows(int ref) throws SQLException {
+
+        List<Follow> follows = new ArrayList<>();
+        CachedRowSet rs = executeQuery("SELECT * FROM Following WHERE ref = ?;", List.of(ref));
+
+        while (rs.next()) {
+            Follow f = new Follow();
+            f.id = rs.getString("id");
+            f.acct = rs.getString("acct");
+            f.avatar = rs.getString("avatar");
+            follows.add(f);
+        }
+
+        return follows;
+    }
+
+    /**
+     * Method to get the user id from the username
+     * @param username (String) - The username of the user
+     * @return String - The id of the user
+     */
+    /*public String getUserId(String username){
+
+
+    }*/
+
+
+
+
+
 
 
 }
