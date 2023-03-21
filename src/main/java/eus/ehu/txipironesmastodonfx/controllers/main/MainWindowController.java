@@ -3,9 +3,11 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.*;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -23,8 +25,6 @@ public class MainWindowController implements WindowController {
     @FXML
     private Button changeAcctBtn;
     @FXML
-    private Label copyright;
-    @FXML
     private Button followers;
     @FXML
     private Button following;
@@ -33,11 +33,10 @@ public class MainWindowController implements WindowController {
     @FXML
     private ImageView icon;
     @FXML
-    private ImageView logo;
-    @FXML
-    private Label searchbar;
-    @FXML
-    private Button searchbutton;
+    private ListView<Object> listView;
+
+    private ObservableList<Object> listViewItems = FXCollections.observableArrayList();
+
 
     /**
      * Sets a reference to the main application
@@ -86,6 +85,5 @@ public class MainWindowController implements WindowController {
 
     @FXML
     void initialize() {
-        copyright.setText("");
     }
 }

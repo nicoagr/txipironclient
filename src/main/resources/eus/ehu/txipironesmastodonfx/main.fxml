@@ -28,7 +28,7 @@
             </ImageView>
             <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="searchbar" layoutX="259.0" layoutY="26.0" prefHeight="40.0" prefWidth="541.0" />
-            <Button fx:id="searchbutton" layoutX="204.0" layoutY="26.0" minHeight="40.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="searchbutton" layoutX="204.0" layoutY="26.0" minHeight="40.0" mnemonicParsing="false" text="search" />
          </children>
       </AnchorPane>
    </top>
@@ -39,7 +39,7 @@
             <Button fx:id="following" layoutY="70.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#followingListView" prefHeight="70.0" prefWidth="186.0" text="Following" />
             <Button fx:id="followers" layoutY="140.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#followerListView" prefHeight="70.0" prefWidth="186.0" text="Followers" />
             <Button fx:id="changeAcctBtn" layoutY="555.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#changeAcctBtnClick" prefHeight="70.0" prefWidth="185.0" text="Change account" />
-            <ListView layoutX="185.0" prefHeight="627.0" prefWidth="805.0" />
+            <ListView fx:id="listView" layoutX="185.0" prefHeight="627.0" prefWidth="805.0" />
          </children>
       </AnchorPane>
    </center>
