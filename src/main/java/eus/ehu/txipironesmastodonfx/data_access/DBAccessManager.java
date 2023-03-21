@@ -92,7 +92,6 @@ public class DBAccessManager {
                   reblogged BOOLEAN,
                   content VARCHAR(2048),
                   account_id VARCHAR(255),
-                  CONSTRAINT toots_pk_id PRIMARY KEY (id),
                   CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
                 );""";
         String followersql = """
