@@ -3,6 +3,7 @@ package eus.ehu.txipironesmastodonfx.data_access;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
+import javafx.scene.image.Image;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -92,7 +93,6 @@ public class DBAccessManager {
                   reblogged BOOLEAN,
                   content VARCHAR(2048),
                   account_id VARCHAR(255),
-                  CONSTRAINT toots_pk_id PRIMARY KEY (id),
                   CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
                 );""";
         String followersql = """
@@ -340,4 +340,5 @@ public class DBAccessManager {
         stmt.close();
         return crs;
     }
+
 }
