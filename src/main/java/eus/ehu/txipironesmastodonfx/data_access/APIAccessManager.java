@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import eus.ehu.txipironesmastodonfx.domain.Account;
+import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,10 +29,21 @@ public class APIAccessManager {
 
     public static Gson gson = new Gson();
 
+    /**
+     * Simple class to do a quick json parsing.
+     * Used in the verifyAndGetId method.
+     */
     private class idHandler {
         String id;
     }
 
+    /**
+     * Method to verify if a token is valid. It will return the id of the account
+     * if the account is valid and null if it is not.
+     *
+     * @param token (String) - token to verify
+     * @return (String) - id of the account if the token is valid, null if it is not
+     */
     public static String verifyAndGetId(String token) {
         String response = request("accounts/verify_credentials", token, true);
         if (response.equals("")) {
@@ -42,6 +54,15 @@ public class APIAccessManager {
         return result.id;
     }
 
+    /**
+     * Method to get the statuses (activity toots) of an account.
+     * It will return a list of toots. If the request can't be made,
+     * it will return null.
+     *
+     * @param selectedAccId (String) - id of the account
+     * @param sysvar        (String) - system variable of the account
+     * @return (List < Toot >) - list of toots
+     */
     public static List<Toot> getActivityToots(String selectedAccId, String sysvar) {
         String response = request("accounts/" + selectedAccId + "/statuses", sysvar, false);
         if (response.equals("")) {
@@ -54,6 +75,37 @@ public class APIAccessManager {
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), statusListType);
     }
 
+    /**
+     * Generic method to get the follow list of an account
+     * The parameter following indicates if we want to get the
+     * following list or the followers list.
+     *
+     * @param selectedAccId (String) - id of the account
+     * @param sysvar        (String) - system variable of the account
+     * @param following     (boolean) - true if we want the following list, false if we want the followers list
+     * @return (List < Follow >) - list of follows
+     */
+    public static List<Follow> getFollow(String selectedAccId, String sysvar, boolean following) {
+        String endtarget = following ? "following" : "followers";
+        String response = request("accounts/" + selectedAccId + "/" + endtarget, sysvar, false);
+        if (response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        Type followListType = new TypeToken<ArrayList<Follow>>() {
+        }.getType();
+        // get json array and then convert it to a list of Accounts
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), followListType);
+    }
+
+
+    /**
+     * Generic method to get an account from its id
+     *
+     * @param id    (String) - id of the account
+     * @param token (String) - token of the account
+     * @return (Account) - the account
+     */
     public static Account getAccount(String id, String token) {
         String response = request("accounts/" + id, token, true);
         if (response.equals("")) {

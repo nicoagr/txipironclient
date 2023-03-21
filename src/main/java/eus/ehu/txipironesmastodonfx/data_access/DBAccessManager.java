@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
 import eus.ehu.txipironesmastodonfx.domain.Account;
+import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 
 import javax.sql.rowset.CachedRowSet;
@@ -91,10 +92,8 @@ public class DBAccessManager {
                   reblogged BOOLEAN,
                   content VARCHAR(2048),
                   account_id VARCHAR(255),
-                  reblog_id INT,
                   CONSTRAINT toots_pk_id PRIMARY KEY (id),
-                  CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE,
-                  CONSTRAINT toots_fk_reblog_id FOREIGN KEY (reblog_id) REFERENCES toots(id) ON DELETE CASCADE ON UPDATE CASCADE
+                  CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
                 );""";
         String followersql = """
                 CREATE TABLE IF NOT EXISTS follower (
@@ -187,11 +186,11 @@ public class DBAccessManager {
      * @return (String) - The ref associated with the account
      * @throws SQLException - If the query fails to execute
      */
-    public static String getRefFromId(String AccId) throws SQLException {
+    public static Integer getRefFromId(String AccId) throws SQLException {
         ResultSet rs = executeQuery("SELECT ref FROM accounts WHERE id = ?", List.of(AccId));
-        String ref = null;
+        Integer ref = null;
         while (rs.next()) {
-            ref = rs.getString("ref");
+            ref = rs.getInt("ref");
         }
         return ref;
     }
@@ -202,7 +201,7 @@ public class DBAccessManager {
      * @param ref (String) - The ref of the account
      * @return (String) - The system variable associated with the account
      */
-    public static String getSysVarFromRef(String ref) throws SQLException {
+    public static String getSysVarFromRef(Integer ref) throws SQLException {
         ResultSet rs = executeQuery("SELECT svarname FROM accounts WHERE ref = ?", List.of(ref));
         String sysvar = null;
         while (rs.next()) {
@@ -212,13 +211,14 @@ public class DBAccessManager {
     }
 
     /**
-     * This method will delete all toots from the database
-     * associated with a specific account. (ref)
+     * This generic method will be used to delete
+     * entries with an specific ref in a specific table.
      *
-     * @param ref (String) - The ref of the account
+     * @param ref       (String) - The ref of the account
+     * @param tablename (String) - The name of the table
      */
-    public static void deleteTootsFromDb(String ref) throws SQLException {
-        executeQuery("DELETE FROM toots WHERE ref = ?", List.of(ref));
+    public static void deleteRefFromDb(Integer ref, String tablename) throws SQLException {
+        executeQuery("DELETE FROM " + tablename + " WHERE ref = ?", List.of(ref));
     }
 
     /**
@@ -229,9 +229,15 @@ public class DBAccessManager {
      * @param toots (List < Toot >) - The list of toots to insert
      * @param ref   (String) - The ref of the account
      */
-    public static void insertTootsInDb(List<Toot> toots, String ref) throws SQLException {
+    public static void insertTootsInDb(List<Toot> toots, Integer ref) throws SQLException {
+        List<Object> params;
         for (Toot t : toots) {
-            List<Object> params = new ArrayList<>();
+            params = new ArrayList<>();
+            // unflip the recursion stack
+            while (t.reblog != null) {
+                t = t.reblog;
+                t.reblogged = true;
+            }
             params.add(ref);
             params.add(t.id);
             params.add(t.created_at);
@@ -245,9 +251,25 @@ public class DBAccessManager {
             params.add(t.reblogged);
             params.add(t.content);
             params.add(t.account != null ? t.account.id : null);
-            params.add(t.reblog != null ? t.reblog.id : null);
 
-            executeQuery("INSERT INTO toots (ref, id, created_at, in_reply_to_id, sensitive, uri, replies_count, reblogs_count, favourites_count, favourited, reblogged, content, account_id, reblog_id) VALUES (?, ?, ?, ? , ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)", params);
+            executeQuery("INSERT INTO toots (ref, id, created_at, in_reply_to_id, sensitive, uri, replies_count, reblogs_count, favourites_count, favourited, reblogged, content, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?);", params);
+        }
+    }
+
+    /**
+     * Method to insert a list of follow in the database.
+     * If the following parameter is true, it will insert the accounts
+     * into the following table. If not, it will insert the accounts
+     * into the follower table.
+     *
+     * @param followList (String) - The list of accounts to insert
+     * @param ref        (String) - The ref of the account
+     * @param following  (boolean) - True if the accounts are following the account, false otherwise
+     */
+    public static void insertFollowInDb(List<Follow> followList, Integer ref, boolean following) throws SQLException {
+        String tablename = following ? "following" : "follower";
+        for (Follow f : followList) {
+            executeQuery("INSERT INTO " + tablename + " (ref, id, acct, avatar) VALUES (?, ?, ?, ?);", List.of(ref, f.id, f.acct, f.avatar));
         }
     }
 
@@ -287,10 +309,19 @@ public class DBAccessManager {
         // if we have parameters to substitute, we do it
         if (params != null) {
             for (Object o : params) {
+                // please note smt.set indexes start at 1 and not at 0
                 if (o instanceof String) {
                     stmt.setString(params.indexOf(o) + 1, (String) o);
                 } else if (o instanceof Integer) {
                     stmt.setInt(params.indexOf(o) + 1, (Integer) o);
+                } else if (o instanceof Boolean) {
+                    stmt.setBoolean(params.indexOf(o) + 1, (Boolean) o);
+                } else if (o instanceof Long) {
+                    stmt.setLong(params.indexOf(o) + 1, (Long) o);
+                } else if (o instanceof Double) {
+                    stmt.setDouble(params.indexOf(o) + 1, (Double) o);
+                } else if (o instanceof Float) {
+                    stmt.setFloat(params.indexOf(o) + 1, (Float) o);
                 }
             }
         }

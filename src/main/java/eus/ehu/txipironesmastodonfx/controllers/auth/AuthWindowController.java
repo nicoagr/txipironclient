@@ -6,6 +6,7 @@ import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
+import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -69,10 +70,22 @@ public class AuthWindowController implements WindowController {
         System.exit(0);
     }
 
+    /**
+     * Login button click action.
+     * It will check if there is internet connection.
+     * It will check if the selected account is in the database.
+     * It will get the reference of the account.
+     * It will get the sysvar of the account.
+     * It will download the toots of the account.
+     * It will insert the toots in the database.
+     * It will download the follows (followers/followings) of the account.
+     * It will insert the follows (followers/followings) in the database.
+     * It will change the scene to the main window.
+     */
     @FXML
     void loginBtnClick() {
         // get ref from account id
-        String ref;
+        Integer ref;
         String sysvar;
         try {
             ref = DBAccessManager.getRefFromId(selectedAccId);
@@ -90,7 +103,7 @@ public class AuthWindowController implements WindowController {
             List<Toot> toots = APIAccessManager.getActivityToots(selectedAccId, sysvar);
             if (toots != null) {
                 // TODO! - Sprint 2 - Check if toots are already in db instead of deleting all
-                DBAccessManager.deleteTootsFromDb(ref);
+                DBAccessManager.deleteRefFromDb(ref, "toots");
                 DBAccessManager.insertTootsInDb(toots, ref);
             }
         } catch (SQLException e) {
@@ -99,8 +112,30 @@ public class AuthWindowController implements WindowController {
         }
 
         // download following and insert in database
+        try {
+            List<Follow> following = APIAccessManager.getFollow(selectedAccId, sysvar, true);
+            if (following != null || following.size() > 0) {
+                // TODO! - Sprint 2 - Check if following are already in db instead of deleting all
+                DBAccessManager.deleteRefFromDb(ref, "following");
+                DBAccessManager.insertFollowInDb(following, ref, true);
+            }
+        } catch (SQLException e) {
+            errStop("SQLError when deleting & inserting downloaded following in db.");
+            return;
+        }
         // download followers and insert in database
-        mainApp.changeScene("Main");
+        try {
+            List<Follow> followers = APIAccessManager.getFollow(selectedAccId, sysvar, false);
+            if (followers != null || followers.size() > 0) {
+                // TODO! - Sprint 2 - Check if followers are already in db instead of deleting all
+                DBAccessManager.deleteRefFromDb(ref, "follower");
+                DBAccessManager.insertFollowInDb(followers, ref, false);
+            }
+        } catch (SQLException e) {
+            errStop("SQLError when deleting & inserting downloaded followers in db.");
+            return;
+        }
+        mainApp.changeScene("Main", ref);
     }
 
     /**
@@ -206,10 +241,10 @@ public class AuthWindowController implements WindowController {
             int selectedIndex = accountListView.getSelectionModel().getSelectedIndex();
             // if the selected cell is an account, enable the login button
             // if the selected cell is not an account, disable the login button
-            if (selectedIndex >= 0 && selectedIndex < listViewItems.size()) {
-                loginBtn.setDisable(!(listViewItems.get(selectedIndex) instanceof Account));
+            if (selectedIndex >= 0 && selectedIndex < listViewItems.size() && listViewItems.get(selectedIndex) instanceof Account) {
+                loginBtn.setDisable(false);
                 selectedAccId = ((Account) listViewItems.get(selectedIndex)).id;
-            }
+            } else loginBtn.setDisable(true);
         });
         // Update ListView
         updateListView();

@@ -14,6 +14,14 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Controller class for the new account cell in the listview.
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Marcos Chouciño
+ * @author Xiomara Cáceces
+ */
 public class AuthNewAccoCellController {
     @FXML
     private AnchorPane anchorPane;
@@ -25,6 +33,14 @@ public class AuthNewAccoCellController {
     private Label errorTxt;
     private AuthWindowController master;
 
+    /**
+     * Add account button: It will perform
+     * a series of checks. If everything is ok,
+     * it will add the account to the database and it
+     * will refresh the listview.
+     * If something goes wrong, it'll display a message
+     * indicating that fact.
+     */
     @FXML
     void addAccBtnClick() {
         String token = mstdTokenTxt.getText();
@@ -83,6 +99,10 @@ public class AuthNewAccoCellController {
         mstdTokenTxt.setText("");
     }
 
+    /**
+     * Constructor for the controller.
+     * It will load itself at take consciousness (set itself as controller)
+     */
     public AuthNewAccoCellController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/auth/authnewcell.fxml"));
         fxmlLoader.setController(this);
@@ -94,11 +114,23 @@ public class AuthNewAccoCellController {
         }
     }
 
+    /**
+     * Getter for the UI (AnchorPane)
+     * This method will be used by the AuthWindowController
+     * in order to display custom cells in the listview
+     *
+     * @return (AnchorPane) - The UI of the controller
+     */
     public AnchorPane getUI() {
         return anchorPane;
     }
 
-    public void setReference(AuthWindowController thisclass) {
-        this.master = thisclass;
+    /**
+     * Setter for the reference to the auth window controller
+     *
+     * @param authcont (AuthWindowController) - The reference to the auth window controller
+     */
+    public void setReference(AuthWindowController authcont) {
+        this.master = authcont;
     }
 }
