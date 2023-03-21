@@ -4,6 +4,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="200.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.domain.Toot">
    <children>
@@ -35,5 +36,6 @@
             <Image url="@dark-share-900.png" />
          </image>
       </ImageView>
+      <Text layoutX="613.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;- //TO DO" wrappingWidth="109.7294921875" />
    </children>
 </AnchorPane>
