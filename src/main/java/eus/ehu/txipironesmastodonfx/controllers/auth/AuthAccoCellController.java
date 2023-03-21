@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers.auth;
 
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.SysUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,17 +16,13 @@ import java.sql.SQLException;
 public class AuthAccoCellController {
     @FXML
     private ImageView avatarImg;
-
     @FXML
     private AnchorPane anchorPane;
-
     @FXML
     private Label accIdTxt;
-
     @FXML
     private Label userNameTxt;
     private AuthWindowController master;
-
     public AuthAccoCellController(Account account) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml"));
         fxmlLoader.setController(this);
@@ -53,6 +50,7 @@ public class AuthAccoCellController {
     void removeAccBtnClick() {
         // Remove account from database
         try {
+            SysUtils.removeSysVariable(DBAccessManager.getSysVarFromDbId(accIdTxt.getText()));
             DBAccessManager.removeAccountFromDbId(accIdTxt.getText());
             // Refresh listview
             master.updateListView();

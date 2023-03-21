@@ -10,13 +10,13 @@ public class NetworkUtils {
     /**
      * This method checks if the device has an internet connection
      * To do so, it tries to connect to mastodon.social API and fetch
-     * the public timeline. If it can't, it returns false.
+     * a single (special) toot. If it can't, it returns false.
      *
      * @return boolean - True if the device has an internet connection, false otherwise
      */
     public static boolean hasInternet() {
         try {
-            final URL url = new URL("https://mastodon.social/api/v1/timelines/public");
+            final URL url = new URL("https://mastodon.social/api/v1/statuses/109897715842769702");
             final URLConnection conn = url.openConnection();
             conn.setConnectTimeout(3000);
             conn.connect();

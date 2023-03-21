@@ -1,10 +1,17 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import eus.ehu.txipironesmastodonfx.domain.Account;
+import eus.ehu.txipironesmastodonfx.domain.Toot;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is responsible for managing access to the API.
@@ -35,6 +42,18 @@ public class APIAccessManager {
         return result.id;
     }
 
+    public static List<Toot> getActivityToots(String selectedAccId, String sysvar) {
+        String response = request("accounts/" + selectedAccId + "/statuses", sysvar, false);
+        if (response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        Type statusListType = new TypeToken<ArrayList<Toot>>() {
+        }.getType();
+        // get json array and then convert it to a list of Toots
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), statusListType);
+    }
+
     public static Account getAccount(String id, String token) {
         String response = request("accounts/" + id, token, true);
         if (response.equals("")) {
@@ -44,6 +63,16 @@ public class APIAccessManager {
         return gson.fromJson(response, Account.class);
     }
 
+    /**
+     * Generic method to perform a request to the
+     * mastodon API. The endpoint must be formated by the part
+     * that comes after "https://mastodon.social/api/v1/"
+     *
+     * @param endpoint   (String) - The endpoint to request
+     * @param sysvarname - The name of the system variable that contains the token
+     * @param override   - If true, the sysvar will be interpreted as a token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
     private static String request(String endpoint, String sysvarname, boolean override) {
         String result = "";
         OkHttpClient client = new OkHttpClient();

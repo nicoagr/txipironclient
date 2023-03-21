@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
 import eus.ehu.txipironesmastodonfx.domain.Account;
+import eus.ehu.txipironesmastodonfx.domain.Toot;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -157,19 +158,97 @@ public class DBAccessManager {
     /**
      * Removes an account from the database.
      *
-     * @param ref (String) - The reference of the account to remove
-     */
-    private static void removeAccountFromDbRef(String ref) throws SQLException {
-        executeQuery("DELETE FROM accounts WHERE ref = ?", List.of(ref));
-    }
-
-    /**
-     * Removes an account from the database.
-     *
      * @param id (String) - The id of the account to remove
      */
     public static void removeAccountFromDbId(String id) throws SQLException {
         executeQuery("DELETE FROM accounts WHERE id = ?", List.of(id));
+    }
+
+    /**
+     * Gets the system variable associated with an account.
+     *
+     * @param id (String) - The id of the account
+     * @return (String) - The system variable associated with the account
+     * @throws SQLException - If the query fails to execute
+     */
+    public static String getSysVarFromDbId(String id) throws SQLException {
+        ResultSet rs = executeQuery("SELECT svarname FROM accounts WHERE id = ?", List.of(id));
+        String svarname = null;
+        while (rs.next()) {
+            svarname = rs.getString("svarname");
+        }
+        return svarname;
+    }
+
+    /**
+     * Gets the ref associated with an account.
+     *
+     * @param AccId (String) - The id of the account
+     * @return (String) - The ref associated with the account
+     * @throws SQLException - If the query fails to execute
+     */
+    public static String getRefFromId(String AccId) throws SQLException {
+        ResultSet rs = executeQuery("SELECT ref FROM accounts WHERE id = ?", List.of(AccId));
+        String ref = null;
+        while (rs.next()) {
+            ref = rs.getString("ref");
+        }
+        return ref;
+    }
+
+    /**
+     * Gets the system variable associated with an account.
+     *
+     * @param ref (String) - The ref of the account
+     * @return (String) - The system variable associated with the account
+     */
+    public static String getSysVarFromRef(String ref) throws SQLException {
+        ResultSet rs = executeQuery("SELECT svarname FROM accounts WHERE ref = ?", List.of(ref));
+        String sysvar = null;
+        while (rs.next()) {
+            sysvar = rs.getString("svarname");
+        }
+        return sysvar;
+    }
+
+    /**
+     * This method will delete all toots from the database
+     * associated with a specific account. (ref)
+     *
+     * @param ref (String) - The ref of the account
+     */
+    public static void deleteTootsFromDb(String ref) throws SQLException {
+        executeQuery("DELETE FROM toots WHERE ref = ?", List.of(ref));
+    }
+
+    /**
+     * Method to insert a list of toots in the database.
+     * It will have a ref parameter to know which account
+     * the toots belong to.
+     *
+     * @param toots (List < Toot >) - The list of toots to insert
+     * @param ref   (String) - The ref of the account
+     */
+    public static void insertTootsInDb(List<Toot> toots, String ref) throws SQLException {
+        for (Toot t : toots) {
+            List<Object> params = new ArrayList<>();
+            params.add(ref);
+            params.add(t.id);
+            params.add(t.created_at);
+            params.add(t.in_reply_to_id);
+            params.add(t.sensitive);
+            params.add(t.uri);
+            params.add(t.replies_count);
+            params.add(t.reblogs_count);
+            params.add(t.favourites_count);
+            params.add(t.favourited);
+            params.add(t.reblogged);
+            params.add(t.content);
+            params.add(t.account != null ? t.account.id : null);
+            params.add(t.reblog != null ? t.reblog.id : null);
+
+            executeQuery("INSERT INTO toots (ref, id, created_at, in_reply_to_id, sensitive, uri, replies_count, reblogs_count, favourites_count, favourited, reblogged, content, account_id, reblog_id) VALUES (?, ?, ?, ? , ?, ?, ?, ?, ? , ?, ?, ?, ?, ?)", params);
+        }
     }
 
     /**

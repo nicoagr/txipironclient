@@ -27,27 +27,25 @@ public class AuthNewAccoCellController {
 
     @FXML
     void addAccBtnClick() {
-        addAccBtn.setDisable(true);
-        mstdTokenTxt.setDisable(true);
         String token = mstdTokenTxt.getText();
-        mstdTokenTxt.setText("Loading");
+        mstdTokenTxt.setText("Loading...");
         // Check for internet connection
         if (!NetworkUtils.hasInternet()) {
             errorTxt.setText("Error! No internet connection / Mastodon API Unreachable");
-            addAccBtn.setDisable(false);
+            mstdTokenTxt.setText("");
             return;
         }
         // verify token present
         if (mstdTokenTxt.getText().isEmpty()) {
             errorTxt.setText("Error! Token is empty");
-            addAccBtn.setDisable(false);
+            mstdTokenTxt.setText("");
             return;
         }
         // check if token is valid
         String id = APIAccessManager.verifyAndGetId(token);
         if (id == null) {
             errorTxt.setText("Error! Token is invalid");
-            addAccBtn.setDisable(false);
+            mstdTokenTxt.setText("");
             return;
         }
         // check if account is not in database
@@ -55,12 +53,12 @@ public class AuthNewAccoCellController {
             if (DBAccessManager.isAccountInDb(id)) {
                 // If the account is in the database, stop the process
                 errorTxt.setText("Error! Account already in database");
-                addAccBtn.setDisable(false);
+                mstdTokenTxt.setText("");
                 return;
             }
         } catch (SQLException e) {
             errorTxt.setText("Error when checking if account is in database");
-            addAccBtn.setDisable(false);
+            mstdTokenTxt.setText("");
             return;
         }
         // add account to database
@@ -69,20 +67,20 @@ public class AuthNewAccoCellController {
             DBAccessManager.addAccount(destinationsysvar, id, token);
         } catch (UnsupportedOperationException e) {
             errorTxt.setText("Error! Unsupported operating system (System Variables)");
-            addAccBtn.setDisable(false);
+            mstdTokenTxt.setText("");
             return;
         } catch (SQLException e) {
             errorTxt.setText("Error when adding account to database");
-            addAccBtn.setDisable(false);
+            mstdTokenTxt.setText("");
             return;
         } catch (IOException e) {
             errorTxt.setText("Error when setting system variable");
-            addAccBtn.setDisable(false);
+            mstdTokenTxt.setText("");
             return;
         }
         // refresh listview
         master.updateListView();
-        addAccBtn.setDisable(false);
+        mstdTokenTxt.setText("");
     }
 
     public AuthNewAccoCellController() {

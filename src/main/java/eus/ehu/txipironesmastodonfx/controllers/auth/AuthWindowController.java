@@ -2,9 +2,11 @@ package eus.ehu.txipironesmastodonfx.controllers.auth;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
+import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,6 +47,7 @@ public class AuthWindowController implements WindowController {
         mainApp = app;
     }
 
+    private String selectedAccId;
     @FXML
     private VBox vbox;
     @FXML
@@ -68,6 +71,35 @@ public class AuthWindowController implements WindowController {
 
     @FXML
     void loginBtnClick() {
+        // get ref from account id
+        String ref;
+        String sysvar;
+        try {
+            ref = DBAccessManager.getRefFromId(selectedAccId);
+            sysvar = DBAccessManager.getSysVarFromRef(ref);
+        } catch (SQLException e) {
+            errStop("SQLError when obtaining user reference");
+            return;
+        }
+        if (ref == null || sysvar == null) {
+            errStop("Error! Couldn't get reference or sysvar from db.");
+            return;
+        }
+        // download toots and insert in database
+        try {
+            List<Toot> toots = APIAccessManager.getActivityToots(selectedAccId, sysvar);
+            if (toots != null) {
+                // TODO! - Sprint 2 - Check if toots are already in db instead of deleting all
+                DBAccessManager.deleteTootsFromDb(ref);
+                DBAccessManager.insertTootsInDb(toots, ref);
+            }
+        } catch (SQLException e) {
+            errStop("SQLError when deleting & inserting downloaded toots in db.");
+            return;
+        }
+
+        // download following and insert in database
+        // download followers and insert in database
         mainApp.changeScene("Main");
     }
 
@@ -174,12 +206,13 @@ public class AuthWindowController implements WindowController {
             int selectedIndex = accountListView.getSelectionModel().getSelectedIndex();
             // if the selected cell is an account, enable the login button
             // if the selected cell is not an account, disable the login button
-            if (selectedIndex >= 0 && selectedIndex < listViewItems.size())
+            if (selectedIndex >= 0 && selectedIndex < listViewItems.size()) {
                 loginBtn.setDisable(!(listViewItems.get(selectedIndex) instanceof Account));
+                selectedAccId = ((Account) listViewItems.get(selectedIndex)).id;
+            }
         });
         // Update ListView
         updateListView();
-
     }
 
 }
