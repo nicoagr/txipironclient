@@ -28,7 +28,7 @@
             </ImageView>
             <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="searchbar" layoutX="259.0" layoutY="26.0" prefHeight="40.0" prefWidth="541.0" />
-            <Button fx:id="searchbutton" layoutX="204.0" layoutY="26.0" minHeight="40.0" mnemonicParsing="false" text="search" />
+            <Button fx:id="searchbutton" layoutX="204.0" layoutY="26.0" minHeight="40.0" mnemonicParsing="false" text="search//todo" />
          </children>
       </AnchorPane>
    </top>

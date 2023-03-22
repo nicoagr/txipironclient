@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,7 +64,7 @@ public class TootCellController   {
      * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
     public TootCellController(Toot toot, MainWindowController master) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/tootcell.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/tootcell.fxml"));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
@@ -74,18 +73,14 @@ public class TootCellController   {
         }
         this.setReference(master);
         // set the values for the account cell
-            this.Id.setText(toot.account.id);
-            this.username.setText(toot.account.acct);
-            this.imagen.setImage(new Image(toot.account.avatar));
-            this.date.setText((toot.created_at));
-            this.tootinfo.setText(toot.content);
-            this.numLikes.setText(Integer.toString(toot.favourites_count));
-            this.numReboots.setText(Integer.toString(toot.reblogs_count));
-            this.numComments.setText(Integer.toString(toot.replies_count));
-
-
-
-
+        this.Id.setText(toot.account.id);
+        this.username.setText(toot.account.acct);
+        this.imagen.setImage(new Image(toot.account.avatar));
+        this.date.setText((toot.created_at));
+        this.tootinfo.setText(toot.content);
+        this.numLikes.setText(Integer.toString(toot.favourites_count));
+        this.numReboots.setText(Integer.toString(toot.reblogs_count));
+        this.numComments.setText(Integer.toString(toot.replies_count));
     }
 
     /**
