@@ -432,10 +432,17 @@ public class DBAccessManager {
      * @param username (String) - The username of the user
      * @return String - The id of the user
      */
-    /*public String getUserId(String username){
+    public String getUserId(String username, int ref) throws SQLException {
+        CachedRowSet rs = executeQuery("SELECT id FROM accounts WHERE username = ? AND ref = ?;", List.of(username, ref));
+        if (rs.next()) {
+            return rs.getString("id");
+        }
+        return null;
+    }
 
 
-    }*/
+
+    }
 
 
 
@@ -443,4 +450,4 @@ public class DBAccessManager {
 
 
 
-}
+
