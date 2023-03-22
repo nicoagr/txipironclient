@@ -398,7 +398,7 @@ public class DBAccessManager {
      */
     public List<Follow> getUserFollowers(int ref) throws SQLException {
         List<Follow> follows = new ArrayList<>();
-        CachedRowSet rs = executeQuery("SELECT * FROM Followers WHERE ref = ?;", List.of(ref));
+        CachedRowSet rs = executeQuery("SELECT * FROM Follower WHERE ref = ?;", List.of(ref));
 
         while (rs.next()) {
             Follow f = new Follow();
