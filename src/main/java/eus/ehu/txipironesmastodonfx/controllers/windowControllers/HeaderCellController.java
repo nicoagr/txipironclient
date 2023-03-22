@@ -26,10 +26,6 @@ public class HeaderCellController {
         }
 
 
-       // Label.
-
-              //  (account.acct);
-
     }
 
     public AnchorPane getUI() {

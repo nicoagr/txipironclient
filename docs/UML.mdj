@@ -62,7 +62,7 @@
 											"top": 405,
 											"width": 92.45361328125,
 											"height": 13,
-											"text": "Unloged user"
+											"text": "Guest"
 										},
 										{
 											"_type": "LabelView",
@@ -1109,7 +1109,7 @@
 											"top": 683.5,
 											"width": 89,
 											"height": 13,
-											"text": "View follows"
+											"text": "View following"
 										},
 										{
 											"_type": "LabelView",
@@ -1142,7 +1142,7 @@
 									"font": "Arial;13;0",
 									"left": 661,
 									"top": 676.5,
-									"width": 99,
+									"width": 100.04150390625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGG9QZ1yX475eE="
@@ -1966,9 +1966,9 @@
 											"font": "Arial;13;1",
 											"left": 381,
 											"top": 629,
-											"width": 85.236328125,
+											"width": 93.88818359375,
 											"height": 13,
-											"text": "Logged usser"
+											"text": "Logged-in user"
 										},
 										{
 											"_type": "LabelView",
@@ -2001,7 +2001,7 @@
 									"font": "Arial;13;0",
 									"left": 376,
 									"top": 622,
-									"width": 95.236328125,
+									"width": 103.88818359375,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGG9YBPFfcgR+Q="
@@ -2085,7 +2085,7 @@
 							"containerChangeable": true,
 							"left": 376,
 							"top": 568,
-							"width": 95.236328125,
+							"width": 103.88818359375,
 							"height": 80,
 							"nameCompartment": {
 								"$ref": "AAAAAAGG9YBPFfcfphY="
@@ -2126,8 +2126,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 588,
-									"top": 701,
+									"left": 593,
+									"top": 703,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -2147,8 +2147,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 597,
-									"top": 689,
+									"left": 602,
+									"top": 691,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -2168,8 +2168,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 571,
-									"top": 726,
+									"left": 576,
+									"top": 728,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -2189,8 +2189,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 500,
-									"top": 638,
+									"left": 509,
+									"top": 643,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -2210,8 +2210,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 510,
-									"top": 629,
+									"left": 519,
+									"top": 633,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -2231,8 +2231,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 481,
-									"top": 658,
+									"left": 490,
+									"top": 662,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -2338,7 +2338,7 @@
 								"$ref": "AAAAAAGG9YBPFfcec0Y="
 							},
 							"lineStyle": 1,
-							"points": "471:642;690:799",
+							"points": "480:646;690:799",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9YC2mvm3waw="
@@ -2396,8 +2396,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 579,
-									"top": 663,
+									"left": 583,
+									"top": 664,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -2417,8 +2417,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 586,
-									"top": 650,
+									"left": 590,
+									"top": 651,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -2438,8 +2438,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 566,
-									"top": 690,
+									"left": 570,
+									"top": 691,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -2459,8 +2459,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 500,
-									"top": 624,
+									"left": 509,
+									"top": 626,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -2480,8 +2480,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 508,
-									"top": 613,
+									"left": 518,
+									"top": 615,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -2501,8 +2501,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 484,
-									"top": 646,
+									"left": 493,
+									"top": 649,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -2543,7 +2543,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 662,
-									"top": 691,
+									"top": 690,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -2608,7 +2608,7 @@
 								"$ref": "AAAAAAGG9YBPFfcec0Y="
 							},
 							"lineStyle": 1,
-							"points": "471:632;675:735",
+							"points": "480:634;675:735",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9YDKDP2BbaI="
@@ -2666,7 +2666,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 563,
+									"left": 568,
 									"top": 625,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -2687,7 +2687,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 567,
+									"left": 572,
 									"top": 611,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -2708,7 +2708,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 554,
+									"left": 559,
 									"top": 654,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -2729,8 +2729,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 500,
-									"top": 607,
+									"left": 509,
+									"top": 608,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -2750,8 +2750,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 505,
-									"top": 595,
+									"left": 515,
+									"top": 596,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -2771,8 +2771,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 488,
-									"top": 632,
+									"left": 497,
+									"top": 634,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -2792,7 +2792,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 626,
+									"left": 627,
 									"top": 643,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -2812,8 +2812,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 627,
-									"top": 630,
+									"left": 628,
+									"top": 629,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -2832,8 +2832,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 622,
-									"top": 671,
+									"left": 623,
+									"top": 670,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -2878,7 +2878,7 @@
 								"$ref": "AAAAAAGG9YBPFfcec0Y="
 							},
 							"lineStyle": 1,
-							"points": "471:621;647:671",
+							"points": "480:622;648:671",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9YDZ4//pQCA="
@@ -2936,7 +2936,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 559,
+									"left": 563,
 									"top": 591,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -2957,7 +2957,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 560,
+									"left": 564,
 									"top": 576,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -2978,7 +2978,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 558,
+									"left": 562,
 									"top": 620,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -2999,7 +2999,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 497,
+									"left": 506,
 									"top": 588,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -3020,7 +3020,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 500,
+									"left": 509,
 									"top": 575,
 									"height": 13,
 									"alpha": 0.7853981633974483,
@@ -3041,7 +3041,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 492,
+									"left": 501,
 									"top": 616,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -3148,7 +3148,7 @@
 								"$ref": "AAAAAAGG9YBPFfcec0Y="
 							},
 							"lineStyle": 1,
-							"points": "471:609;647:615",
+							"points": "480:609;647:615",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9YDk4wKEpJo="
@@ -3228,7 +3228,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 492,
-									"top": 483,
+									"top": 482,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -3267,7 +3267,7 @@
 								"$ref": "AAAAAAGG6jXhkBeMvEE="
 							},
 							"lineStyle": 1,
-							"points": "437:424;464:480;436:567",
+							"points": "437:424;464:480;439:567",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9YHBqwUITtk="
@@ -3361,7 +3361,7 @@
 								"$ref": "AAAAAAGG9YBPFfcec0Y="
 							},
 							"lineStyle": 1,
-							"points": "409:567;376:472;399:424",
+							"points": "412:567;376:472;399:424",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9YHVUAgxfJY="
@@ -3381,7 +3381,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
-					"name": "Unloged user",
+					"name": "Guest",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
@@ -3792,7 +3792,7 @@
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
 					"name": "Logging in an account that is saved",
-					"documentation": "#Logging in an account that is saved\n##Main flow\n1. The user will click on the account in which he wants to loggin and click the\t\"Loggin With selected account button\"  \n2. The Sistem will swich to the main window."
+					"documentation": "#Logging in an account that is saved\n##Main flow\n1. The user will click on the account in which he wants to loggin and click the\t\"Login With selected account button\"  \n2. The sistem will download the toots of the user of which token was given by the user.  \n3. The Sistem will switch to the main window."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3801,7 +3801,7 @@
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
 					"name": "View my toots",
-					"documentation": "#View follows\n##Main flow\n1. The user will click on the \"View my toots\" button.\n2. The Sistem will load from the database each toot that bellongs to the user."
+					"documentation": "#View my toots\n##Main flow\n1. The user will click on the \"View my toots\" button.\n2. The System will load from the database each toot that belngs to the user."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3810,7 +3810,7 @@
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
 					"name": "View followers",
-					"documentation": "#View followers\n##Main flow\n1. The user will click on the \"View followers\" button.\n2. The Sistem will load from the database each account that follows the user."
+					"documentation": "#View followers\n##Main flow\n1. The user will click on the \"View followers\" button.\n2. The System will load from the database each account which the user follows."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3818,7 +3818,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
-					"name": "View follows",
+					"name": "View following",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -3848,7 +3848,7 @@
 							}
 						}
 					],
-					"documentation": "#View follows\n##Main flow\n1. The user will click on the \"View follows\" button.\n2. The Sistem will load from the database each account that the user follows and distplay it."
+					"documentation": "#View following\n##Main flow\n1. The user will click on the \"View follows\" button.\n2. The Sistem will load from the database each account which the user follows and it'll display it."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3857,7 +3857,7 @@
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
 					"name": "Save an account",
-					"documentation": "#Save an account\n##Main flow\n1. The user will provide a token.  \n2. The sistem will downoload the toots of the user of which token was given by the user.  \n3. The sistem will display the account on the UI, and the user will be able to loggin with that account.  \n##Alternative flow\n2. A The user will give a token that is already loaded, the sistem will display an error.  "
+					"documentation": "#Save an account\n##Main flow\n1. The user will provide a token.\n2. The system will check if the token is correct.  \n3. The sistem will display the account information on the UI and the user will be able to login with that account.  \n##Alternative flow\n2. A The user will give a token that is already loaded, the system will display an error.  \n2. B There is no internet conexion. The system will display an error  .  \n2. C The operating system is not compatible with sistem variables. The system will display an error."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3874,7 +3874,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
-					"name": "Logged usser",
+					"name": "Logged-in user",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
