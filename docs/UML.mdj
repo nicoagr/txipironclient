@@ -227,8 +227,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 352,
-											"top": -128,
+											"left": 320,
+											"top": -144,
 											"height": 13
 										},
 										{
@@ -238,8 +238,8 @@
 												"$ref": "AAAAAAGG9QFIR1QMf/E="
 											},
 											"font": "Arial;13;1",
-											"left": 645,
-											"top": 323.5,
+											"left": 629,
+											"top": 315.5,
 											"width": 220,
 											"height": 13,
 											"text": "Logging in an account that is saved"
@@ -252,8 +252,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 352,
-											"top": -128,
+											"left": 320,
+											"top": -144,
 											"width": 126.90234375,
 											"height": 13,
 											"text": "(from Use Case View)"
@@ -266,15 +266,15 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 352,
-											"top": -128,
+											"left": 320,
+											"top": -144,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 640,
-									"top": 316.5,
+									"left": 624,
+									"top": 308.5,
 									"width": 231.025390625,
 									"height": 25,
 									"stereotypeLabel": {
@@ -301,8 +301,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 176,
-									"top": -64,
+									"left": 160,
+									"top": -72,
 									"width": 10,
 									"height": 10
 								},
@@ -317,8 +317,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 176,
-									"top": -64,
+									"left": 160,
+									"top": -72,
 									"width": 10,
 									"height": 10
 								},
@@ -333,8 +333,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 176,
-									"top": -64,
+									"left": 160,
+									"top": -72,
 									"width": 10,
 									"height": 10
 								},
@@ -349,8 +349,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 176,
-									"top": -64,
+									"left": 160,
+									"top": -72,
 									"width": 10,
 									"height": 10
 								},
@@ -365,16 +365,16 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 176,
-									"top": -64,
+									"left": 160,
+									"top": -72,
 									"width": 10,
 									"height": 10
 								}
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 592,
-							"top": 312,
+							"left": 576,
+							"top": 304,
 							"width": 326,
 							"height": 35,
 							"nameCompartment": {
@@ -419,8 +419,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 553,
-									"top": 340,
+									"left": 554,
+									"top": 335,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -441,7 +441,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 551,
-									"top": 325,
+									"top": 320,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -461,8 +461,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 558,
-									"top": 369,
+									"left": 559,
+									"top": 364,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -482,8 +482,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 493,
-									"top": 350,
+									"left": 492,
+									"top": 347,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -503,8 +503,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 493,
-									"top": 336,
+									"left": 492,
+									"top": 333,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -525,7 +525,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 493,
-									"top": 377,
+									"top": 375,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -545,8 +545,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 613,
-									"top": 330,
+									"left": 616,
+									"top": 323,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -565,8 +565,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 609,
-									"top": 317,
+									"left": 611,
+									"top": 310,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -585,8 +585,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 622,
-									"top": 356,
+									"left": 626,
+									"top": 349,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -631,7 +631,7 @@
 								"$ref": "AAAAAAGG6jXhkBeMvEE="
 							},
 							"lineStyle": 1,
-							"points": "470:375;642:347",
+							"points": "470:373;645:339",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9QGMFlQ/byw="
@@ -1095,7 +1095,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -48,
-											"top": 176,
+											"top": 160,
 											"height": 13
 										},
 										{
@@ -1106,7 +1106,7 @@
 											},
 											"font": "Arial;13;1",
 											"left": 666,
-											"top": 691.5,
+											"top": 683.5,
 											"width": 89,
 											"height": 13,
 											"text": "View follows"
@@ -1120,7 +1120,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -48,
-											"top": 176,
+											"top": 160,
 											"width": 126.90234375,
 											"height": 13,
 											"text": "(from Use Case View)"
@@ -1134,14 +1134,14 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"left": -48,
-											"top": 176,
+											"top": 160,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 661,
-									"top": 684.5,
+									"top": 676.5,
 									"width": 99,
 									"height": 25,
 									"stereotypeLabel": {
@@ -1169,7 +1169,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -24,
-									"top": 88,
+									"top": 80,
 									"width": 10,
 									"height": 10
 								},
@@ -1185,7 +1185,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -24,
-									"top": 88,
+									"top": 80,
 									"width": 10,
 									"height": 10
 								},
@@ -1201,7 +1201,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -24,
-									"top": 88,
+									"top": 80,
 									"width": 10,
 									"height": 10
 								},
@@ -1217,7 +1217,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -24,
-									"top": 88,
+									"top": 80,
 									"width": 10,
 									"height": 10
 								},
@@ -1233,7 +1233,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": -24,
-									"top": 88,
+									"top": 80,
 									"width": 10,
 									"height": 10
 								}
@@ -1241,7 +1241,7 @@
 							"font": "Arial;13;0",
 							"containerChangeable": true,
 							"left": 640,
-							"top": 680,
+							"top": 672,
 							"width": 141,
 							"height": 35,
 							"nameCompartment": {
@@ -1754,8 +1754,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 512,
-											"top": -64,
+											"left": 496,
+											"top": -96,
 											"height": 13
 										},
 										{
@@ -1765,8 +1765,8 @@
 												"$ref": "AAAAAAGG9QpFNJf5/MI="
 											},
 											"font": "Arial;13;1",
-											"left": 676,
-											"top": 627.5,
+											"left": 668,
+											"top": 611.5,
 											"width": 62,
 											"height": 13,
 											"text": "Logout"
@@ -1779,8 +1779,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 512,
-											"top": -64,
+											"left": 496,
+											"top": -96,
 											"width": 126.90234375,
 											"height": 13,
 											"text": "(from Use Case View)"
@@ -1793,15 +1793,15 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 512,
-											"top": -64,
+											"left": 496,
+											"top": -96,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 671,
-									"top": 620.5,
+									"left": 663,
+									"top": 604.5,
 									"width": 72,
 									"height": 25,
 									"stereotypeLabel": {
@@ -1828,8 +1828,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 256,
-									"top": -32,
+									"left": 248,
+									"top": -48,
 									"width": 10,
 									"height": 10
 								},
@@ -1844,8 +1844,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 256,
-									"top": -32,
+									"left": 248,
+									"top": -48,
 									"width": 10,
 									"height": 10
 								},
@@ -1860,8 +1860,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 256,
-									"top": -32,
+									"left": 248,
+									"top": -48,
 									"width": 10,
 									"height": 10
 								},
@@ -1876,8 +1876,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 256,
-									"top": -32,
+									"left": 248,
+									"top": -48,
 									"width": 10,
 									"height": 10
 								},
@@ -1892,16 +1892,16 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 256,
-									"top": -32,
+									"left": 248,
+									"top": -48,
 									"width": 10,
 									"height": 10
 								}
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 656,
-							"top": 616,
+							"left": 648,
+							"top": 600,
 							"width": 102,
 							"height": 35,
 							"nameCompartment": {
@@ -2666,8 +2666,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 566,
-									"top": 629,
+									"left": 563,
+									"top": 625,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -2687,8 +2687,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 571,
-									"top": 615,
+									"left": 567,
+									"top": 611,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -2708,8 +2708,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 557,
-									"top": 658,
+									"left": 554,
+									"top": 654,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -2730,7 +2730,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 500,
-									"top": 609,
+									"top": 607,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -2750,8 +2750,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 506,
-									"top": 597,
+									"left": 505,
+									"top": 595,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -2771,8 +2771,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 487,
-									"top": 634,
+									"left": 488,
+									"top": 632,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -2792,8 +2792,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 632,
-									"top": 650,
+									"left": 626,
+									"top": 643,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -2812,8 +2812,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 634,
-									"top": 637,
+									"left": 627,
+									"top": 630,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -2832,8 +2832,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 628,
-									"top": 678,
+									"left": 622,
+									"top": 671,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -2878,7 +2878,7 @@
 								"$ref": "AAAAAAGG9YBPFfcec0Y="
 							},
 							"lineStyle": 1,
-							"points": "471:622;653:679",
+							"points": "471:621;647:671",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9YDZ4//pQCA="
@@ -2936,8 +2936,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 564,
-									"top": 598,
+									"left": 559,
+									"top": 591,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -2957,8 +2957,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 565,
-									"top": 583,
+									"left": 560,
+									"top": 576,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -2978,8 +2978,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 561,
-									"top": 627,
+									"left": 558,
+									"top": 620,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -2999,8 +2999,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 498,
-									"top": 592,
+									"left": 497,
+									"top": 588,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -3020,8 +3020,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 501,
-									"top": 579,
+									"left": 500,
+									"top": 575,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -3041,8 +3041,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 491,
-									"top": 619,
+									"left": 492,
+									"top": 616,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -3062,8 +3062,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 630,
-									"top": 604,
+									"left": 621,
+									"top": 593,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -3082,8 +3082,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 629,
-									"top": 591,
+									"left": 619,
+									"top": 579,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -3102,8 +3102,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 632,
-									"top": 632,
+									"left": 624,
+									"top": 620,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -3148,7 +3148,7 @@
 								"$ref": "AAAAAAGG9YBPFfcec0Y="
 							},
 							"lineStyle": 1,
-							"points": "471:611;655:628",
+							"points": "471:609;647:615",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGG9YDk4wKEpJo="
@@ -3791,7 +3791,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
-					"name": "Logging in an account that is saved"
+					"name": "Logging in an account that is saved",
+					"documentation": "#Logging in an account that is saved\n##Main flow\n1. The user will click on the account in which he wants to loggin and click the\t\"Loggin With selected account button\"  \n2. The Sistem will swich to the main window."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3799,7 +3800,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
-					"name": "View my toots"
+					"name": "View my toots",
+					"documentation": "#View follows\n##Main flow\n1. The user will click on the \"View my toots\" button.\n2. The Sistem will load from the database each toot that bellongs to the user."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3807,7 +3809,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
-					"name": "View followers"
+					"name": "View followers",
+					"documentation": "#View followers\n##Main flow\n1. The user will click on the \"View followers\" button.\n2. The Sistem will load from the database each account that follows the user."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3844,7 +3847,8 @@
 								}
 							}
 						}
-					]
+					],
+					"documentation": "#View follows\n##Main flow\n1. The user will click on the \"View follows\" button.\n2. The Sistem will load from the database each account that the user follows and distplay it."
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3852,7 +3856,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
-					"name": "Save an account"
+					"name": "Save an account",
+					"documentation": "#Save an account\n##Main flow\n1. The user will provide a token.  \n2. The sistem will downoload the toots of the user of which token was given by the user.  \n3. The sistem will display the account on the UI, and the user will be able to loggin with that account.  \n##Alternative flow\n2. A The user will give a token that is already loaded, the sistem will display an error.  "
 				},
 				{
 					"_type": "UMLUseCase",
@@ -3860,7 +3865,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFFxl38KT9O4MM="
 					},
-					"name": "Logout"
+					"name": "Logout",
+					"documentation": "#Logaut\n##Main flow\n1. The user will click on the loggout button and he will be redirected to the loggin window."
 				},
 				{
 					"_type": "UMLActor",
@@ -5125,7 +5131,7 @@
 									"font": "Arial;13;0",
 									"left": 780,
 									"top": 363,
-									"width": 12.65087890625,
+									"width": 13.83154296875,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -5638,7 +5644,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGG9TSQUuC4zE0="
 							},
-							"name": "note String"
+							"name": "note String",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",

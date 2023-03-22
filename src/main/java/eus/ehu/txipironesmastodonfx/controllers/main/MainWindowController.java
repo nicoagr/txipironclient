@@ -64,8 +64,8 @@ public class MainWindowController implements WindowController {
     @Override
     public void setRef(Integer ref) {
         this.ref = ref;
-        Image avatar = DBAccessManager.getUserAvatar(ref);
-        icon.setImage(avatar);
+      //  Image avatar = DBAccessManager.getUserAvatar(ref);
+       // icon.setImage(avatar);
     }
 
     @FXML
