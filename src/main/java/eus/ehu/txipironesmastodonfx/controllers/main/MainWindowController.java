@@ -3,6 +3,7 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.*;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import javafx.scene.image.ImageView;
  * @author Xiomara Cáceces
  */
 public class MainWindowController implements WindowController {
+
     private TxipironClient mainApp;
     private Integer ref;
     @FXML
@@ -37,7 +39,9 @@ public class MainWindowController implements WindowController {
 
     private ObservableList<Object> listViewItems = FXCollections.observableArrayList();
 
-
+    public Application getTxipironClient(){
+        return mainApp;
+    }
     /**
      * Sets a reference to the main application
      *

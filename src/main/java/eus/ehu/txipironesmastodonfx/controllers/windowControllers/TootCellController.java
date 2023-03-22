@@ -5,15 +5,26 @@ package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import javafx.scene.web.WebEngine;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.TextField;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.events.EventTarget;
+import org.w3c.dom.html.HTMLAnchorElement;
+
 
 public class TootCellController   {
 
@@ -40,8 +51,9 @@ public class TootCellController   {
     @FXML
     private Label numReboots;
 
+
     @FXML
-    private Label tootinfo;
+    private WebView tootWebView;
 
     @FXML
     private Label username;
@@ -77,7 +89,7 @@ public class TootCellController   {
         this.username.setText(toot.account.acct);
         this.imagen.setImage(new Image(toot.account.avatar));
         this.date.setText((toot.created_at));
-        this.tootinfo.setText(toot.content);
+        tootWebView.getEngine().loadContent(toot.content);
         this.numLikes.setText(Integer.toString(toot.favourites_count));
         this.numReboots.setText(Integer.toString(toot.reblogs_count));
         this.numComments.setText(Integer.toString(toot.replies_count));
@@ -104,6 +116,37 @@ public class TootCellController   {
     public void setReference(MainWindowController thisclass) {
         this.master = thisclass;
     }
-    
+
+
+
+
+    @FXML
+    void initialize() {
+        // Adds a click event listener to all <a> elements in the WebView.
+        // When an <a> element is clicked, the listener gets the URL from the element's href attribute.
+        // The URL is then opened in the default system browser using the HostServices class.
+        WebEngine webEngine = tootWebView.getEngine();
+        webEngine.getLoadWorker().stateProperty().addListener((ObservableValue<? extends Worker.State> ov, Worker.State oldState, Worker.State newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                Document doc = webEngine.getDocument();
+                NodeList nodeList = doc.getElementsByTagName("a");
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Node node = nodeList.item(i);
+                    EventTarget eventTarget = (EventTarget) node;
+                    eventTarget.addEventListener("click", evt -> {
+                        evt.preventDefault();
+                        Node targetNode = (Node) evt.getTarget();
+                        while (targetNode != null && !(targetNode instanceof HTMLAnchorElement)) {
+                            targetNode = targetNode.getParentNode();
+                        }
+                        if (targetNode != null) {
+                            String url = ((HTMLAnchorElement) targetNode).getHref();
+                            master.getTxipironClient().getHostServices().showDocument(url);
+                        }
+                    }, true);
+                }
+            }
+        });
+    }
     
 }

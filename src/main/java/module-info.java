@@ -7,6 +7,8 @@ module eus.ehu.txipironesmastodonfx {
     requires com.google.gson;
     requires okhttp3;
     requires java.sql.rowset;
+    requires jdk.xml.dom;
+    requires javafx.web;
 
     opens eus.ehu.txipironesmastodonfx to javafx.fxml;
     exports eus.ehu.txipironesmastodonfx.controllers;
