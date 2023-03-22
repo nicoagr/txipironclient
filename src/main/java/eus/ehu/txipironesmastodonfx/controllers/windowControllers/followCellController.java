@@ -52,7 +52,7 @@ public class followCellController {
      * @param account (Account) - The account to be displayed
      */
     public followCellController(Account account) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eus/ehu/txipironesmastodonfx/followcell.fxml"));//ejemplo: /eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/followcell.fxml"));//ejemplo: /eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();

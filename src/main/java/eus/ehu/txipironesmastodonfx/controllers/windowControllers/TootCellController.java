@@ -54,7 +54,7 @@ public class TootCellController   {
 
 
     public TootCellController(Toot toot) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eus/ehu/txipironesmastodonfx/tootcell.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/tootcell.fxml"));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
