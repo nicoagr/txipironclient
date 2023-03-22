@@ -372,10 +372,6 @@ public class DBAccessManager {
             t.account.id = rs.getString("account_id");
             toots.add(t);
         }
-
-
-
-
         return toots;
     }
 
@@ -384,7 +380,7 @@ public class DBAccessManager {
      * @param ref (int) - The ref of the account
      * @return List<Follow> - The list of followers of the account
      */
-    public String getUserAvatar(Integer ref) throws SQLException {
+    public static String getUserAvatar(Integer ref) throws SQLException {
 
         CachedRowSet rs = executeQuery("SELECT avatar FROM accounts WHERE ref = ?;", List.of(ref));
 

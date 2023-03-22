@@ -83,7 +83,7 @@ public class AuthWindowController implements WindowController {
      * It will change the scene to the main window.
      */
     @FXML
-    void loginBtnClick() {
+    void loginBtnClick() throws SQLException {
         // get ref from account id
         Integer ref;
         String sysvar;

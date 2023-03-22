@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Main class of the application. This will be the starting point.
@@ -94,7 +95,7 @@ public class TxipironClient extends Application {
      * @param sceneName (String) - Name of the scene to change to
      * @param ref       (Integer) - Reference of the current logged in user
      */
-    public void changeScene(String sceneName, Integer ref) {
+    public void changeScene(String sceneName, Integer ref) throws SQLException {
         switch (sceneName) {
             case "Auth" -> {
                 stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");

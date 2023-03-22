@@ -12,6 +12,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.sql.SQLException;
+
 /**
  * Controller class for the main window.
  *
@@ -56,7 +58,7 @@ public class MainWindowController implements WindowController {
      * when the change account button is clicked
      */
     @FXML
-    void changeAcctBtnClick() {
+    void changeAcctBtnClick() throws SQLException {
         mainApp.changeScene("Auth", null);
     }
 
@@ -66,10 +68,10 @@ public class MainWindowController implements WindowController {
      * @param ref (Integer) - The reference of the current logged in user
      */
     @Override
-    public void setRef(Integer ref) {
+    public void setRef(Integer ref) throws SQLException {
         this.ref = ref;
-      //  Image avatar = DBAccessManager.getUserAvatar(ref);
-       // icon.setImage(avatar);
+        Image avatar = new Image(DBAccessManager.getUserAvatar(ref));
+        icon.setImage(avatar);
     }
 
     @FXML
