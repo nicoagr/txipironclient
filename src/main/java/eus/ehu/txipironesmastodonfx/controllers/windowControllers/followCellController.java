@@ -50,8 +50,9 @@ public class followCellController {
      * Also it will set the corresponding values for the account cell.
      *
      * @param account (Account) - The account to be displayed
+     * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
-    public followCellController(Account account) {
+    public followCellController(Account account, MainWindowController master) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/followcell.fxml"));//ejemplo: /eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml
         fxmlLoader.setController(this);
         try {
@@ -59,7 +60,7 @@ public class followCellController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        this.setReference(master);
         // set the values for the account cell
         Id.setText(account.id);
         username.setText(account.acct);

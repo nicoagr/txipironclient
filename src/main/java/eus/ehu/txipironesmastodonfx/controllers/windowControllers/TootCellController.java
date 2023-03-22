@@ -53,7 +53,18 @@ public class TootCellController   {
     private MainWindowController master;
 
 
-    public TootCellController(Toot toot) {
+
+
+
+    /**
+     * Constructor for the controller.
+     * It will load itself at take consciousness (set itself as controller)
+     * Also it will set the corresponding values for the account cell.
+     *
+     * @param toot (Toot) - The account to be displayed
+     * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
+     */
+    public TootCellController(Toot toot, MainWindowController master) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/tootcell.fxml"));
         fxmlLoader.setController(this);
         try {
@@ -61,7 +72,7 @@ public class TootCellController   {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        this.setReference(master);
         // set the values for the account cell
             this.Id.setText(toot.account.id);
             this.username.setText(toot.account.acct);
@@ -77,9 +88,24 @@ public class TootCellController   {
 
     }
 
+    /**
+     * Getter for the UI (AnchorPane)
+     * This method will be used by the AuthWindowController
+     * in order to display custom cells in the listview
+     *
+     * @return (AnchorPane) - The UI of the controller
+     */
+
     public AnchorPane getUI() {
         return anchor;
     }
+
+
+    /**
+     * Setter for the reference to the auth window controller
+     *
+     * @param thisclass (AuthWindowController) - The reference to the auth window controller
+     */
     public void setReference(MainWindowController thisclass) {
         this.master = thisclass;
     }
