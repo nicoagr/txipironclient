@@ -433,14 +433,47 @@ public class DBAccessManager {
      * @return String - The id of the user
      */
     public String getUserId(String username, int ref) throws SQLException {
+
         CachedRowSet rs = executeQuery("SELECT id FROM accounts WHERE username = ? AND ref = ?;", List.of(username, ref));
+
         if (rs.next()) {
             return rs.getString("id");
         }
+
         return null;
     }
 
+    /**
+     * Method to get the number of followings of an account
+     * @param ref (int) - The ref of the account
+     * @return int - The number of followings of the account
+     */
+    public int getNumFollowings (Integer ref) throws SQLException {
 
+        CachedRowSet rs = executeQuery("SELECT COUNT(*) AS num FROM Following WHERE ref = ?;", List.of(ref));
+
+        if (rs.next()) {
+            return rs.getInt("num");
+        }
+
+        return 0;
+    }
+
+    /**
+     * Method to get the number of followers of an account
+     * @param ref (int) - The ref of the account
+     * @return int - The number of followers of the account
+     */
+    public int getNumFollowers (Integer ref) throws SQLException {
+
+        CachedRowSet rs = executeQuery("SELECT COUNT(*) AS num FROM Follower WHERE ref = ?;", List.of(ref));
+
+        if (rs.next()) {
+            return rs.getInt("num");
+        }
+
+        return 0;
+    }
 
     }
 
