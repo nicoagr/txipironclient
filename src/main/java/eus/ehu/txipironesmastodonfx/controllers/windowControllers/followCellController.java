@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.domain.Account;
+import eus.ehu.txipironesmastodonfx.domain.Follow;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -20,11 +20,8 @@ public class followCellController {
     private Button followbutton;
     @FXML
     private AnchorPane anchor;
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
+ 
+    
 
     @FXML
     private Label Id;
@@ -33,10 +30,7 @@ public class followCellController {
 
     @FXML
     private ImageView icon;
-
-    @FXML
-    private Label info;
-
+    
     @FXML
     private Label username;
 
@@ -47,10 +41,10 @@ public class followCellController {
      * It will load itself at take consciousness (set itself as controller)
      * Also it will set the corresponding values for the account cell.
      *
-     * @param account (Account) - The account to be displayed
+     * @param follow (Follow) - The account to be displayed
      * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
-    public followCellController(Account account, MainWindowController master) {
+    public followCellController(Follow follow, MainWindowController master) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/followcell.fxml"));//ejemplo: /eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml
         fxmlLoader.setController(this);
         try {
@@ -60,10 +54,10 @@ public class followCellController {
         }
         this.setReference(master);
         // set the values for the account cell
-        Id.setText(account.id);
-        username.setText(account.acct);
-        info.setText(account.note);
-        icon.setImage(new Image(account.avatar));
+        Id.setText(follow.id);
+        username.setText(follow.acct);
+
+        icon.setImage(new Image(follow.avatar));
     }
 
     /**
