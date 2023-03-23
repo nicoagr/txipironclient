@@ -110,6 +110,7 @@ public class TxipironClient extends Application {
                 stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
                 scene.setRoot(mainWindow.ui);
                 mainWindow.controller.setRef(ref);
+                mainWindow.controller.start();
             }
             default -> {
             }

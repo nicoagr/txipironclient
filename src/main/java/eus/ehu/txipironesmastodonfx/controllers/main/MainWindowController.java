@@ -3,7 +3,10 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.FollowCellController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.HeaderCellController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.TootCellController;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.application.Application;
@@ -11,12 +14,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,15 +94,16 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void followerListView() throws SQLException {
-        listViewItems.clear();
-        listViewItems.add("Followers");
-        List<Follow> followers = DBAccessManager.getUserFollowers(ref);
-        //Account account = new Account();
-        for (Follow f: followers) {
-            FollowCellController followCellController = new FollowCellController(f, this);
-            listViewItems.add(followCellController);
-        }
         listView.setItems(listViewItems);
+        listViewItems.add("Home");
+        List<Follow> follower = new ArrayList<Follow>();
+        try{
+            follower = DBAccessManager.getUserFollowers(ref);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        listViewItems.addAll(follower);
     }
 
     /**
@@ -107,15 +113,16 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void followingListView() throws SQLException {
-        listViewItems.clear();
-        listViewItems.add("Following");
-        List<Follow> following = DBAccessManager.getUserFollowings(ref);
-        for (Follow f: following) {
-            //followCellController followCellController = new followCellController(f, this);
-            //listViewItems.add(followCellController);
-            listViewItems.add(f);
-        }
         listView.setItems(listViewItems);
+        listViewItems.add("Home");
+        List<Follow> following = new ArrayList<Follow>();
+        try{
+            following = DBAccessManager.getUserFollowings(ref);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        listViewItems.addAll(following);
     }
 
     /**
@@ -123,21 +130,74 @@ public class MainWindowController implements WindowController {
      * user is following starting from the most recent
      */
     @FXML
-    void homeListView() throws SQLException {
-        listViewItems.clear();
-        listViewItems.add("Home");
-        List<Toot> toots = DBAccessManager.getUserToots(ref);
-        for (Toot t: toots) {
-            //TootCellController tootCellController = new TootCellController(t);
-            listViewItems.add(t);
-        }
+    void homeListView() {
         listView.setItems(listViewItems);
+        listViewItems.add("Home");
+        List<Toot> toots = new ArrayList<Toot>();
+        try{
+            toots = DBAccessManager.getUserToots(ref);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        listViewItems.addAll(toots);
+    }
 
+    public void start()  {
+        listView.setItems(listViewItems);
+        listViewItems.add("Home");
+        List<Toot> toots = new ArrayList<Toot>();
+        try{
+            toots = DBAccessManager.getUserToots(ref);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        listViewItems.addAll(toots);
     }
 
     @FXML
     void initialize() {
-        listViewItems.clear();
-        listView.setItems(listViewItems);
+        MainWindowController thisclass = this;
+        listView.setCellFactory(param -> new ListCell<>(){
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else if (item instanceof Account) {
+                    setText(null);
+                    //AuthAccoCellController a = new AuthAccoCellController((Account) item);
+                    //a.setReference(thisclass);
+                    FollowCellController a = new FollowCellController((Follow) item, thisclass);
+                    setGraphic(a.getUI());
+                } else if (item instanceof Toot) {
+                    setText(null);
+                    //AuthNewAccoCellController b = new AuthNewAccoCellController();
+                    //b.setReference(thisclass);
+                    TootCellController b = new TootCellController((Toot) item, thisclass);
+                    setGraphic(b.getUI());
+                } else if (item instanceof String && item.equals("Home")) {
+                    setText(null);
+                    //AuthNewAccoCellController b = new AuthNewAccoCellController();
+                    //b.setReference(thisclass);
+                    HeaderCellController c = new HeaderCellController((String) item, thisclass);
+                    setGraphic(c.getUI());
+                } else if (item instanceof String && item.equals("Followers")) {
+                    setText(null);
+                    //AuthNewAccoCellController b = new AuthNewAccoCellController();
+                    //b.setReference(thisclass);
+                    HeaderCellController d = new HeaderCellController((String) item, thisclass);
+                    setGraphic(d.getUI());
+                } else if (item instanceof String && item.equals("Following")) {
+                    setText(null);
+                    //AuthNewAccoCellController b = new AuthNewAccoCellController();
+                    //b.setReference(thisclass);
+                    HeaderCellController e = new HeaderCellController((String) item, thisclass);
+                    setGraphic(e.getUI());
+                }
+            }
+        });
     }
 }

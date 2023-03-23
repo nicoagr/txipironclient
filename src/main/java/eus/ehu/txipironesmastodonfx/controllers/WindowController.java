@@ -10,4 +10,8 @@ public interface WindowController {
     default void setRef(Integer ref) throws SQLException {
         // Do nothing
     }
+
+    default public void start(){
+
+    }
 }
