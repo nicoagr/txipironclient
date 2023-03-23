@@ -81,19 +81,24 @@ public class MainWindowController implements WindowController {
      * @param ref (Integer) - The reference of the current logged in user
      */
     @Override
-    public void setRef(Integer ref) throws SQLException {
+    public void setRef(Integer ref) {
         this.ref = ref;
-        Image avatar = new Image(DBAccessManager.getUserAvatar(ref));
+        //change this!! avatar=null?????????? STRANGE
+        Image avatar= null;
+        try{
+            avatar = new Image(DBAccessManager.getUserAvatar(ref));
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
         icon.setImage(avatar);
     }
 
     /**
      * Sets the list view to show the followers of the current logged in user
-     *
-     * @throws SQLException
      */
     @FXML
-    void followerListView() throws SQLException {
+    void followerListView() {
         listView.setItems(listViewItems);
         listViewItems.add("Home");
         List<Follow> follower = new ArrayList<Follow>();
@@ -108,11 +113,9 @@ public class MainWindowController implements WindowController {
 
     /**
      * Sets the list view to show the users that the current logged in user is following
-     *
-     * @throws SQLException
      */
     @FXML
-    void followingListView() throws SQLException {
+    void followingListView()  {
         listView.setItems(listViewItems);
         listViewItems.add("Home");
         List<Follow> following = new ArrayList<Follow>();
