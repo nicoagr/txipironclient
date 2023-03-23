@@ -437,6 +437,14 @@ public class DBAccessManager {
         return follows;
     }
 
+    /**
+     * Method to get the list of followings of an account.
+     *
+     * @param ref (int) - The ref of the account
+     * @return List<Follow> - The list of followings of the account
+     *
+     * @throws SQLException - If the query fails to execute
+     */
     public static List<Follow> getUserFollowings(int ref) throws SQLException {
 
         List<Follow> follows = new ArrayList<>();
@@ -509,6 +517,35 @@ public class DBAccessManager {
 
         return 0;
     }
+
+    /**
+     * Method to get user account
+     * @param ref
+     * @return
+     * @throws SQLException
+     */
+    public Account getUserAccount(Integer ref) throws SQLException {
+        CachedRowSet rs = executeQuery("SELECT * FROM accounts WHERE ref = ?;", List.of(ref));
+
+        if(rs.next()) {
+            Account a = new Account();
+            a.acct = rs.getString("acct");
+            a.avatar = rs.getString("avatar");
+            a.id = rs.getString("id");
+            a.header= rs.getString("header");
+            a.display_name = rs.getString("display_name");
+            a.statuses_count = rs.getInt("statuses_count");
+            a.followers_count = rs.getInt("followers_count");
+            a.following_count = rs.getInt("following_count");
+            a.note = rs.getString("note");
+            a.last_status_at = rs.getString("last_status_at");
+            return a;
+        }
+
+        return null;
+    }
+
+
 
     }
 
