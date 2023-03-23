@@ -1,11 +1,10 @@
 package eus.ehu.txipironesmastodonfx.controllers.main;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
-import eus.ehu.txipironesmastodonfx.controllers.*;
+import eus.ehu.txipironesmastodonfx.controllers.WindowController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.FollowCellController;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
-import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
-import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -16,8 +15,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import okhttp3.internal.http2.Header;
-
 
 import java.sql.SQLException;
 import java.util.List;
@@ -141,13 +138,6 @@ public class MainWindowController implements WindowController {
     @FXML
     void initialize() {
         listViewItems.clear();
-        HeaderCellController headerCellController = new HeaderCellController("Home", this);
-        headerCellController.initialize();
-        listViewItems.add(headerCellController);
         listView.setItems(listViewItems);
-
-
     }
-
-
 }

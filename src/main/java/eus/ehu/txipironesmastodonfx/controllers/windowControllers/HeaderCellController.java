@@ -1,7 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.domain.Account;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -34,8 +33,8 @@ public class HeaderCellController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.setReference(master);
-        //this.info.setText(cuerpo);
+        setReference(master);
+        info.setText(cuerpo);
     }
 
 
@@ -58,10 +57,6 @@ public class HeaderCellController {
      */
     public AnchorPane getUI() {
         return anchor;
-    }
-
-    public void initialize(){
-        this.info.setText("Home");
     }
 
 }
