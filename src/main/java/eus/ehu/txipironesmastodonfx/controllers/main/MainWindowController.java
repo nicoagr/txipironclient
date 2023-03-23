@@ -156,6 +156,9 @@ public class MainWindowController implements WindowController {
         listViewItems.addAll(toots);
     }
 
+    /**
+     * Initializes the list view
+     */
     @FXML
     void initialize() {
         MainWindowController thisclass = this;

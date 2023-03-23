@@ -25,7 +25,16 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLAnchorElement;
 
-
+/**
+ * Controller for the TootCell
+ * This class will be used to display the toots in the main window
+ * It will be used by the MainWindowController
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Marcos Chouciño
+ * @author Xiomara Cáceces
+ */
 public class TootCellController   {
 
     @FXML
