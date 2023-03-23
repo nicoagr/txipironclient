@@ -3,7 +3,10 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.*;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
+import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+
 
 import java.sql.SQLException;
 import java.util.List;
@@ -44,6 +48,7 @@ public class MainWindowController implements WindowController {
     @FXML
     private ListView<Object> listView;
     private ObservableList<Object> listViewItems = FXCollections.observableArrayList();
+    private MainWindowController mainWindowController;
 
     public Application getTxipironClient(){
         return mainApp;
@@ -88,8 +93,11 @@ public class MainWindowController implements WindowController {
     @FXML
     void followerListView() throws SQLException {
         listViewItems.clear();
+        listViewItems.add("Followers");
         List<Follow> followers = DBAccessManager.getUserFollowers(ref);
+        //Account account = new Account();
         for (Follow f: followers) {
+            //FollowCellController followCellController = new FollowCellController(f);
             listViewItems.add(f);
         }
         listView.setItems(listViewItems);
@@ -103,8 +111,11 @@ public class MainWindowController implements WindowController {
     @FXML
     void followingListView() throws SQLException {
         listViewItems.clear();
+        listViewItems.add("Following");
         List<Follow> following = DBAccessManager.getUserFollowings(ref);
         for (Follow f: following) {
+            //followCellController followCellController = new followCellController(f, mainWindowController);
+            //listViewItems.add(followCellController);
             listViewItems.add(f);
         }
         listView.setItems(listViewItems);
@@ -115,13 +126,24 @@ public class MainWindowController implements WindowController {
      * user is following starting from the most recent
      */
     @FXML
-    void homeListView() {
+    void homeListView() throws SQLException {
         listViewItems.clear();
+        listViewItems.add("Home");
+        List< Toot> toots = DBAccessManager.getUserToots(ref);
+        for (Toot t: toots) {
+            //TootCellController tootCellController = new TootCellController(t);
+            listViewItems.add(t);
+        }
+        listView.setItems(listViewItems);
 
     }
 
     @FXML
     void initialize() {
+        listViewItems.clear();
+        listViewItems.add("Home");
+        listView.setItems(listViewItems);
+
 
     }
 

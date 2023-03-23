@@ -124,6 +124,7 @@ public class DBAccessManager {
      * Returns all accounts contained in the database.
      *
      * @return (List < Account >) - The list of accounts
+     *
      * @throws SQLException - If the query fails to execute
      */
     public static List<Account> getAccounts() throws SQLException {
@@ -144,6 +145,7 @@ public class DBAccessManager {
      *
      * @param id (String) - The id of the account
      * @return (boolean) - True if the account is in the db, false otherwise
+     *
      * @throws SQLException - If the query fails to execute
      */
     public static boolean isAccountInDb(String id) throws SQLException {
@@ -160,6 +162,8 @@ public class DBAccessManager {
      * Removes an account from the database.
      *
      * @param id (String) - The id of the account to remove
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public static void removeAccountFromDbId(String id) throws SQLException {
         executeQuery("DELETE FROM accounts WHERE id = ?", List.of(id));
@@ -170,6 +174,7 @@ public class DBAccessManager {
      *
      * @param id (String) - The id of the account
      * @return (String) - The system variable associated with the account
+     *
      * @throws SQLException - If the query fails to execute
      */
     public static String getSysVarFromDbId(String id) throws SQLException {
@@ -186,6 +191,7 @@ public class DBAccessManager {
      *
      * @param AccId (String) - The id of the account
      * @return (String) - The ref associated with the account
+     *
      * @throws SQLException - If the query fails to execute
      */
     public static Integer getRefFromId(String AccId) throws SQLException {
@@ -202,6 +208,8 @@ public class DBAccessManager {
      *
      * @param ref (String) - The ref of the account
      * @return (String) - The system variable associated with the account
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public static String getSysVarFromRef(Integer ref) throws SQLException {
         ResultSet rs = executeQuery("SELECT svarname FROM accounts WHERE ref = ?", List.of(ref));
@@ -218,6 +226,8 @@ public class DBAccessManager {
      *
      * @param ref       (String) - The ref of the account
      * @param tablename (String) - The name of the table
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public static void deleteRefFromDb(Integer ref, String tablename) throws SQLException {
         executeQuery("DELETE FROM " + tablename + " WHERE ref = ?", List.of(ref));
@@ -230,6 +240,8 @@ public class DBAccessManager {
      *
      * @param toots (List < Toot >) - The list of toots to insert
      * @param ref   (String) - The ref of the account
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public static void insertTootsInDb(List<Toot> toots, Integer ref) throws SQLException {
         List<Object> params;
@@ -268,6 +280,8 @@ public class DBAccessManager {
      * @param followList (String) - The list of accounts to insert
      * @param ref        (String) - The ref of the account
      * @param following  (boolean) - True if the accounts are following the account, false otherwise
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public static void insertFollowInDb(List<Follow> followList, Integer ref, boolean following) throws SQLException {
         String tablename = following ? "following" : "follower";
@@ -285,6 +299,7 @@ public class DBAccessManager {
      * @param destinationSysVar (String) - The destination sys variable
      * @param id                (String) - The id of the account
      * @param token             (String) - The mastodon access token of the account
+     *
      * @throws SQLException                  - If the query fails to execute
      * @throws IOException                   - If the setting of the system variable fails
      * @throws UnsupportedOperationException - If the operating system is unsupported (cannot set sysenv)
@@ -303,6 +318,7 @@ public class DBAccessManager {
      * @param query  (String) - The query to execute
      * @param params (List<Object>) - The parameters to substitute in the query
      * @return CachedRowSet - The result of the query, null if there is no result
+     *
      * @throws SQLException - If the query returns some error
      */
     private static CachedRowSet executeQuery(String query, List<Object> params) throws SQLException {
@@ -347,11 +363,13 @@ public class DBAccessManager {
 
     /**
      * Method to get the list of toots of an account.
+     *
      * @param ref (int) - The ref of the account
      * @return List<Toot> - The list of toots of the account
+     *
      * @throws SQLException - If the query fails to execute
      */
-    public List<Toot> getUserToots(int ref) throws SQLException {
+    public static List<Toot> getUserToots(int ref) throws SQLException {
 
         List<Toot> toots = new ArrayList<>();
         CachedRowSet rs = executeQuery("SELECT * FROM toots WHERE ref = ?;", List.of(ref));
@@ -379,8 +397,10 @@ public class DBAccessManager {
 
     /**
      * Method to get the list of followers of an account.
+     *
      * @param ref (int) - The ref of the account
      * @return List<Follow> - The list of followers of the account
+     *
      * @throws SQLException - If the query fails to execute
      */
     public static String getUserAvatar(Integer ref) throws SQLException {
@@ -396,8 +416,11 @@ public class DBAccessManager {
 
     /**
      * Method to get the list of followers of an account.
+     *
      * @param ref (int) - The ref of the account
      * @return List<Follow> - The list of followers of the account
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public static List<Follow> getUserFollowers(int ref) throws SQLException {
         List<Follow> follows = new ArrayList<>();
@@ -432,8 +455,11 @@ public class DBAccessManager {
 
     /**
      * Method to get the user id from the username
+     *
      * @param username (String) - The username of the user
      * @return String - The id of the user
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public String getUserId(String username, int ref) throws SQLException {
 
@@ -448,8 +474,11 @@ public class DBAccessManager {
 
     /**
      * Method to get the number of followings of an account
+     *
      * @param ref (int) - The ref of the account
      * @return int - The number of followings of the account
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public int getNumFollowings (Integer ref) throws SQLException {
 
@@ -464,8 +493,11 @@ public class DBAccessManager {
 
     /**
      * Method to get the number of followers of an account
+     *
      * @param ref (int) - The ref of the account
      * @return int - The number of followers of the account
+     *
+     * @throws SQLException - If the query fails to execute
      */
     public int getNumFollowers (Integer ref) throws SQLException {
 

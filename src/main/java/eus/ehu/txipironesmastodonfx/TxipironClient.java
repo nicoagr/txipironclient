@@ -38,8 +38,10 @@ public class TxipironClient extends Application {
 
     /**
      * Generic method. Will be used to start and create all windows
+     *
      * @param fxmlFile (String) - Name of the FXML file to load
      * @return Window - The window class created
+     *
      * @throws IOException - When the FXML file is not found
      */
     private Window load(String fxmlFile) throws IOException {
@@ -60,6 +62,7 @@ public class TxipironClient extends Application {
      * Will set the title for the application and also the icon.
      *
      * @param stage (Stage) - Automatically Passes it
+     *
      * @throws IOException - When the FXML/Image file is not found
      */
     @Override
@@ -94,6 +97,8 @@ public class TxipironClient extends Application {
      *
      * @param sceneName (String) - Name of the scene to change to
      * @param ref       (Integer) - Reference of the current logged in user
+     *
+     * @throws SQLException - When the SQL query fails
      */
     public void changeScene(String sceneName, Integer ref) throws SQLException {
         switch (sceneName) {
