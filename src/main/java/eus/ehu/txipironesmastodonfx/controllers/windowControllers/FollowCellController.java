@@ -14,25 +14,18 @@ import javafx.scene.layout.AnchorPane;
 
 public class FollowCellController {
     private MainWindowController master;
-    @FXML
-    private Button followbutton;
+
     @FXML
     private AnchorPane anchor;
- 
-    
+
+    @FXML
+    private ImageView icon;
 
     @FXML
     private Label id;
 
-
-
-    @FXML
-    private ImageView icon;
-    
     @FXML
     private Label username;
-
-
 
     /**
      * Constructor for the controller.
