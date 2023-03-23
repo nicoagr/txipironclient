@@ -5,6 +5,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * This class contains some useful methods for system variables
+ * It is used to store the tokens in the system variables
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Marcos Chouciño
+ * @author Xiomara Cáceces
+ */
 public class NetworkUtils {
 
     /**

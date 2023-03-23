@@ -135,6 +135,9 @@ public class MainWindowController implements WindowController {
 
     }
 
+    /**
+     * Initializes the list view
+     */
     @FXML
     void initialize() {
         listViewItems.clear();

@@ -8,6 +8,15 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
+/**
+ * Controller class for the header cell.
+ * It will be used to display the header cells in the main window.
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Marcos Chouciño
+ * @author Xiomara Cáceces
+ */
 public class HeaderCellController {
     private MainWindowController master;
     @FXML
