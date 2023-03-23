@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import okhttp3.internal.http2.Header;
 
 
 import java.sql.SQLException;
@@ -48,7 +49,6 @@ public class MainWindowController implements WindowController {
     @FXML
     private ListView<Object> listView;
     private ObservableList<Object> listViewItems = FXCollections.observableArrayList();
-    private MainWindowController mainWindowController;
 
     public Application getTxipironClient(){
         return mainApp;
@@ -114,7 +114,7 @@ public class MainWindowController implements WindowController {
         listViewItems.add("Following");
         List<Follow> following = DBAccessManager.getUserFollowings(ref);
         for (Follow f: following) {
-            //followCellController followCellController = new followCellController(f, mainWindowController);
+            //followCellController followCellController = new followCellController(f, this);
             //listViewItems.add(followCellController);
             listViewItems.add(f);
         }
@@ -129,7 +129,7 @@ public class MainWindowController implements WindowController {
     void homeListView() throws SQLException {
         listViewItems.clear();
         listViewItems.add("Home");
-        List< Toot> toots = DBAccessManager.getUserToots(ref);
+        List<Toot> toots = DBAccessManager.getUserToots(ref);
         for (Toot t: toots) {
             //TootCellController tootCellController = new TootCellController(t);
             listViewItems.add(t);
@@ -141,7 +141,9 @@ public class MainWindowController implements WindowController {
     @FXML
     void initialize() {
         listViewItems.clear();
-        listViewItems.add("Home");
+        HeaderCellController headerCellController = new HeaderCellController("Home", this);
+        headerCellController.initialize();
+        listViewItems.add(headerCellController);
         listView.setItems(listViewItems);
 
 

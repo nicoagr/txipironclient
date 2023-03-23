@@ -12,7 +12,7 @@ import java.io.IOException;
 public class HeaderCellController {
     private MainWindowController master;
     @FXML
-    private Label info;
+    private Label info= new Label();
     @FXML
     private AnchorPane anchor;
 
@@ -35,7 +35,7 @@ public class HeaderCellController {
             e.printStackTrace();
         }
         this.setReference(master);
-        info.setText(cuerpo);
+        //this.info.setText(cuerpo);
     }
 
 
@@ -58,6 +58,10 @@ public class HeaderCellController {
      */
     public AnchorPane getUI() {
         return anchor;
+    }
+
+    public void initialize(){
+        this.info.setText("Home");
     }
 
 }
