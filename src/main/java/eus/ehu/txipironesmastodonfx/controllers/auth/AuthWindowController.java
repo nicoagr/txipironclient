@@ -81,6 +81,8 @@ public class AuthWindowController implements WindowController {
      * It will download the follows (followers/followings) of the account.
      * It will insert the follows (followers/followings) in the database.
      * It will change the scene to the main window.
+     *
+     * @throws SQLException
      */
     @FXML
     void loginBtnClick() throws SQLException {

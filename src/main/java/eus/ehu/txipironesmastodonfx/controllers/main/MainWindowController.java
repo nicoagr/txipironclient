@@ -3,6 +3,7 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.*;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import eus.ehu.txipironesmastodonfx.domain.Follow;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,8 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Controller class for the main window.
@@ -37,8 +40,9 @@ public class MainWindowController implements WindowController {
     @FXML
     private ImageView icon;
     @FXML
+    private BorderPane mainWraper;
+    @FXML
     private ListView<Object> listView;
-
     private ObservableList<Object> listViewItems = FXCollections.observableArrayList();
 
     public Application getTxipironClient(){
@@ -56,6 +60,8 @@ public class MainWindowController implements WindowController {
     /**
      * Changes the scene to the account selection scene
      * when the change account button is clicked
+     *
+     * @throws SQLException
      */
     @FXML
     void changeAcctBtnClick() throws SQLException {
@@ -63,7 +69,7 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the reference of the current logged in user
+     * Sets the reference of the current logged in user and sets the avatar
      *
      * @param ref (Integer) - The reference of the current logged in user
      */
@@ -74,22 +80,50 @@ public class MainWindowController implements WindowController {
         icon.setImage(avatar);
     }
 
+    /**
+     * Sets the list view to show the followers of the current logged in user
+     *
+     * @throws SQLException
+     */
     @FXML
-    void followerListView() {
-
+    void followerListView() throws SQLException {
+        listViewItems.clear();
+        List<Follow> followers = DBAccessManager.getUserFollowers(ref);
+        for (Follow f: followers) {
+            listViewItems.add(f);
+        }
+        listView.setItems(listViewItems);
     }
 
+    /**
+     * Sets the list view to show the users that the current logged in user is following
+     *
+     * @throws SQLException
+     */
     @FXML
-    void followingListView() {
-
+    void followingListView() throws SQLException {
+        listViewItems.clear();
+        List<Follow> following = DBAccessManager.getUserFollowings(ref);
+        for (Follow f: following) {
+            listViewItems.add(f);
+        }
+        listView.setItems(listViewItems);
     }
 
+    /**
+     * Sets the list view to show the toots of the current logged in user and the users that the current logged in
+     * user is following starting from the most recent
+     */
     @FXML
     void homeListView() {
+        listViewItems.clear();
 
     }
 
     @FXML
     void initialize() {
+
     }
+
+
 }

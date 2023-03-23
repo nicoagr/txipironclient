@@ -344,10 +344,12 @@ public class DBAccessManager {
         return crs;
     }
 
+
     /**
      * Method to get the list of toots of an account.
      * @param ref (int) - The ref of the account
      * @return List<Toot> - The list of toots of the account
+     * @throws SQLException - If the query fails to execute
      */
     public List<Toot> getUserToots(int ref) throws SQLException {
 
@@ -379,6 +381,7 @@ public class DBAccessManager {
      * Method to get the list of followers of an account.
      * @param ref (int) - The ref of the account
      * @return List<Follow> - The list of followers of the account
+     * @throws SQLException - If the query fails to execute
      */
     public static String getUserAvatar(Integer ref) throws SQLException {
 
@@ -396,7 +399,7 @@ public class DBAccessManager {
      * @param ref (int) - The ref of the account
      * @return List<Follow> - The list of followers of the account
      */
-    public List<Follow> getUserFollowers(int ref) throws SQLException {
+    public static List<Follow> getUserFollowers(int ref) throws SQLException {
         List<Follow> follows = new ArrayList<>();
         CachedRowSet rs = executeQuery("SELECT * FROM Follower WHERE ref = ?;", List.of(ref));
 
@@ -411,7 +414,7 @@ public class DBAccessManager {
         return follows;
     }
 
-    public List<Follow> getUserFollows(int ref) throws SQLException {
+    public static List<Follow> getUserFollowings(int ref) throws SQLException {
 
         List<Follow> follows = new ArrayList<>();
         CachedRowSet rs = executeQuery("SELECT * FROM Following WHERE ref = ?;", List.of(ref));
