@@ -97,8 +97,8 @@ public class MainWindowController implements WindowController {
         List<Follow> followers = DBAccessManager.getUserFollowers(ref);
         //Account account = new Account();
         for (Follow f: followers) {
-            //FollowCellController followCellController = new FollowCellController(f);
-            listViewItems.add(f);
+            FollowCellController followCellController = new FollowCellController(f, this);
+            listViewItems.add(followCellController);
         }
         listView.setItems(listViewItems);
     }

@@ -22,11 +22,11 @@ public class HeaderCellController {
      * It will load itself at take consciousness (set itself as controller)
      * Also it will set the corresponding values for the account cell.
      *
-     * @param account (Account) - The account to be displayed
+     * @param cuerpo (Account) - The account to be displayed
      * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
 
-    public HeaderCellController(Account account, MainWindowController master) {
+    public HeaderCellController(String cuerpo, MainWindowController master) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/headercell.fxml"));
         fxmlLoader.setController(this);
         try {
@@ -35,7 +35,7 @@ public class HeaderCellController {
             e.printStackTrace();
         }
         this.setReference(master);
-
+        info.setText(cuerpo);
     }
 
 

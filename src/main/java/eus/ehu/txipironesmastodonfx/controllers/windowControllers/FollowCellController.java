@@ -22,7 +22,7 @@ public class FollowCellController {
     
 
     @FXML
-    private Label Id;
+    private Label id;
 
 
 
@@ -43,7 +43,7 @@ public class FollowCellController {
      * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
     public FollowCellController(Follow follow, MainWindowController master) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/followcell.fxml"));//ejemplo: /eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/followcell.fxml"));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
@@ -52,8 +52,9 @@ public class FollowCellController {
         }
         this.setReference(master);
         // set the values for the account cell
-        Id.setText(follow.id);
         username.setText(follow.acct);
+        id.setText(follow.id);
+
 
         icon.setImage(new Image(follow.avatar));
     }
