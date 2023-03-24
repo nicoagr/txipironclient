@@ -52,7 +52,7 @@ public class MainWindowController implements WindowController {
     private ListView<Object> listView;
     private ObservableList<Object> listViewItems = FXCollections.observableArrayList();
 
-    public Application getTxipironClient(){
+    public Application TxipironClient(){
         return mainApp;
     }
     /**

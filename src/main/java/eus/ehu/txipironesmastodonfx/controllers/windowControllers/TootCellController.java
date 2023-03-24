@@ -74,6 +74,8 @@ public class TootCellController   {
 
 
 
+
+
     /**
      * Constructor for the controller.
      * It will load itself at take consciousness (set itself as controller)
@@ -104,6 +106,16 @@ public class TootCellController   {
         numReboots.setText(Integer.toString(toot.reblogs_count));
         numComments.setText(Integer.toString(toot.replies_count));
 
+        tootWebView.getEngine().loadContent(toot.content);
+
+
+
+
+        }
+
+
+
+    void initialize() {
         // Adds a click event listener to all <a> elements in the WebView.
         // When an <a> element is clicked, the listener gets the URL from the element's href attribute.
         // The URL is then opened in the default system browser using the HostServices class.
@@ -123,7 +135,7 @@ public class TootCellController   {
                         }
                         if (targetNode != null) {
                             String url = ((HTMLAnchorElement) targetNode).getHref();
-                            master.getTxipironClient().getHostServices().showDocument(url);
+                            master.TxipironClient().getHostServices().showDocument(url); //NI PUTA IDEA DE QUE HACE ESTO WEY, SUPONGO QUE EL GETHOSTSERVICES HABRA QUE IMPLEMENTARLO
                         }
                     }, true);
                 }
