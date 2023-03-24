@@ -101,7 +101,7 @@ public class MainWindowController implements WindowController {
     void followerListView() {
         listViewItems.clear();
         listView.setItems(listViewItems);
-        listViewItems.add("Home");
+        listViewItems.add("Followers");
         List<Follow> follower = new ArrayList<Follow>();
         try{
             follower = DBAccessManager.getUserFollowers(ref);
@@ -110,6 +110,7 @@ public class MainWindowController implements WindowController {
             e.printStackTrace();
         }
         listViewItems.addAll(follower);
+        //listView.setItems(listViewItems);
     }
 
     /**
@@ -119,7 +120,7 @@ public class MainWindowController implements WindowController {
     void followingListView()  {
         listViewItems.clear();
         listView.setItems(listViewItems);
-        listViewItems.add("Home");
+        listViewItems.add("Following");
         List<Follow> following = new ArrayList<Follow>();
         try{
             following = DBAccessManager.getUserFollowings(ref);
@@ -175,34 +176,24 @@ public class MainWindowController implements WindowController {
                 if (empty || item == null) {
                     setText(null);
                     setGraphic(null);
-                } else if (item instanceof Account) {
+                } else if (item instanceof Follow) {
                     setText(null);
-                    //AuthAccoCellController a = new AuthAccoCellController((Account) item);
-                    //a.setReference(thisclass);
                     FollowCellController a = new FollowCellController((Follow) item, thisclass);
                     setGraphic(a.getUI());
                 } else if (item instanceof Toot) {
                     setText(null);
-                    //AuthNewAccoCellController b = new AuthNewAccoCellController();
-                    //b.setReference(thisclass);
                     TootCellController b = new TootCellController((Toot) item, thisclass);
                     setGraphic(b.getUI());
                 } else if (item instanceof String && item.equals("Home")) {
                     setText(null);
-                    //AuthNewAccoCellController b = new AuthNewAccoCellController();
-                    //b.setReference(thisclass);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
                     setGraphic(c.getUI());
                 } else if (item instanceof String && item.equals("Followers")) {
                     setText(null);
-                    //AuthNewAccoCellController b = new AuthNewAccoCellController();
-                    //b.setReference(thisclass);
                     HeaderCellController d = new HeaderCellController((String) item, thisclass);
                     setGraphic(d.getUI());
                 } else if (item instanceof String && item.equals("Following")) {
                     setText(null);
-                    //AuthNewAccoCellController b = new AuthNewAccoCellController();
-                    //b.setReference(thisclass);
                     HeaderCellController e = new HeaderCellController((String) item, thisclass);
                     setGraphic(e.getUI());
                 }

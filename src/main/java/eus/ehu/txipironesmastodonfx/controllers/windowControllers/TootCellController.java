@@ -70,12 +70,6 @@ public class TootCellController   {
     private ImageView imagen;
     private MainWindowController master;
 
-
-
-
-
-
-
     /**
      * Constructor for the controller.
      * It will load itself at take consciousness (set itself as controller)
@@ -117,7 +111,7 @@ public class TootCellController   {
 
 
 
-    void initialize() {
+    /*void initialize() {
         // Adds a click event listener to all <a> elements in the WebView.
         // When an <a> element is clicked, the listener gets the URL from the element's href attribute.
         // The URL is then opened in the default system browser using the HostServices class.
@@ -143,7 +137,7 @@ public class TootCellController   {
                 }
             }
         });
-    }
+    }*/
 
     /**
      * Getter for the UI (AnchorPane)
