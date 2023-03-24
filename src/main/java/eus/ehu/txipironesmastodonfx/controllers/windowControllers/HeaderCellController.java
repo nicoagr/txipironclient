@@ -20,7 +20,7 @@ import java.io.IOException;
 public class HeaderCellController {
     private MainWindowController master;
     @FXML
-    private Label info= new Label();
+    private Label info;
     @FXML
     private AnchorPane anchor;
 
