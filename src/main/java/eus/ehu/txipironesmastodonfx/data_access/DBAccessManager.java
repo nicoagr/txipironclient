@@ -3,7 +3,6 @@ package eus.ehu.txipironesmastodonfx.data_access;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
-import javafx.scene.image.Image;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -387,6 +386,7 @@ public class DBAccessManager {
             t.favourited = rs.getBoolean("favourited");
             t.reblogged = rs.getBoolean("reblogged");
             t.content = rs.getString("content");
+            t.account = new Account();
             t.account.acct = rs.getString("acct");
             t.account.avatar = rs.getString("avatar");
             t.account.id = rs.getString("account_id");

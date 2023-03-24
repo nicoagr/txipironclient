@@ -1,11 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.scene.web.WebEngine;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.beans.value.ObservableValue;
@@ -16,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.TextField;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.w3c.dom.Document;
@@ -24,6 +18,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLAnchorElement;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Controller for the TootCell
@@ -85,52 +83,27 @@ public class TootCellController   {
      * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
     public TootCellController(Toot toot, MainWindowController master) {
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/tootcell.fxml"));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
+            tootWebView = new WebView();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.setReference(master);
+        setReference(master);
+
         // set the values for the account cell
-        this.Id.setText(toot.account.id);
-        this.username.setText(toot.account.acct);
-        this.imagen.setImage(new Image(toot.account.avatar));
-        this.date.setText((toot.created_at));
+        Id.setText(toot.account.id);
+        username.setText(toot.account.acct);
+        imagen.setImage(new Image(toot.account.avatar));
+        date.setText((toot.created_at));
         tootWebView.getEngine().loadContent(toot.content);
-        this.numLikes.setText(Integer.toString(toot.favourites_count));
-        this.numReboots.setText(Integer.toString(toot.reblogs_count));
-        this.numComments.setText(Integer.toString(toot.replies_count));
-    }
+        numLikes.setText(Integer.toString(toot.favourites_count));
+        numReboots.setText(Integer.toString(toot.reblogs_count));
+        numComments.setText(Integer.toString(toot.replies_count));
 
-    /**
-     * Getter for the UI (AnchorPane)
-     * This method will be used by the AuthWindowController
-     * in order to display custom cells in the listview
-     *
-     * @return (AnchorPane) - The UI of the controller
-     */
-
-    public AnchorPane getUI() {
-        return anchor;
-    }
-
-
-    /**
-     * Setter for the reference to the auth window controller
-     *
-     * @param thisclass (AuthWindowController) - The reference to the auth window controller
-     */
-    public void setReference(MainWindowController thisclass) {
-        this.master = thisclass;
-    }
-
-
-
-
-    @FXML
-    void initialize() {
         // Adds a click event listener to all <a> elements in the WebView.
         // When an <a> element is clicked, the listener gets the URL from the element's href attribute.
         // The URL is then opened in the default system browser using the HostServices class.
@@ -156,6 +129,28 @@ public class TootCellController   {
                 }
             }
         });
+    }
+
+    /**
+     * Getter for the UI (AnchorPane)
+     * This method will be used by the AuthWindowController
+     * in order to display custom cells in the listview
+     *
+     * @return (AnchorPane) - The UI of the controller
+     */
+
+    public AnchorPane getUI() {
+        return anchor;
+    }
+
+
+    /**
+     * Setter for the reference to the auth window controller
+     *
+     * @param thisclass (AuthWindowController) - The reference to the auth window controller
+     */
+    public void setReference(MainWindowController thisclass) {
+        this.master = thisclass;
     }
     
 }
