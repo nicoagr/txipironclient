@@ -65,7 +65,7 @@ public class DBAccessManager {
         String accsql = """
                 CREATE TABLE IF NOT EXISTS accounts (
                 ref INTEGER PRIMARY KEY,
-                svarname VARCHAR(255) NOT NULL,
+                mstdtoken VARCHAR(255) NOT NULL,
                 id VARCHAR(255) NOT NULL,
                 acct VARCHAR(255) NOT NULL,
                 avatar VARCHAR(1024) NOT NULL,
@@ -75,7 +75,8 @@ public class DBAccessManager {
                 followers_count INT,
                 following_count INT,
                 note VARCHAR(2048),
-                last_status_at VARCHAR(255)
+                last_status_at VARCHAR(255),
+                CONSTRAINT accounts_tk UNIQUE (mstdtoken)
                 );""";
         String tootsql = """
                 CREATE TABLE IF NOT EXISTS toots (
@@ -173,16 +174,15 @@ public class DBAccessManager {
      *
      * @param id (String) - The id of the account
      * @return (String) - The system variable associated with the account
-     *
      * @throws SQLException - If the query fails to execute
      */
-    public static String getSysVarFromDbId(String id) throws SQLException {
-        ResultSet rs = executeQuery("SELECT svarname FROM accounts WHERE id = ?", List.of(id));
-        String svarname = null;
+    public static String getTokenFromDbId(String id) throws SQLException {
+        ResultSet rs = executeQuery("SELECT mstdtoken FROM accounts WHERE id = ?", List.of(id));
+        String mstdtoken = null;
         while (rs.next()) {
-            svarname = rs.getString("svarname");
+            mstdtoken = rs.getString("mstdtoken");
         }
-        return svarname;
+        return mstdtoken;
     }
 
     /**
@@ -190,33 +190,17 @@ public class DBAccessManager {
      *
      * @param AccId (String) - The id of the account
      * @return (String) - The ref associated with the account
-     *
      * @throws SQLException - If the query fails to execute
      */
-    public static Integer getRefFromId(String AccId) throws SQLException {
-        ResultSet rs = executeQuery("SELECT ref FROM accounts WHERE id = ?", List.of(AccId));
+    public static List<Object> getRefTokenFromId(String AccId) throws SQLException {
+        ResultSet rs = executeQuery("SELECT ref, mstdtoken FROM accounts WHERE id = ?", List.of(AccId));
         Integer ref = null;
+        String token = null;
         while (rs.next()) {
             ref = rs.getInt("ref");
+            token = rs.getString("mstdtoken");
         }
-        return ref;
-    }
-
-    /**
-     * Gets the system variable associated with an account.
-     *
-     * @param ref (String) - The ref of the account
-     * @return (String) - The system variable associated with the account
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public static String getSysVarFromRef(Integer ref) throws SQLException {
-        ResultSet rs = executeQuery("SELECT svarname FROM accounts WHERE ref = ?", List.of(ref));
-        String sysvar = null;
-        while (rs.next()) {
-            sysvar = rs.getString("svarname");
-        }
-        return sysvar;
+        return (token == null || ref == null) ? null : List.of(ref, token);
     }
 
     /**
@@ -295,20 +279,16 @@ public class DBAccessManager {
      * then it will insert it in the database and finally if
      * the insertion went well it will set the destination sys variable.
      *
-     * @param destinationSysVar (String) - The destination sys variable
      * @param id                (String) - The id of the account
      * @param token             (String) - The mastodon access token of the account
      *
      * @throws SQLException                  - If the query fails to execute
-     * @throws IOException                   - If the setting of the system variable fails
-     * @throws UnsupportedOperationException - If the operating system is unsupported (cannot set sysenv)
      */
-    public static void addAccount(String destinationSysVar, String id, String token) throws SQLException, IOException, UnsupportedOperationException {
+    public static void addAccount(String id, String token) throws SQLException {
         // Get Account Data from api
         Account acc = APIAccessManager.getAccount(id, token);
         // Insert the account in the database
-        executeQuery("INSERT INTO accounts (svarname, id, acct, avatar, header, display_name, statuses_count, followers_count, following_count, note, last_status_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", List.of(destinationSysVar, acc.id, acc.acct, acc.avatar, acc.header, acc.display_name, acc.statuses_count, acc.followers_count, acc.following_count, acc.note, acc.last_status_at));        // set destination sys variable into system
-        SysUtils.setSysVariable(destinationSysVar, token);
+        executeQuery("INSERT INTO accounts (mstdtoken, id, acct, avatar, header, display_name, statuses_count, followers_count, following_count, note, last_status_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", List.of(token, acc.id, acc.acct, acc.avatar, acc.header, acc.display_name, acc.statuses_count, acc.followers_count, acc.following_count, acc.note, acc.last_status_at));        // set destination sys variable into system
     }
 
     /**

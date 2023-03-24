@@ -6,7 +6,6 @@ import eus.ehu.txipironesmastodonfx.controllers.windowControllers.FollowCellCont
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.HeaderCellController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.TootCellController;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
-import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.application.Application;
@@ -89,6 +88,7 @@ public class MainWindowController implements WindowController {
             avatar = new Image(DBAccessManager.getUserAvatar(ref));
         }
         catch(SQLException e){
+            // TODO ! - Here we have to put an error image
             e.printStackTrace();
         }
         icon.setImage(avatar);

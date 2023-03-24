@@ -81,28 +81,28 @@ public class AuthWindowController implements WindowController {
      * It will download the follows (followers/followings) of the account.
      * It will insert the follows (followers/followings) in the database.
      * It will change the scene to the main window.
-     *
-     * @throws SQLException
      */
     @FXML
-    void loginBtnClick() throws SQLException {
+    void loginBtnClick() {
         // get ref from account id
         Integer ref;
-        String sysvar;
+        String token;
+        List<Object> result;
         try {
-            ref = DBAccessManager.getRefFromId(selectedAccId);
-            sysvar = DBAccessManager.getSysVarFromRef(ref);
+            result = DBAccessManager.getRefTokenFromId(selectedAccId);
         } catch (SQLException e) {
-            errStop("SQLError when obtaining user reference");
+            errStop("SQLError when obtaining user reference and/or token");
             return;
         }
-        if (ref == null || sysvar == null) {
-            errStop("Error! Couldn't get reference or sysvar from db.");
+        if (result == null) {
+            errStop("Error! Couldn't get reference or token from db.");
             return;
         }
+        ref = (Integer) result.get(0);
+        token = (String) result.get(1);
         // download toots and insert in database
         try {
-            List<Toot> toots = APIAccessManager.getActivityToots(selectedAccId, sysvar);
+            List<Toot> toots = APIAccessManager.getActivityToots(selectedAccId, token);
             if (toots != null) {
                 // TODO! - Sprint 2 - Check if toots are already in db instead of deleting all
                 DBAccessManager.deleteRefFromDb(ref, "toots");
@@ -115,7 +115,7 @@ public class AuthWindowController implements WindowController {
 
         // download following and insert in database
         try {
-            List<Follow> following = APIAccessManager.getFollow(selectedAccId, sysvar, true);
+            List<Follow> following = APIAccessManager.getFollow(selectedAccId, token, true);
             if (following != null || following.size() > 0) {
                 // TODO! - Sprint 2 - Check if following are already in db instead of deleting all
                 DBAccessManager.deleteRefFromDb(ref, "following");
@@ -127,7 +127,7 @@ public class AuthWindowController implements WindowController {
         }
         // download followers and insert in database
         try {
-            List<Follow> followers = APIAccessManager.getFollow(selectedAccId, sysvar, false);
+            List<Follow> followers = APIAccessManager.getFollow(selectedAccId, token, false);
             if (followers != null || followers.size() > 0) {
                 // TODO! - Sprint 2 - Check if followers are already in db instead of deleting all
                 DBAccessManager.deleteRefFromDb(ref, "follower");
