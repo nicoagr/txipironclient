@@ -72,6 +72,7 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void changeAcctBtnClick() throws SQLException {
+        listViewItems.clear();
         mainApp.changeScene("Auth", null);
     }
 
