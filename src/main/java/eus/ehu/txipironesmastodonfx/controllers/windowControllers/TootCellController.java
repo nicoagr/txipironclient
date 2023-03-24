@@ -102,6 +102,8 @@ public class TootCellController   {
         imagen.setImage(new Image(toot.account.avatar));
         date.setText((toot.created_at));
         tootWebView.getEngine().loadContent(toot.content);
+        System.out.println(toot.favourites_count);
+        System.out.println(toot.content);
         numLikes.setText(Integer.toString(toot.favourites_count));
         numReboots.setText(Integer.toString(toot.reblogs_count));
         numComments.setText(Integer.toString(toot.replies_count));
