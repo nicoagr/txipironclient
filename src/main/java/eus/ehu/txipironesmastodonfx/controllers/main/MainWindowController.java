@@ -99,6 +99,7 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void followerListView() {
+        listViewItems.clear();
         listView.setItems(listViewItems);
         listViewItems.add("Home");
         List<Follow> follower = new ArrayList<Follow>();
@@ -116,6 +117,7 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void followingListView()  {
+        listViewItems.clear();
         listView.setItems(listViewItems);
         listViewItems.add("Home");
         List<Follow> following = new ArrayList<Follow>();
@@ -134,6 +136,7 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void homeListView() {
+        listViewItems.clear();
         listView.setItems(listViewItems);
         listViewItems.add("Home");
         List<Toot> toots = new ArrayList<Toot>();
