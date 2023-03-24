@@ -27,7 +27,7 @@ public interface WindowController {
      * @param ref (Integer) - The reference to the main application
      * @throws SQLException - If there is a problem with the database
      */
-    default void setRef(Integer ref) throws SQLException {
+    default void setRef(Integer ref) {
         // Do nothing
     }
 

@@ -3,7 +3,6 @@ package eus.ehu.txipironesmastodonfx.controllers.auth;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
-import eus.ehu.txipironesmastodonfx.data_access.SysUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -53,7 +52,7 @@ public class AuthNewAccoCellController {
         }
         // verify token present
         if (mstdTokenTxt.getText().isEmpty()) {
-            errorTxt.setText("Error! Token is empty");
+            errorTxt.setText("Error! Token is empty.");
             mstdTokenTxt.setText("");
             return;
         }
@@ -79,18 +78,9 @@ public class AuthNewAccoCellController {
         }
         // add account to database
         try {
-            String destinationsysvar = SysUtils.getNextFreeSysVar("TXIPIRON_MSTD_TK_");
-            DBAccessManager.addAccount(destinationsysvar, id, token);
-        } catch (UnsupportedOperationException e) {
-            errorTxt.setText("Error! Unsupported operating system (System Variables)");
-            mstdTokenTxt.setText("");
-            return;
+            DBAccessManager.addAccount(id, token);
         } catch (SQLException e) {
             errorTxt.setText("Error when adding account to database");
-            mstdTokenTxt.setText("");
-            return;
-        } catch (IOException e) {
-            errorTxt.setText("Error when setting system variable");
             mstdTokenTxt.setText("");
             return;
         }

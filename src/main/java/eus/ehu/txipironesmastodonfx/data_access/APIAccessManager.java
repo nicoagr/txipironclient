@@ -45,7 +45,7 @@ public class APIAccessManager {
      * @return (String) - id of the account if the token is valid, null if it is not
      */
     public static String verifyAndGetId(String token) {
-        String response = request("accounts/verify_credentials", token, true);
+        String response = request("accounts/verify_credentials", token);
         if (response.equals("")) {
             // token is invalid
             return null;
@@ -60,11 +60,11 @@ public class APIAccessManager {
      * it will return null.
      *
      * @param selectedAccId (String) - id of the account
-     * @param sysvar        (String) - system variable of the account
+     * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
      */
-    public static List<Toot> getActivityToots(String selectedAccId, String sysvar) {
-        String response = request("accounts/" + selectedAccId + "/statuses", sysvar, false);
+    public static List<Toot> getActivityToots(String selectedAccId, String token) {
+        String response = request("accounts/" + selectedAccId + "/statuses", token);
         if (response.equals("")) {
             // token is invalid
             return null;
@@ -81,13 +81,13 @@ public class APIAccessManager {
      * following list or the followers list.
      *
      * @param selectedAccId (String) - id of the account
-     * @param sysvar        (String) - system variable of the account
+     * @param token         (String) - token of the account
      * @param following     (boolean) - true if we want the following list, false if we want the followers list
      * @return (List < Follow >) - list of follows
      */
-    public static List<Follow> getFollow(String selectedAccId, String sysvar, boolean following) {
+    public static List<Follow> getFollow(String selectedAccId, String token, boolean following) {
         String endtarget = following ? "following" : "followers";
-        String response = request("accounts/" + selectedAccId + "/" + endtarget, sysvar, false);
+        String response = request("accounts/" + selectedAccId + "/" + endtarget, token);
         if (response.equals("")) {
             // token is invalid
             return null;
@@ -107,7 +107,7 @@ public class APIAccessManager {
      * @return (Account) - the account
      */
     public static Account getAccount(String id, String token) {
-        String response = request("accounts/" + id, token, true);
+        String response = request("accounts/" + id, token);
         if (response.equals("")) {
             // token is invalid
             return null;
@@ -120,18 +120,13 @@ public class APIAccessManager {
      * mastodon API. The endpoint must be formated by the part
      * that comes after "https://mastodon.social/api/v1/"
      *
-     * @param endpoint   (String) - The endpoint to request
-     * @param sysvarname - The name of the system variable that contains the token
-     * @param override   - If true, the sysvar will be interpreted as a token
+     * @param endpoint (String) - The endpoint to request
+     * @param token    - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    private static String request(String endpoint, String sysvarname, boolean override) {
+    private static String request(String endpoint, String token) {
         String result = "";
         OkHttpClient client = new OkHttpClient();
-        String token = System.getenv(sysvarname);
-        if (override) {
-            token = sysvarname;
-        }
         Request request = new Request.Builder()
                 .url("https://mastodon.social/api/v1/" + endpoint)
                 .get()

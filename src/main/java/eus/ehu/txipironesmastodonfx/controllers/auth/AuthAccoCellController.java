@@ -1,7 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.auth;
 
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
-import eus.ehu.txipironesmastodonfx.data_access.SysUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -85,7 +84,6 @@ public class AuthAccoCellController {
     void removeAccBtnClick() {
         // Remove account from database
         try {
-            SysUtils.removeSysVariable(DBAccessManager.getSysVarFromDbId(accIdTxt.getText()));
             DBAccessManager.removeAccountFromDbId(accIdTxt.getText());
             // Refresh listview
             master.updateListView();
