@@ -148,6 +148,7 @@ public class MainWindowController implements WindowController {
             e.printStackTrace();
         }
         listViewItems.addAll(toots);
+        //System.out.println(listViewItems.toString());
     }
 
     /**
