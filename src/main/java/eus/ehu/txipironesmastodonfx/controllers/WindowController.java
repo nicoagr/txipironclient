@@ -31,7 +31,7 @@ public interface WindowController {
         // Do nothing
     }
 
-    default public void start(){
-
+    default public void homeListView() {
+        // Do nothing
     }
 }

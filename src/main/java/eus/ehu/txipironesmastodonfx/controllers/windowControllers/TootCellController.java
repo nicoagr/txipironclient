@@ -34,38 +34,26 @@ import java.util.ResourceBundle;
  * @author Xiomara Cáceces
  */
 public class TootCellController   {
-
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private Label Id;
-
     @FXML
     private Label date;
-
     @FXML
     private AnchorPane anchor;
     @FXML
     private Label numComments;
-
     @FXML
     private Label numLikes;
-
     @FXML
     private Label numReboots;
-
-
     @FXML
     private WebView tootWebView;
-
     @FXML
     private Label username;
-
-
     @FXML
     private ImageView imagen;
     private MainWindowController master;
@@ -75,43 +63,35 @@ public class TootCellController   {
      * It will load itself at take consciousness (set itself as controller)
      * Also it will set the corresponding values for the account cell.
      *
-     * @param toot (Toot) - The account to be displayed
      * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
-    public TootCellController(Toot toot, MainWindowController master) {
-
+    public TootCellController(MainWindowController master) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/tootcell.fxml"));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
-            tootWebView = new WebView();
         } catch (IOException e) {
             e.printStackTrace();
         }
         setReference(master);
+    }
 
-        // set the values for the account cell
+    public void loadToot(Toot toot) {
+        // set the values for the toot cell
         Id.setText(toot.account.id);
         username.setText(toot.account.acct);
         imagen.setImage(new Image(toot.account.avatar));
         date.setText((toot.created_at));
-        tootWebView.getEngine().loadContent(toot.content);
-        System.out.println(toot.favourites_count);
-        System.out.println(toot.content);
         numLikes.setText(Integer.toString(toot.favourites_count));
         numReboots.setText(Integer.toString(toot.reblogs_count));
         numComments.setText(Integer.toString(toot.replies_count));
 
         tootWebView.getEngine().loadContent(toot.content);
+    }
 
 
-
-
-        }
-
-
-
-    /*void initialize() {
+    @FXML
+    void initialize() {
         // Adds a click event listener to all <a> elements in the WebView.
         // When an <a> element is clicked, the listener gets the URL from the element's href attribute.
         // The URL is then opened in the default system browser using the HostServices class.
@@ -137,7 +117,7 @@ public class TootCellController   {
                 }
             }
         });
-    }*/
+    }
 
     /**
      * Getter for the UI (AnchorPane)

@@ -137,28 +137,14 @@ public class MainWindowController implements WindowController {
      * user is following starting from the most recent
      */
     @FXML
-    void homeListView() {
+    public void homeListView() {
         listViewItems.clear();
-        listView.setItems(listViewItems);
         listViewItems.add("Home");
-        List<Toot> toots = new ArrayList<Toot>();
-        try{
-            toots = DBAccessManager.getUserToots(ref);
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-        listViewItems.addAll(toots);
-    }
-
-    public void start()  {
         listView.setItems(listViewItems);
-        listViewItems.add("Home");
         List<Toot> toots = new ArrayList<Toot>();
-        try{
+        try {
             toots = DBAccessManager.getUserToots(ref);
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         listViewItems.addAll(toots);
@@ -183,20 +169,13 @@ public class MainWindowController implements WindowController {
                     setGraphic(a.getUI());
                 } else if (item instanceof Toot) {
                     setText(null);
-                    TootCellController b = new TootCellController((Toot) item, thisclass);
+                    TootCellController b = new TootCellController(thisclass);
                     setGraphic(b.getUI());
-                } else if (item instanceof String && item.equals("Home")) {
+                    b.loadToot((Toot) item);
+                } else if (item instanceof String) {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
                     setGraphic(c.getUI());
-                } else if (item instanceof String && item.equals("Followers")) {
-                    setText(null);
-                    HeaderCellController d = new HeaderCellController((String) item, thisclass);
-                    setGraphic(d.getUI());
-                } else if (item instanceof String && item.equals("Following")) {
-                    setText(null);
-                    HeaderCellController e = new HeaderCellController((String) item, thisclass);
-                    setGraphic(e.getUI());
                 }
             }
         });
