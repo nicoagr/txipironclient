@@ -133,13 +133,12 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the list view to show the toots of the current logged in user and the users that the current logged in
-     * user is following starting from the most recent
+     * Sets the list view to show the toots of the current logged in user
      */
     @FXML
     public void homeListView() {
         listViewItems.clear();
-        listViewItems.add("Home");
+        listViewItems.add("My profile toots");
         listView.setItems(listViewItems);
         List<Toot> toots = new ArrayList<Toot>();
         try {
@@ -148,7 +147,6 @@ public class MainWindowController implements WindowController {
             e.printStackTrace();
         }
         listViewItems.addAll(toots);
-        //System.out.println(listViewItems.toString());
     }
 
     /**
