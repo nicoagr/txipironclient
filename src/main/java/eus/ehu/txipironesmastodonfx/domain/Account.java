@@ -39,8 +39,6 @@ public class Account {
      * @param last_status_at  (String) - The account's last status date
      * @param display_name    (String) - The account's display name
      */
-
-
     public Account(String id, String acct, String avatar, String header, int statuses_count, int followers_count, int following_count, String note, String last_status_at, String display_name) {
         this.id = id;
         this.acct = acct;
