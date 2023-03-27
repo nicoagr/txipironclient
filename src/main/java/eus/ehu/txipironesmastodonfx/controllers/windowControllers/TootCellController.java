@@ -76,6 +76,11 @@ public class TootCellController   {
         setReference(master);
     }
 
+    /**
+     * Method to set the values for the toot cell
+     *
+     * @param toot (Toot) - The toot to be displayed
+     */
     public void loadToot(Toot toot) {
         // set the values for the toot cell
         Id.setText(toot.account.id);
@@ -89,7 +94,10 @@ public class TootCellController   {
         tootWebView.getEngine().loadContent(toot.content);
     }
 
-
+    /**
+     * Initializes the controller class.
+     *
+     */
     @FXML
     void initialize() {
         // Adds a click event listener to all <a> elements in the WebView.
