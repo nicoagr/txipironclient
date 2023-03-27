@@ -111,7 +111,7 @@ public class TootCellController   {
                         }
                         if (targetNode != null) {
                             String url = ((HTMLAnchorElement) targetNode).getHref();
-                            master.TxipironClient().getHostServices().showDocument(url); //NI PUTA IDEA DE QUE HACE ESTO WEY, SUPONGO QUE EL GETHOSTSERVICES HABRA QUE IMPLEMENTARLO
+                            master.TxipironClient().getHostServices().showDocument(url);
                         }
                     }, true);
                 }
