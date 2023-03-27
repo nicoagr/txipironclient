@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers.auth;
 
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import javafx.fxml.FXML;
@@ -44,50 +45,49 @@ public class AuthNewAccoCellController {
     void addAccBtnClick() {
         String token = mstdTokenTxt.getText();
         mstdTokenTxt.setText("Loading...");
-        // Check for internet connection
-        if (!NetworkUtils.hasInternet()) {
-            errorTxt.setText("Error! No internet connection / Mastodon API Unreachable");
-            mstdTokenTxt.setText("");
-            return;
-        }
-        // verify token present
-        if (mstdTokenTxt.getText().isEmpty()) {
-            errorTxt.setText("Error! Token is empty.");
-            mstdTokenTxt.setText("");
-            return;
-        }
-        // check if token is valid
-        String id = APIAccessManager.verifyAndGetId(token);
-        if (id == null) {
-            errorTxt.setText("Error! Token is invalid");
-            mstdTokenTxt.setText("");
-            return;
-        }
-        // check if account is not in database
-        try {
-            if (DBAccessManager.isAccountInDb(id)) {
-                // If the account is in the database, stop the process
-                errorTxt.setText("Error! Account already in database");
-                mstdTokenTxt.setText("");
-                return;
+        errorTxt.setText("");
+
+        AsyncUtils.asyncTask(() -> {
+            // Check for internet connection
+            if (!NetworkUtils.hasInternet()) {
+                return "Error! No internet connection / Mastodon API Unreachable";
             }
-        } catch (SQLException e) {
-            errorTxt.setText("Error when checking if account is in database");
+            // verify token present
+            if (mstdTokenTxt.getText().isEmpty()) {
+                return "Error! Token is empty.";
+            }
+            // check if token is valid
+            String id = APIAccessManager.verifyAndGetId(token);
+            if (id == null) {
+                return "Error! Token is invalid";
+            }
+            // check if account is not in database
+            try {
+                if (DBAccessManager.isAccountInDb(id)) {
+                    // If the account is in the database, stop the process
+                    return "Error! Account already in database";
+                }
+            } catch (SQLException e) {
+                return "Error when checking if account is in database";
+            }
+            // add account to database
+            try {
+                DBAccessManager.addAccount(id, token);
+            } catch (SQLException e) {
+                return "Error when adding account to database";
+            }
+            return null;
+        }, errorMsg -> {
             mstdTokenTxt.setText("");
-            return;
-        }
-        // add account to database
-        try {
-            DBAccessManager.addAccount(id, token);
-        } catch (SQLException e) {
-            errorTxt.setText("Error when adding account to database");
-            mstdTokenTxt.setText("");
-            return;
-        }
-        // refresh listview
-        master.updateListView();
-        mstdTokenTxt.setText("");
+            if (errorMsg != null) {
+                errorTxt.setText(errorMsg);
+            } else {
+                // refresh listview
+                master.updateListView();
+            }
+        });
     }
+
 
     /**
      * Constructor for the controller.

@@ -3,6 +3,7 @@ package eus.ehu.txipironesmastodonfx.controllers.auth;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
@@ -84,61 +85,67 @@ public class AuthWindowController implements WindowController {
      */
     @FXML
     void loginBtnClick() {
-        // get ref from account id
-        Integer ref;
-        String token;
-        List<Object> result;
-        try {
-            result = DBAccessManager.getRefTokenFromId(selectedAccId);
-        } catch (SQLException e) {
-            errStop("SQLError when obtaining user reference and/or token");
-            return;
-        }
-        if (result == null) {
-            errStop("Error! Couldn't get reference or token from db.");
-            return;
-        }
-        ref = (Integer) result.get(0);
-        token = (String) result.get(1);
-        // download toots and insert in database
-        try {
+        // hide everything - show loading
+        loginBtn.setVisible(false);
+        accountListView.setVisible(false);
+        errorLabel.setText("Downloading Data...");
+
+        // execute database and API access tasks asynchronously
+        AsyncUtils.asyncTask(() -> {
+            // get ref from account id
+            List<Object> result = DBAccessManager.getRefTokenFromId(selectedAccId);
+            if (result == null) {
+                return -1;
+            }
+            Integer ref = (Integer) result.get(0);
+            String token = (String) result.get(1);
+
+            // check if there is internet connection
+            if (!NetworkUtils.hasInternet()) {
+                return -1;
+            }
+
+            // download toots and insert in database
             List<Toot> toots = APIAccessManager.getActivityToots(selectedAccId, token);
             if (toots != null) {
                 // TODO! - Sprint 2 - Check if toots are already in db instead of deleting all
                 DBAccessManager.deleteRefFromDb(ref, "toots");
                 DBAccessManager.insertTootsInDb(toots, ref);
             }
-        } catch (SQLException e) {
-            errStop("SQLError when deleting & inserting downloaded toots in db.");
-            return;
-        }
 
-        // download following and insert in database
-        try {
+            // download following and insert in database
             List<Follow> following = APIAccessManager.getFollow(selectedAccId, token, true);
             if (following != null || following.size() > 0) {
                 // TODO! - Sprint 2 - Check if following are already in db instead of deleting all
                 DBAccessManager.deleteRefFromDb(ref, "following");
                 DBAccessManager.insertFollowInDb(following, ref, true);
             }
-        } catch (SQLException e) {
-            errStop("SQLError when deleting & inserting downloaded following in db.");
-            return;
-        }
-        // download followers and insert in database
-        try {
+
+            // download followers and insert in database
             List<Follow> followers = APIAccessManager.getFollow(selectedAccId, token, false);
             if (followers != null || followers.size() > 0) {
                 // TODO! - Sprint 2 - Check if followers are already in db instead of deleting all
                 DBAccessManager.deleteRefFromDb(ref, "follower");
                 DBAccessManager.insertFollowInDb(followers, ref, false);
             }
-        } catch (SQLException e) {
-            errStop("SQLError when deleting & inserting downloaded followers in db.");
-            return;
-        }
-        mainApp.changeScene("Main", ref);
+
+            // return the reference for the success callback
+            return ref;
+        }, ref -> {
+            // show login button again
+            loginBtn.setVisible(true);
+            accountListView.setVisible(true);
+            errorLabel.setText("");
+            if (ref != -1) {
+                // change scene to main window
+                mainApp.changeScene("Main", ref);
+            } else {
+                errStop("Error when getting account id & token from database");
+            }
+            // change scene to main window
+        });
     }
+
 
     /**
      * This method will be called when a fatal error occurs.
@@ -167,20 +174,29 @@ public class AuthWindowController implements WindowController {
     protected void updateListView() {
         // set items for accountListView
         accountListView.setItems(listViewItems);
-        // Download accounts from db
-        List<Account> accounts;
-        try {
-            accounts = DBAccessManager.getAccounts();
-        } catch (SQLException e) {
-            errStop("Error! Couldn't get accounts from db. " + e.getMessage());
-            return;
-        }
-        // Clear ListView
-        listViewItems.clear();
-        // Add accounts to ListView
-        listViewItems.addAll(accounts);
-        // Add "Add Account" cell to ListView
-        listViewItems.add("Add Account");
+        // execute the updating asyncronously
+        AsyncUtils.asyncTask(() ->
+                {
+                    List<Account> accounts;
+                    try {
+                        accounts = DBAccessManager.getAccounts();
+                    } catch (SQLException e) {
+                        accounts = null;
+                    }
+                    return accounts;
+                }, accounts -> {
+                    if (accounts != null) {
+                        // Clear ListView
+                        listViewItems.clear();
+                        // Add accounts to ListView
+                        listViewItems.addAll(accounts);
+                        // Add "Add Account" cell to ListView
+                        listViewItems.add("Add Account");
+                    } else {
+                        errStop("Error! Couldn't get accounts from db.");
+                    }
+                }
+        );
     }
 
     /**
