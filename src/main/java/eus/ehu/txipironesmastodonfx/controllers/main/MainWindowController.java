@@ -5,6 +5,7 @@ import eus.ehu.txipironesmastodonfx.controllers.WindowController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.FollowCellController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.HeaderCellController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.TootCellController;
+import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
@@ -102,16 +103,25 @@ public class MainWindowController implements WindowController {
     void followerListView() {
         listViewItems.clear();
         listView.setItems(listViewItems);
-        listViewItems.add("Followers");
-        List<Follow> follower = new ArrayList<Follow>();
-        try{
-            follower = DBAccessManager.getUserFollowers(ref);
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-        listViewItems.addAll(follower);
-        //listView.setItems(listViewItems);
+        AsyncUtils.asyncTask(() ->
+        {
+            List<Follow> follower = new ArrayList<Follow>();
+            try{
+                follower = DBAccessManager.getUserFollowers(ref);
+            }
+            catch(SQLException e){
+                follower = null;
+            }
+            return follower;
+            }, follower -> {
+            if (follower != null){
+                listViewItems.add("Followers");
+                listViewItems.addAll(follower);
+            }
+            else{
+                System.out.println("error");
+            }
+        });
     }
 
     /**
@@ -121,15 +131,24 @@ public class MainWindowController implements WindowController {
     void followingListView()  {
         listViewItems.clear();
         listView.setItems(listViewItems);
-        listViewItems.add("Following");
-        List<Follow> following = new ArrayList<Follow>();
-        try{
-            following = DBAccessManager.getUserFollowings(ref);
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-        listViewItems.addAll(following);
+        AsyncUtils.asyncTask(() ->
+        {
+            List<Follow> following = new ArrayList<Follow>();
+            try {
+                following = DBAccessManager.getUserFollowings(ref);
+            } catch (SQLException e) {
+                following = null;
+            }
+            return following;
+            }, following -> {
+            if (following != null){
+                listViewItems.add("Following");
+                listViewItems.addAll(following);
+            }
+            else{
+                System.out.println("error");
+            }
+        });
     }
 
     /**
@@ -138,15 +157,25 @@ public class MainWindowController implements WindowController {
     @FXML
     public void homeListView() {
         listViewItems.clear();
-        listViewItems.add("My profile toots");
         listView.setItems(listViewItems);
-        List<Toot> toots = new ArrayList<Toot>();
-        try {
-            toots = DBAccessManager.getUserToots(ref);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        listViewItems.addAll(toots);
+        AsyncUtils.asyncTask(() ->
+        {
+            List<Toot> toots = new ArrayList<Toot>();
+            try {
+                toots = DBAccessManager.getUserToots(ref);
+            } catch (SQLException e) {
+                toots = null;
+            }
+            return toots;
+            }, toots -> {
+            if (toots != null){
+                listViewItems.add("My profile toots");
+                listViewItems.addAll(toots);
+            }
+            else{
+                System.out.println("error");
+            }
+        });
     }
 
     /**
