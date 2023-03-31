@@ -9,6 +9,7 @@ module eus.ehu.txipironesmastodonfx {
     requires java.sql.rowset;
     requires jdk.xml.dom;
     requires javafx.web;
+    requires java.desktop;
 
     opens eus.ehu.txipironesmastodonfx to javafx.fxml;
     exports eus.ehu.txipironesmastodonfx.controllers;
