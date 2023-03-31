@@ -1,6 +1,8 @@
 package eus.ehu.txipironesmastodonfx.controllers.auth;
 
+import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,7 +52,19 @@ public class AuthAccoCellController {
         // set the values for the account cell
         userNameTxt.setText(account.acct);
         accIdTxt.setText(account.id);
-        avatarImg.setImage(new Image(account.avatar));
+        avatarImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
+        AsyncUtils.asyncTask(() ->
+                {
+                    Image img = null;
+                    if (NetworkUtils.hasInternet())
+                        img = new Image(account.avatar);
+                    return img;
+                }, param -> {
+                    if (param != null) avatarImg.setImage(param);
+                    else
+                        avatarImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg")));
+                }
+        );
     }
 
     /**

@@ -2,13 +2,10 @@ package eus.ehu.txipironesmastodonfx.controllers.auth;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
-import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
-import eus.ehu.txipironesmastodonfx.domain.Follow;
-import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -88,61 +85,29 @@ public class AuthWindowController implements WindowController {
         // hide everything - show loading
         loginBtn.setVisible(false);
         accountListView.setVisible(false);
-        errorLabel.setText("Downloading Data...");
+        errorLabel.setText("Loading Data...");
 
         // execute database and API access tasks asynchronously
         AsyncUtils.asyncTask(() -> {
-            // get ref from account id
+            // get ref, token, id from account id
             List<Object> result = DBAccessManager.getRefTokenFromId(selectedAccId);
-            if (result == null) {
-                return -1;
-            }
-            Integer ref = (Integer) result.get(0);
-            String token = (String) result.get(1);
-
             // check if there is internet connection
             if (!NetworkUtils.hasInternet()) {
-                return -1;
+                return null;
             }
-
-            // download toots and insert in database
-            List<Toot> toots = APIAccessManager.getActivityToots(selectedAccId, token);
-            if (toots != null) {
-                // TODO! - Sprint 2 - Check if toots are already in db instead of deleting all
-                DBAccessManager.deleteRefFromDb(ref, "toots");
-                DBAccessManager.insertTootsInDb(toots, ref);
-            }
-
-            // download following and insert in database
-            List<Follow> following = APIAccessManager.getFollow(selectedAccId, token, true);
-            if (following != null || following.size() > 0) {
-                // TODO! - Sprint 2 - Check if following are already in db instead of deleting all
-                DBAccessManager.deleteRefFromDb(ref, "following");
-                DBAccessManager.insertFollowInDb(following, ref, true);
-            }
-
-            // download followers and insert in database
-            List<Follow> followers = APIAccessManager.getFollow(selectedAccId, token, false);
-            if (followers != null || followers.size() > 0) {
-                // TODO! - Sprint 2 - Check if followers are already in db instead of deleting all
-                DBAccessManager.deleteRefFromDb(ref, "follower");
-                DBAccessManager.insertFollowInDb(followers, ref, false);
-            }
-
-            // return the reference for the success callback
-            return ref;
-        }, ref -> {
+            // return the result
+            return result;
+        }, result -> {
             // show login button again
             loginBtn.setVisible(true);
             accountListView.setVisible(true);
             errorLabel.setText("");
-            if (ref != -1) {
+            if (result != null) {
                 // change scene to main window
-                mainApp.changeScene("Main", ref);
+                mainApp.changeScene("Main", result);
             } else {
-                errStop("Error when getting account id & token from database");
+                errorLabel.setText("Error when getting account id & token from database. Check connection.");
             }
-            // change scene to main window
         });
     }
 
@@ -211,8 +176,7 @@ public class AuthWindowController implements WindowController {
     void initialize() {
         // Check for internet connection
         if (!NetworkUtils.hasInternet()) {
-            errStop("Error! No internet connection / Mastodon API Unreachable");
-            return;
+            errorLabel.setText("Error! No internet connection / Mastodon API Unreachable");
         }
         // Check if db file exists
         if (!DBAccessManager.isDbReachable()) {
@@ -254,18 +218,19 @@ public class AuthWindowController implements WindowController {
             }
         });
         // add a listener to the ListView's selection model
-        accountListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            // get the index of the selected cell
-            int selectedIndex = accountListView.getSelectionModel().getSelectedIndex();
+        accountListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            // get the selected index
+            int selectedIndex = newValue.intValue();
             // if the selected cell is an account, enable the login button
             // if the selected cell is not an account, disable the login button
             if (selectedIndex >= 0 && selectedIndex < listViewItems.size() && listViewItems.get(selectedIndex) instanceof Account) {
                 loginBtn.setDisable(false);
                 selectedAccId = ((Account) listViewItems.get(selectedIndex)).id;
-            } else loginBtn.setDisable(true);
+            } else {
+                loginBtn.setDisable(true);
+            }
         });
         // Update ListView
         updateListView();
     }
-
 }

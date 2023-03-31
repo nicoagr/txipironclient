@@ -63,7 +63,7 @@ public class APIAccessManager {
      * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
      */
-    public static List<Toot> getActivityToots(String selectedAccId, String token) {
+    public static List<Toot> getProfileToots(String selectedAccId, String token) {
         String response = request("accounts/" + selectedAccId + "/statuses", token);
         if (response.equals("")) {
             // token is invalid
@@ -72,7 +72,14 @@ public class APIAccessManager {
         Type statusListType = new TypeToken<ArrayList<Toot>>() {
         }.getType();
         // get json array and then convert it to a list of Toots
-        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), statusListType);
+        List<Toot> toots = gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), statusListType);
+        // Unflip the reblog recursion stack
+        for (int i = 0; i < toots.size(); i++) {
+            Toot t = toots.get(i);
+            while (t.reblog != null) t = t.reblog;
+            toots.set(i, t);
+        }
+        return toots;
     }
 
     /**
@@ -125,7 +132,7 @@ public class APIAccessManager {
      * @return (String) - The response of the request - Usually formatted as json
      */
     private static String request(String endpoint, String token) {
-        String result = "";
+        String result = null;
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://mastodon.social/api/v1/" + endpoint)
@@ -134,7 +141,7 @@ public class APIAccessManager {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            if (response.code() == 200) {
+            if (response.code() == 200 && response.body() != null) {
                 result = response.body().string();
             }
         } catch (Exception e) {

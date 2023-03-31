@@ -2,6 +2,8 @@ package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
+import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -85,7 +87,20 @@ public class TootCellController   {
         // set the values for the toot cell
         Id.setText(toot.account.id);
         username.setText(toot.account.acct);
-        imagen.setImage(new Image(toot.account.avatar));
+        imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
+        AsyncUtils.asyncTask(() ->
+                {
+                    Image img = null;
+                    if (NetworkUtils.hasInternet())
+                        img = new Image(toot.account.avatar);
+                    return img;
+                }, param -> {
+                    if (param != null) imagen.setImage(param);
+                    else
+                        imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg")));
+
+                }
+        );
         date.setText((toot.created_at));
         numLikes.setText(Integer.toString(toot.favourites_count));
         numReboots.setText(Integer.toString(toot.reblogs_count));

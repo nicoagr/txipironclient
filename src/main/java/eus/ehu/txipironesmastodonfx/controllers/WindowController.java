@@ -2,7 +2,7 @@ package eus.ehu.txipironesmastodonfx.controllers;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 
-import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Interface for the controllers of the windows.
@@ -24,17 +24,16 @@ public interface WindowController {
     /**
      * Sets a reference to the main application
      *
-     * @param ref (Integer) - The reference to the main application
-     * @throws SQLException - If there is a problem with the database
+     * @param result (List<Object>) - The list of reference, token and id to be set
      */
-    default void setRef(Integer ref) {
+    default void setRefTokenId(List<Object> result) {
         // Do nothing
     }
 
     /**
      * homeListView method
      */
-    default public void homeListView() {
+    default void homeListView() {
         // Do nothing
     }
 }

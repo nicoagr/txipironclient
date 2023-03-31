@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Main class of the application. This will be the starting point.
@@ -95,11 +96,9 @@ public class TxipironClient extends Application {
      * Will change the scene to the one passed as parameter.
      *
      * @param sceneName (String) - Name of the scene to change to
-     * @param ref       (Integer) - Reference of the current logged in user
-     *                  <p>
-     *                  ç
+     * @param result    (List<Object>) - List of reference, token and id to pass to the controller
      */
-    public void changeScene(String sceneName, Integer ref) {
+    public void changeScene(String sceneName, List<Object> result) {
         switch (sceneName) {
             case "Auth" -> {
                 stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
@@ -108,7 +107,7 @@ public class TxipironClient extends Application {
             case "Main" -> {
                 stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
                 scene.setRoot(mainWindow.ui);
-                mainWindow.controller.setRef(ref);
+                mainWindow.controller.setRefTokenId(result);
                 mainWindow.controller.homeListView();
             }
             default -> {
