@@ -1,16 +1,17 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
-import java.io.IOException;
-
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
+import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 /**
  * Controller class for the follow cell.
@@ -57,8 +58,19 @@ public class FollowCellController {
         username.setText(follow.acct);
         id.setText(follow.id);
 
-
-        icon.setImage(new Image(follow.avatar));
+        icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
+        AsyncUtils.asyncTask(() ->
+                {
+                    Image img = null;
+                    if (NetworkUtils.hasInternet())
+                        img = new Image(follow.avatar);
+                    return img;
+                }, param -> {
+                    if (param != null) icon.setImage(param);
+                    else
+                        icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg")));
+                }
+        );
     }
 
     /**
@@ -80,9 +92,4 @@ public class FollowCellController {
     public void setReference(MainWindowController thisclass) {
         this.master = thisclass;
     }
-
-
-
-
-
 }

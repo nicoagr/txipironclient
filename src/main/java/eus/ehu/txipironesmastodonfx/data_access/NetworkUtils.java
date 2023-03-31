@@ -27,7 +27,7 @@ public class NetworkUtils {
         try {
             final URL url = new URL("https://mastodon.social/api/v1/statuses/109897715842769702");
             final URLConnection conn = url.openConnection();
-            conn.setConnectTimeout(3000);
+            conn.setConnectTimeout(2000);
             conn.connect();
             conn.getInputStream().close();
             return true;
@@ -38,4 +38,5 @@ public class NetworkUtils {
             return false;
         }
     }
+
 }

@@ -1,8 +1,6 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
 import eus.ehu.txipironesmastodonfx.domain.Account;
-import eus.ehu.txipironesmastodonfx.domain.Follow;
-import eus.ehu.txipironesmastodonfx.domain.Toot;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -24,7 +22,6 @@ import java.util.List;
  */
 public class DBAccessManager {
 
-    // TODO- Code smell: Hard-Coded value
     public final static String dbName = "TxipironData.db";
     private final static File dbPointer = new File(dbName);
 
@@ -78,46 +75,8 @@ public class DBAccessManager {
                 last_status_at VARCHAR(255),
                 CONSTRAINT accounts_tk UNIQUE (mstdtoken)
                 );""";
-        String tootsql = """
-                CREATE TABLE IF NOT EXISTS toots (
-                  ref INT NOT NULL,
-                  id VARCHAR(255) NOT NULL,
-                  created_at VARCHAR(255),
-                  in_reply_to_id VARCHAR(255),
-                  sensitive BOOLEAN,
-                  uri VARCHAR(1024),
-                  replies_count INT,
-                  reblogs_count INT,
-                  favourites_count INT,
-                  favourited BOOLEAN,
-                  reblogged BOOLEAN,
-                  content VARCHAR(2048),
-                  account_id VARCHAR(255),
-                  avatar VARCHAR(1024),
-                  acct VARCHAR(255),
-                  CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
-                );""";
-        String followersql = """
-                CREATE TABLE IF NOT EXISTS follower (
-                  ref INT NOT NULL,
-                  id VARCHAR(255) NOT NULL,
-                  acct VARCHAR(255) NOT NULL,
-                  avatar VARCHAR(1024) NOT NULL,
-                  CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
-                  );""";
-        String followingsql = """
-                CREATE TABLE IF NOT EXISTS following (
-                  ref INT NOT NULL,
-                  id VARCHAR(255) NOT NULL,
-                  acct VARCHAR(255) NOT NULL,
-                  avatar VARCHAR(1024) NOT NULL,
-                  CONSTRAINT toots_fk_ref_id FOREIGN KEY (ref) REFERENCES account(ref) ON DELETE CASCADE ON UPDATE CASCADE
-                  );""";
-        // Execute querys
+        // Execute query
         executeQuery(accsql, null);
-        executeQuery(tootsql, null);
-        executeQuery(followersql, null);
-        executeQuery(followingsql, null);
     }
 
     /**
@@ -170,22 +129,6 @@ public class DBAccessManager {
     }
 
     /**
-     * Gets the system variable associated with an account.
-     *
-     * @param id (String) - The id of the account
-     * @return (String) - The system variable associated with the account
-     * @throws SQLException - If the query fails to execute
-     */
-    public static String getTokenFromDbId(String id) throws SQLException {
-        ResultSet rs = executeQuery("SELECT mstdtoken FROM accounts WHERE id = ?", List.of(id));
-        String mstdtoken = null;
-        while (rs.next()) {
-            mstdtoken = rs.getString("mstdtoken");
-        }
-        return mstdtoken;
-    }
-
-    /**
      * Gets the ref associated with an account.
      *
      * @param AccId (String) - The id of the account
@@ -200,77 +143,7 @@ public class DBAccessManager {
             ref = rs.getInt("ref");
             token = rs.getString("mstdtoken");
         }
-        return (token == null || ref == null) ? null : List.of(ref, token);
-    }
-
-    /**
-     * This generic method will be used to delete
-     * entries with an specific ref in a specific table.
-     *
-     * @param ref       (String) - The ref of the account
-     * @param tablename (String) - The name of the table
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public static void deleteRefFromDb(Integer ref, String tablename) throws SQLException {
-        executeQuery("DELETE FROM " + tablename + " WHERE ref = ?", List.of(ref));
-    }
-
-    /**
-     * Method to insert a list of toots in the database.
-     * It will have a ref parameter to know which account
-     * the toots belong to.
-     *
-     * @param toots (List < Toot >) - The list of toots to insert
-     * @param ref   (String) - The ref of the account
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public static void insertTootsInDb(List<Toot> toots, Integer ref) throws SQLException {
-        List<Object> params;
-        for (Toot t : toots) {
-            params = new ArrayList<>();
-            // unflip the recursion stack
-            while (t.reblog != null) {
-                t = t.reblog;
-                t.reblogged = true;
-            }
-            params.add(ref);
-            params.add(t.id);
-            params.add(t.created_at);
-            params.add(t.in_reply_to_id);
-            params.add(t.sensitive);
-            params.add(t.uri);
-            params.add(t.replies_count);
-            params.add(t.reblogs_count);
-            params.add(t.favourites_count);
-            params.add(t.favourited);
-            params.add(t.reblogged);
-            params.add(t.content);
-            params.add(t.account != null ? t.account.id : null);
-            params.add(t.account.acct);
-            params.add(t.account.avatar);
-            executeQuery("INSERT INTO toots (ref, id, created_at, in_reply_to_id, sensitive, uri, replies_count, reblogs_count, favourites_count, favourited, reblogged, content, account_id, acct, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?);", params);
-        }
-    }
-
-    /**
-     * Method to insert a list of follow in the database.
-     * If the following parameter is true, it will insert the accounts
-     * into the following table. If not, it will insert the accounts
-     * into the follower table.
-     *
-     * @param followList (String) - The list of accounts to insert
-     * @param ref        (String) - The ref of the account
-     * @param following  (boolean) - True if the accounts are following the account, false otherwise
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public static void insertFollowInDb(List<Follow> followList, Integer ref, boolean following) throws SQLException {
-        String tablename = following ? "following" : "follower";
-        for (Follow f : followList) {
-            executeQuery("INSERT INTO " + tablename + " (ref, id, acct, avatar) VALUES (?, ?, ?, ?);", List.of(ref, f.id, f.acct, f.avatar));
-        }
+        return (token == null || ref == null) ? null : List.of(ref, token, AccId);
     }
 
     /**
@@ -288,7 +161,8 @@ public class DBAccessManager {
         // Get Account Data from api
         Account acc = APIAccessManager.getAccount(id, token);
         // Insert the account in the database
-        executeQuery("INSERT INTO accounts (mstdtoken, id, acct, avatar, header, display_name, statuses_count, followers_count, following_count, note, last_status_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", List.of(token, acc.id, acc.acct, acc.avatar, acc.header, acc.display_name, acc.statuses_count, acc.followers_count, acc.following_count, acc.note, acc.last_status_at));        // set destination sys variable into system
+        if (acc != null)
+            executeQuery("INSERT INTO accounts (mstdtoken, id, acct, avatar, header, display_name, statuses_count, followers_count, following_count, note, last_status_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", List.of(token, acc.id, acc.acct, acc.avatar, acc.header, acc.display_name, acc.statuses_count, acc.followers_count, acc.following_count, acc.note, acc.last_status_at));        // set destination sys variable into system
     }
 
     /**
@@ -339,42 +213,6 @@ public class DBAccessManager {
         return crs;
     }
 
-
-    /**
-     * Method to get the list of toots of an account.
-     *
-     * @param ref (int) - The ref of the account
-     * @return List<Toot> - The list of toots of the account
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public static List<Toot> getUserToots(int ref) throws SQLException {
-
-        List<Toot> toots = new ArrayList<>();
-        CachedRowSet rs = executeQuery("SELECT * FROM toots WHERE ref = ?;", List.of(ref));
-
-        while(rs.next()){
-            Toot t = new Toot();
-            t.id = rs.getString("id");
-            t.created_at = rs.getString("created_at");
-            t.in_reply_to_id = rs.getString("in_reply_to_id");
-            t.sensitive = rs.getBoolean("sensitive");
-            t.uri = rs.getString("uri");
-            t.replies_count = rs.getInt("replies_count");
-            t.reblogs_count = rs.getInt("reblogs_count");
-            t.favourites_count = rs.getInt("favourites_count");
-            t.favourited = rs.getBoolean("favourited");
-            t.reblogged = rs.getBoolean("reblogged");
-            t.content = rs.getString("content");
-            t.account = new Account();
-            t.account.acct = rs.getString("acct");
-            t.account.avatar = rs.getString("avatar");
-            t.account.id = rs.getString("account_id");
-            toots.add(t);
-        }
-        return toots;
-    }
-
     /**
      * Method to get the list of followers of an account.
      *
@@ -395,118 +233,14 @@ public class DBAccessManager {
     }
 
     /**
-     * Method to get the list of followers of an account.
+     * Method to get user account from a reference
      *
-     * @param ref (int) - The ref of the account
-     * @return List<Follow> - The list of followers of the account
-     *
+     * @param ref (Integer) - The reference of the account
+     * @return (Account) - The account
      * @throws SQLException - If the query fails to execute
-     */
-    public static List<Follow> getUserFollowers(int ref) throws SQLException {
-        List<Follow> follows = new ArrayList<>();
-        CachedRowSet rs = executeQuery("SELECT * FROM Follower WHERE ref = ?;", List.of(ref));
-
-        while (rs.next()) {
-            Follow f = new Follow();
-            f.id = rs.getString("id");
-            f.acct = rs.getString("acct");
-            f.avatar = rs.getString("avatar");
-            follows.add(f);
-        }
-
-        return follows;
-    }
-
-    /**
-     * Method to get the list of followings of an account.
-     *
-     * @param ref (int) - The ref of the account
-     * @return List<Follow> - The list of followings of the account
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public static List<Follow> getUserFollowings(int ref) throws SQLException {
-
-        List<Follow> follows = new ArrayList<>();
-        CachedRowSet rs = executeQuery("SELECT * FROM Following WHERE ref = ?;", List.of(ref));
-
-        while (rs.next()) {
-            Follow f = new Follow();
-            f.id = rs.getString("id");
-            f.acct = rs.getString("acct");
-            f.avatar = rs.getString("avatar");
-            follows.add(f);
-        }
-
-        return follows;
-    }
-
-    /**
-     * Method to get the user id from the username
-     *
-     * @param username (String) - The username of the user
-     * @return String - The id of the user
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public String getUserId(String username, int ref) throws SQLException {
-
-        CachedRowSet rs = executeQuery("SELECT id FROM accounts WHERE username = ? AND ref = ?;", List.of(username, ref));
-
-        if (rs.next()) {
-            return rs.getString("id");
-        }
-
-        return null;
-    }
-
-    /**
-     * Method to get the number of followings of an account
-     *
-     * @param ref (int) - The ref of the account
-     * @return int - The number of followings of the account
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public int getNumFollowings (Integer ref) throws SQLException {
-
-        CachedRowSet rs = executeQuery("SELECT COUNT(*) AS num FROM Following WHERE ref = ?;", List.of(ref));
-
-        if (rs.next()) {
-            return rs.getInt("num");
-        }
-
-        return 0;
-    }
-
-    /**
-     * Method to get the number of followers of an account
-     *
-     * @param ref (int) - The ref of the account
-     * @return int - The number of followers of the account
-     *
-     * @throws SQLException - If the query fails to execute
-     */
-    public int getNumFollowers (Integer ref) throws SQLException {
-
-        CachedRowSet rs = executeQuery("SELECT COUNT(*) AS num FROM Follower WHERE ref = ?;", List.of(ref));
-
-        if (rs.next()) {
-            return rs.getInt("num");
-        }
-
-        return 0;
-    }
-
-    /**
-     * Method to get user account
-     * @param ref
-     * @return
-     * @throws SQLException
      */
     public Account getUserAccount(Integer ref) throws SQLException {
         CachedRowSet rs = executeQuery("SELECT * FROM accounts WHERE ref = ?;", List.of(ref));
-
         if(rs.next()) {
             Account a = new Account();
             a.acct = rs.getString("acct");
@@ -521,18 +255,6 @@ public class DBAccessManager {
             a.last_status_at = rs.getString("last_status_at");
             return a;
         }
-
         return null;
     }
-
-
-
-    }
-
-
-
-
-
-
-
-
+}

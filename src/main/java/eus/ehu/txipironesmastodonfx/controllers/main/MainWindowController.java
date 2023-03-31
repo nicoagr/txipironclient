@@ -2,10 +2,14 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.ErrorCellController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.FollowCellController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.HeaderCellController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.TootCellController;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.application.Application;
@@ -20,7 +24,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +38,8 @@ public class MainWindowController implements WindowController {
 
     private TxipironClient mainApp;
     private Integer ref;
+    protected String authenticatedId;
+    protected String token;
     @FXML
     private Button changeAcctBtn;
     @FXML
@@ -66,11 +71,9 @@ public class MainWindowController implements WindowController {
     /**
      * Changes the scene to the account selection scene
      * when the change account button is clicked
-     *
-     * @throws SQLException
      */
     @FXML
-    void changeAcctBtnClick() throws SQLException {
+    void changeAcctBtnClick() {
         listViewItems.clear();
         mainApp.changeScene("Auth", null);
     }
@@ -78,21 +81,24 @@ public class MainWindowController implements WindowController {
     /**
      * Sets the reference of the current logged in user and sets the avatar
      *
-     * @param ref (Integer) - The reference of the current logged in user
+     * @param result (List<Object>) - The list of reference and token to be set
      */
     @Override
-    public void setRef(Integer ref) {
-        this.ref = ref;
-        //change this!! avatar=null?????????? STRANGE
-        Image avatar= null;
-        try{
-            avatar = new Image(DBAccessManager.getUserAvatar(ref));
-        }
-        catch(SQLException e){
-            // TODO ! - Here we have to put an error image
-            e.printStackTrace();
-        }
-        icon.setImage(avatar);
+    public void setRefTokenId(List<Object> result) {
+        listView.setItems(listViewItems);
+        this.ref = (Integer) result.get(0);
+        this.token = (String) result.get(1);
+        this.authenticatedId = (String) result.get(2);
+        icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
+        AsyncUtils.asyncTask(() -> {
+            String avatarUrl;
+            try {
+                avatarUrl = DBAccessManager.getUserAvatar(ref);
+            } catch (SQLException e) {
+                avatarUrl = null;
+            }
+            return (avatarUrl != null) ? new Image(avatarUrl) : new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg"));
+        }, image -> icon.setImage(image));
     }
 
     /**
@@ -101,35 +107,44 @@ public class MainWindowController implements WindowController {
     @FXML
     void followerListView() {
         listViewItems.clear();
-        listView.setItems(listViewItems);
-        listViewItems.add("Followers");
-        List<Follow> follower = new ArrayList<Follow>();
-        try{
-            follower = DBAccessManager.getUserFollowers(ref);
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-        listViewItems.addAll(follower);
-        //listView.setItems(listViewItems);
+        listViewItems.add("Loading...");
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Follow> follower;
+            follower = APIAccessManager.getFollow(authenticatedId, token, false);
+            return follower;
+        }, follower -> {
+            listViewItems.clear();
+            if (follower == null) {
+                listViewItems.add("Error downloading followers. Please check your connection and try again.");
+                return;
+            }
+            listViewItems.add("Followers");
+            listViewItems.addAll(follower);
+        });
     }
 
     /**
      * Sets the list view to show the users that the current logged in user is following
      */
     @FXML
-    void followingListView()  {
+    void followingListView() {
         listViewItems.clear();
-        listView.setItems(listViewItems);
-        listViewItems.add("Following");
-        List<Follow> following = new ArrayList<Follow>();
-        try{
-            following = DBAccessManager.getUserFollowings(ref);
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-        listViewItems.addAll(following);
+        listViewItems.add("Loading...");
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Follow> follower;
+            follower = APIAccessManager.getFollow(authenticatedId, token, true);
+            return follower;
+        }, follower -> {
+            listViewItems.clear();
+            if (follower == null) {
+                listViewItems.add("Error downloading following. Please check your connection and try again.");
+                return;
+            }
+            listViewItems.add("Followers");
+            listViewItems.addAll(follower);
+        });
     }
 
     /**
@@ -138,15 +153,23 @@ public class MainWindowController implements WindowController {
     @FXML
     public void homeListView() {
         listViewItems.clear();
-        listViewItems.add("My profile toots");
-        listView.setItems(listViewItems);
-        List<Toot> toots = new ArrayList<Toot>();
-        try {
-            toots = DBAccessManager.getUserToots(ref);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        listViewItems.addAll(toots);
+        listViewItems.add("Loading...");
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Toot> toots;
+            // Here, the id parameter is going to control which toots
+            // from which are going to be downloaded
+            toots = APIAccessManager.getProfileToots(authenticatedId, token);
+            return toots;
+        }, toots -> {
+            listViewItems.clear();
+            if (toots == null) {
+                listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
+                return;
+            }
+            listViewItems.add("Profile toots");
+            listViewItems.addAll(toots);
+        });
     }
 
     /**
@@ -171,6 +194,10 @@ public class MainWindowController implements WindowController {
                     TootCellController b = new TootCellController(thisclass);
                     setGraphic(b.getUI());
                     b.loadToot((Toot) item);
+                } else if (item instanceof String && ((String) item).toLowerCase().contains("error")) {
+                    setText(null);
+                    ErrorCellController d = new ErrorCellController((String) item);
+                    setGraphic(d.getUI());
                 } else if (item instanceof String) {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
