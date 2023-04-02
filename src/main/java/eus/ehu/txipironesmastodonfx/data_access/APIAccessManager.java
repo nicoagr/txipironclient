@@ -52,6 +52,7 @@ public class APIAccessManager {
         }
         idHandler result = gson.fromJson(response, idHandler.class);
         return result.id;
+
     }
 
     /**
@@ -149,5 +150,38 @@ public class APIAccessManager {
         }
         return result;
     }
+
+
+
+
+    /**
+     * Method to post a toot, NOT FINISHED
+     *
+     * @param content (String) - The content of the status
+     * @param token    - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static String postToot(String token, String content, String idReply) {
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v1/statuses")
+                .get()
+                .addHeader("Authorization", "Bearer " + token)
+                .addHeader("status", content)
+                .addHeader("in_reply_to_id", idReply)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
 }

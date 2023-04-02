@@ -39,7 +39,7 @@ public class MainWindowController implements WindowController {
     private TxipironClient mainApp;
     private Integer ref;
     protected String authenticatedId;
-    protected String token;
+    public String token;
     @FXML
     private Button changeAcctBtn;
     @FXML
@@ -171,6 +171,7 @@ public class MainWindowController implements WindowController {
             listViewItems.addAll(toots);
         });
     }
+
 
     /**
      * Initializes the list view
