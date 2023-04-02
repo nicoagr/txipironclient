@@ -5,13 +5,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
+import eus.ehu.txipironesmastodonfx.domain.SearchResult;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -120,6 +123,64 @@ public class APIAccessManager {
             return null;
         }
         return gson.fromJson(response, Account.class);
+    }
+
+
+    /**
+     * Method to perform a search on the mastodon servers.
+     * It will return a SearchResult object with the results.
+     *
+     * @param query (String) - query to search
+     * @param token (String) - token of the account
+     * @param limit (int) - limit of results for each category in searchresult
+     * @return (SearchResult) - object with the results
+     */
+    public static SearchResult performSearch(String query, String token, int limit) {
+        HashMap<Object, Object> params = new HashMap<>();
+        params.put("q", query);
+        params.put("limit", limit);
+        String response = requestWithParams(2, "search", token, params);
+        if (response == null || response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        return gson.fromJson(response, SearchResult.class);
+    }
+
+    /**
+     * Generic method to perform a GET to the
+     * mastodon API. The endpoint must be formated by the part
+     * that comes after "https://mastodon.social/api/vX/".
+     * This method will accept some parameters to add to the request.
+     *
+     * @param apiVersion (int) - The version of the API to use
+     * @param endpoint   (String) - The endpoint to request
+     * @param token      (String) - Mastodon account token
+     * @param params     (HashMap<Object,Object>) - Parameters to add to the request
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    private static String requestWithParams(int apiVersion, String endpoint, String token, HashMap<Object, Object> params) {
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://mastodon.social/api/v" + apiVersion + "/" + endpoint).newBuilder();
+        for (Object key : params.keySet()) {
+            urlBuilder.addQueryParameter(key.toString(), params.get(key).toString());
+        }
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /**
