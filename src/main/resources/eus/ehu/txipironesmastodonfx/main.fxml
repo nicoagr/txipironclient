@@ -40,6 +40,7 @@
             <Button fx:id="followers" layoutY="140.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#followerListView" prefHeight="70.0" prefWidth="186.0" text="Followers" />
             <Button fx:id="changeAcctBtn" layoutY="555.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#changeAcctBtnClick" prefHeight="70.0" prefWidth="185.0" text="Change account" />
             <ListView fx:id="listView" layoutX="185.0" prefHeight="627.0" prefWidth="805.0" />
+            <Button fx:id="postToot" layoutY="210.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="186.0" text="Post toot" />
          </children>
       </AnchorPane>
    </center>

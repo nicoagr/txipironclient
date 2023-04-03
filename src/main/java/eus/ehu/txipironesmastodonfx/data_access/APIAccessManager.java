@@ -6,9 +6,8 @@ import com.google.gson.reflect.TypeToken;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
+import okhttp3.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -157,19 +156,18 @@ public class APIAccessManager {
     /**
      * Method to post a toot, NOT FINISHED
      *
-     * @param content (String) - The content of the status
-     * @param token    - Mastodon account token
+     * @param aut (String) - Mastodon account token
+     * @param toot (TootToBePosted) - The toot already insanced that will
      * @return (String) - The response of the request - Usually formatted as json
      */
-    public static String postToot(String token, String content, String idReply) {
+    public static String postToot(String aut, TootToBePosted toot) {
         String result = null;
         OkHttpClient client = new OkHttpClient();
+        RequestBody req = RequestBody.create(MediaType.parse("application/json"), gson.toJson(toot, TootToBePosted.class));
         Request request = new Request.Builder()
                 .url("https://mastodon.social/api/v1/statuses")
-                .get()
-                .addHeader("Authorization", "Bearer " + token)
-                .addHeader("status", content)
-                .addHeader("in_reply_to_id", idReply)
+                .post(req)
+                .addHeader("Authorization", "Bearer " + aut)
                 .build();
 
         try {

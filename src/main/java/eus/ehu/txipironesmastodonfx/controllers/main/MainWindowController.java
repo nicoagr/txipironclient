@@ -2,10 +2,7 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
-import eus.ehu.txipironesmastodonfx.controllers.windowControllers.ErrorCellController;
-import eus.ehu.txipironesmastodonfx.controllers.windowControllers.FollowCellController;
-import eus.ehu.txipironesmastodonfx.controllers.windowControllers.HeaderCellController;
-import eus.ehu.txipironesmastodonfx.controllers.windowControllers.TootCellController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
@@ -54,7 +51,13 @@ public class MainWindowController implements WindowController {
     private BorderPane mainWraper;
     @FXML
     private ListView<Object> listView;
-    private ObservableList<Object> listViewItems = FXCollections.observableArrayList();
+    public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
+
+    @FXML
+    void postTootListview() {
+        listViewItems.clear();
+        listViewItems.add("Post Toot");
+    }
 
     public Application TxipironClient(){
         return mainApp;
@@ -199,6 +202,10 @@ public class MainWindowController implements WindowController {
                     setText(null);
                     ErrorCellController d = new ErrorCellController((String) item);
                     setGraphic(d.getUI());
+                } else if (item instanceof String && item.equals("Post Toot")){
+                    setText(null);
+                    PostTootController c = new PostTootController(thisclass);
+                    setGraphic(c.getUI());
                 } else if (item instanceof String) {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);

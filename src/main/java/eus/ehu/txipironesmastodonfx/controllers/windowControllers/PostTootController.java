@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
+import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,10 +30,16 @@ import javafx.scene.layout.AnchorPane;
         private TextField content;
 
         @FXML
-        void PostAction(ActionEvent event) {
-
-           APIAccessManager.postToot(master.token, content.getText(), null);
-           master.homeListView();//despues de postear el toot, se resetea y se muestra home
+        void PostAction() {
+            master.listViewItems.clear();
+            master.listViewItems.add("Posting toot...");
+            AsyncUtils.asyncTask(() -> {
+                TootToBePosted toot = new TootToBePosted(content.getText());
+                APIAccessManager.postToot(master.token,toot);
+                return null;
+            }, param -> {
+                master.homeListView();//despues de postear el toot, se resetea y se muestra home
+            });
         }
         /**
          * Getter for the UI (AnchorPane)
