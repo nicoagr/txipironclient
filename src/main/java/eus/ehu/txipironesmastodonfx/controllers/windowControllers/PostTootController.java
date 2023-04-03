@@ -8,15 +8,17 @@ import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 
     public class PostTootController {
         private MainWindowController master;
 
+        @FXML
+        private Label charLabel;
         @FXML
         private ResourceBundle resources;
 
@@ -27,11 +29,16 @@ import javafx.scene.layout.AnchorPane;
         private AnchorPane anchor;
 
         @FXML
-        private TextField content;
+        private TextArea content;
 
         @FXML
         void PostAction() {
             master.listViewItems.clear();
+            if (content.getText().length() > 500) {
+                master.listViewItems.add("Error - Toots must contain maximum 500 characters.");
+                master.listViewItems.add("Post Toot");
+                return;
+            }
             master.listViewItems.add("Posting toot...");
             AsyncUtils.asyncTask(() -> {
                 TootToBePosted toot = new TootToBePosted(content.getText());
@@ -51,10 +58,6 @@ import javafx.scene.layout.AnchorPane;
         public AnchorPane getUI() {
             return anchor;
         }
-
-
-
-
 
         /**
          * Constructor for the controller.
@@ -81,11 +84,17 @@ import javafx.scene.layout.AnchorPane;
         public void setReference(MainWindowController master) {
             this.master = master;
         }
+
         @FXML
-        void initialize() {
-            assert anchor != null : "fx:id=\"anchor\" was not injected: check your FXML file 'postToot.fxml'.";
-            assert content != null : "fx:id=\"content\" was not injected: check your FXML file 'postToot.fxml'.";
-
+        public void initialize() {
+            content.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.length() > 501) {
+                    content.setText(oldValue);
+                    charLabel.setText("500 Character Limit Reached");
+                }
+                // set character number
+                else charLabel.setText(newValue.length() + "/500 Characters");
+            });
+            content.setWrapText(true);
         }
-
     }
