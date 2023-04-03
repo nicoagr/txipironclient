@@ -8,6 +8,7 @@ import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
+import eus.ehu.txipironesmastodonfx.domain.SearchResult;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -16,8 +17,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
@@ -38,15 +41,11 @@ public class MainWindowController implements WindowController {
     protected String authenticatedId;
     public String token;
     @FXML
-    private Button changeAcctBtn;
-    @FXML
-    private Button followers;
-    @FXML
-    private Button following;
-    @FXML
-    private Button home;
-    @FXML
     private ImageView icon;
+    @FXML
+    private TextField searchQuery;
+    @FXML
+    private Button searchBtn;
     @FXML
     private BorderPane mainWraper;
     @FXML
@@ -59,9 +58,10 @@ public class MainWindowController implements WindowController {
         listViewItems.add("Post Toot");
     }
 
-    public Application TxipironClient(){
+    public Application TxipironClient() {
         return mainApp;
     }
+
     /**
      * Sets a reference to the main application
      *
@@ -102,6 +102,45 @@ public class MainWindowController implements WindowController {
             }
             return (avatarUrl != null) ? new Image(avatarUrl) : new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg"));
         }, image -> icon.setImage(image));
+    }
+
+    /**
+     * Performs a search on the mastodon servers
+     * with the specified query. It will search
+     * both toots and users
+     */
+    @FXML
+    void performSearch() {
+        listViewItems.clear();
+        if (searchQuery.getText().isEmpty()) {
+            listViewItems.add("Error - Please enter a search query");
+            return;
+        }
+        listViewItems.add("Loading...");
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            SearchResult srslt;
+            srslt = APIAccessManager.performSearch(searchQuery.getText(), token, 5);
+            return srslt;
+        }, res -> {
+            listViewItems.clear();
+            if (res == null) {
+                listViewItems.add("Error downloading search results. Please check your connection and try again.");
+                return;
+            }
+            if (res.accounts.size() == 0) {
+                listViewItems.add("No users found with that query");
+            } else {
+                listViewItems.add("Result accounts");
+                listViewItems.addAll(res.accounts);
+            }
+            if (res.statuses.size() == 0) {
+                listViewItems.add("No statuses found with that query");
+            } else {
+                listViewItems.add("Result statuses");
+                listViewItems.addAll(res.statuses);
+            }
+        });
     }
 
     /**
@@ -211,6 +250,11 @@ public class MainWindowController implements WindowController {
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
                     setGraphic(c.getUI());
                 }
+            }
+        });
+        searchQuery.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                searchBtn.fire();
             }
         });
     }
