@@ -42,10 +42,15 @@ import javafx.scene.layout.AnchorPane;
             master.listViewItems.add("Posting toot...");
             AsyncUtils.asyncTask(() -> {
                 TootToBePosted toot = new TootToBePosted(content.getText());
-                APIAccessManager.postToot(master.token,toot);
-                return null;
-            }, param -> {
-                master.homeListView();//despues de postear el toot, se resetea y se muestra home
+                String res = APIAccessManager.postToot(master.token,toot);
+                return res;
+            }, res -> {
+                if (res != null)
+                    master.homeListView();//despues de postear el toot, se resetea y se muestra home
+                else {
+                    master.listViewItems.add("Error when posting toot to mastodon server. PLease try again.");
+                    master.listViewItems.add("Post Toot");
+                }
             });
         }
         /**
