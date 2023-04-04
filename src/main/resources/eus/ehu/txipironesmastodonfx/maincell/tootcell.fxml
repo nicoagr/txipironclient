@@ -6,27 +6,27 @@
 <?import javafx.scene.web.WebView?>
 <AnchorPane fx:id="anchor" prefHeight="151.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1">
-    <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true"
+    <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0" pickOnBounds="true"
                preserveRatio="true"/>
     <Label fx:id="Id" layoutX="647.0" layoutY="5.0" text="Id" textFill="#00000066"/>
-    <Label fx:id="username" layoutX="14.0" layoutY="106.0" text="\@username" textFill="#605f5f"/>
-    <Label fx:id="date" layoutX="124.0" layoutY="11.0" text="Loading..."/>
-    <Label fx:id="numLikes" layoutX="230.0" layoutY="125.0" text="Likes"/>
-    <Label fx:id="numReboots" layoutX="353.0" layoutY="125.0" text="Reboots"/>
-    <Label fx:id="numComments" layoutX="493.0" layoutY="125.0" text="Comments"/>
-    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="200.0" layoutY="122.0" pickOnBounds="true"
+    <Label fx:id="username" layoutX="22.0" layoutY="122.0" text="\@username" textFill="#605f5f"/>
+    <Label fx:id="date" layoutX="114.0" layoutY="10.0" text="Loading..."/>
+    <Label fx:id="numLikes" layoutX="518.0" layoutY="121.0" text="Likes"/>
+    <Label fx:id="numReboots" layoutX="586.0" layoutY="122.0" text="Reboots"/>
+    <Label fx:id="numComments" layoutX="663.0" layoutY="122.0" text="Comments"/>
+    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="487.0" layoutY="117.0" pickOnBounds="true"
                preserveRatio="true">
         <Image url="@../mainassets/black-heart_160.png"/>
     </ImageView>
-    <ImageView fitHeight="30.0" fitWidth="25.0" layoutX="322.0" layoutY="121.0" pickOnBounds="true"
+    <ImageView fitHeight="30.0" fitWidth="25.0" layoutX="554.0" layoutY="117.0" pickOnBounds="true"
                preserveRatio="true">
         <Image url="@../mainassets/dark-retweet-512.png"/>
     </ImageView>
-    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="462.0" layoutY="121.0" pickOnBounds="true"
+    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="632.0" layoutY="118.0" pickOnBounds="true"
                preserveRatio="true">
         <Image url="@../mainassets/dark-comment-512.png"/>
     </ImageView>
-    <ImageView fx:id="shareImg" fitHeight="25.0" fitWidth="25.0" layoutX="598.0" layoutY="121.0"
+    <ImageView fx:id="shareImg" fitHeight="25.0" fitWidth="25.0" layoutX="732.0" layoutY="118.0"
                onMouseClicked="#shareBtnClick" pickOnBounds="true" preserveRatio="true">
         <Image url="@../mainassets/dark-share-900.png"/>
     </ImageView>

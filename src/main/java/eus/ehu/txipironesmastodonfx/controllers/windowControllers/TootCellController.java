@@ -94,7 +94,7 @@ public class TootCellController   {
     public void loadToot(Toot toot) {
         // set the values for the toot cell
         Id.setText(toot.account.id);
-        username.setText(toot.account.acct);
+        username.setText("@" + toot.account.acct);
         imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         AsyncUtils.asyncTask(() ->
                 {
