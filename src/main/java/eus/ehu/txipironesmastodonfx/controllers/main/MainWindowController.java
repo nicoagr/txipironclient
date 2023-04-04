@@ -14,10 +14,8 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.AccessibleAttribute;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -241,7 +239,7 @@ public class MainWindowController implements WindowController {
                     setText(null);
                     ErrorCellController d = new ErrorCellController((String) item);
                     setGraphic(d.getUI());
-                } else if (item instanceof String && item.equals("Post Toot")){
+                } else if (item instanceof String && item.equals("Post Toot")) {
                     setText(null);
                     PostTootController c = new PostTootController(thisclass);
                     setGraphic(c.getUI());
@@ -249,6 +247,18 @@ public class MainWindowController implements WindowController {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
                     setGraphic(c.getUI());
+                }
+                // Remove horizontal scrollbar for each item that we load
+                // (Yes! necessary!) for each item, because the list view
+                // will be re-dimensioned and the horizontal scrollbar will
+                // appear again
+                ScrollBar scrollBar = (ScrollBar) listView.queryAccessibleAttribute(AccessibleAttribute.HORIZONTAL_SCROLLBAR);
+                if (scrollBar != null) {
+                    scrollBar.setPrefHeight(0);
+                    scrollBar.setMaxHeight(0);
+                    scrollBar.setOpacity(0);
+                    scrollBar.setDisable(true);
+                    scrollBar.setVisible(false);
                 }
             }
         });
