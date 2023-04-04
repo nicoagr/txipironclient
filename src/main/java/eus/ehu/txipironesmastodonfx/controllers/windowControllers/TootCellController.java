@@ -5,27 +5,28 @@ import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.events.EventTarget;
-import org.w3c.dom.html.HTMLAnchorElement;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.NodeVisitor;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -60,8 +61,9 @@ public class TootCellController   {
     private Label numLikes;
     @FXML
     private Label numReboots;
+
     @FXML
-    private WebView tootWebView;
+    private TextFlow textFlow;
     @FXML
     private Label username;
     @FXML
@@ -115,14 +117,44 @@ public class TootCellController   {
         numReboots.setText(Integer.toString(toot.reblogs_count));
         numComments.setText(Integer.toString(toot.replies_count));
         uri = toot.uri;
-        // If toot is too long, FORCE show the scroll bar
-        // I took the number 350 out of my hat, it seems to work fine
-        if (toot.content.length() > 350) {
-            ScrollBar scrollBar = (ScrollBar) tootWebView.lookup(".scroll-bar:vertical");
-            scrollBar.setOpacity(1);
-            scrollBar.setVisible(true);
-        }
-        tootWebView.getEngine().loadContent(toot.content);
+
+        String html = toot.content;
+        Document doc = Jsoup.parse(html);
+        Element body = doc.body();
+
+        body.traverse(new NodeVisitor() {
+            @Override
+            public void head(Node node, int depth) {
+                if (node instanceof TextNode) {
+                    String text = ((TextNode) node).text();
+                    Text textNode = new Text(text);
+                    textFlow.getChildren().add(textNode);
+                } else if (node instanceof Element) {
+                    Element element = (Element) node;
+                    if (element.tagName().equals("br")) {
+                        textFlow.getChildren().add(new Text("\n"));
+                    } else if (element.tagName().equals("a")) {
+                        // Create a Hyperlink object for the link and add it to the TextFlow
+                        String link = element.attr("href");
+                        String text = element.text();
+                        Hyperlink hyperlink = new Hyperlink(text);
+                        hyperlink.setOnAction(e -> {
+                            try {
+                                Desktop.getDesktop().browse(new URI(link));
+                            } catch (IOException | URISyntaxException ex) {
+                                ex.printStackTrace();
+                            }
+                        });
+                        textFlow.getChildren().add(hyperlink);
+                    }
+                }
+            }
+
+            @Override
+            public void tail(Node node, int depth) {
+                // Do nothing
+            }
+        });
     }
 
     /**
@@ -161,38 +193,6 @@ public class TootCellController   {
         return outputDate + " " + zdtSpain.format(hourOutputFormatter);
     }
 
-
-    /**
-     * Initializes the controller class.
-     */
-    @FXML
-    void initialize() {
-        // Adds a click event listener to all <a> elements in the WebView.
-        // When an <a> element is clicked, the listener gets the URL from the element's href attribute.
-        // The URL is then opened in the default system browser using the HostServices class.
-        WebEngine webEngine = tootWebView.getEngine();
-        webEngine.getLoadWorker().stateProperty().addListener((ObservableValue<? extends Worker.State> ov, Worker.State oldState, Worker.State newState) -> {
-            if (newState == Worker.State.SUCCEEDED) {
-                Document doc = webEngine.getDocument();
-                NodeList nodeList = doc.getElementsByTagName("a");
-                for (int i = 0; i < nodeList.getLength(); i++) {
-                    Node node = nodeList.item(i);
-                    EventTarget eventTarget = (EventTarget) node;
-                    eventTarget.addEventListener("click", evt -> {
-                        evt.preventDefault();
-                        Node targetNode = (Node) evt.getTarget();
-                        while (targetNode != null && !(targetNode instanceof HTMLAnchorElement)) {
-                            targetNode = targetNode.getParentNode();
-                        }
-                        if (targetNode != null) {
-                            String url = ((HTMLAnchorElement) targetNode).getHref();
-                            master.TxipironClient().getHostServices().showDocument(url);
-                        }
-                    }, true);
-                }
-            }
-        });
-    }
 
     /**
      * This method will handle

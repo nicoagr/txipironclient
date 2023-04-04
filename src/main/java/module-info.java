@@ -10,6 +10,7 @@ module eus.ehu.txipironesmastodonfx {
     requires jdk.xml.dom;
     requires javafx.web;
     requires java.desktop;
+    requires org.jsoup;
 
     opens eus.ehu.txipironesmastodonfx to javafx.fxml;
     exports eus.ehu.txipironesmastodonfx.controllers;

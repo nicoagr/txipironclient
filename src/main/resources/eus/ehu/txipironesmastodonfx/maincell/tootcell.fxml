@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.web.WebView?>
+<?import javafx.scene.text.TextFlow?>
 <AnchorPane fx:id="anchor" prefHeight="151.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1">
     <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0" pickOnBounds="true"
@@ -30,5 +30,5 @@
                onMouseClicked="#shareBtnClick" pickOnBounds="true" preserveRatio="true">
         <Image url="@../mainassets/dark-share-900.png"/>
     </ImageView>
-    <WebView fx:id="tootWebView" layoutX="114.0" layoutY="34.0" prefHeight="82.0" prefWidth="658.0"/>
+    <TextFlow fx:id="textFlow" layoutX="114.0" layoutY="38.0" prefHeight="75.0" prefWidth="658.0"/>
 </AnchorPane>
