@@ -1,9 +1,8 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
+import java.awt.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 
 /**
  * This class contains some useful methods for system variables
@@ -36,6 +35,48 @@ public class NetworkUtils {
             return false;
         } catch (IOException e) {
             return false;
+        }
+    }
+
+    /**
+     * Open the provided URL in the web browser.
+     *
+     * @param url The URL (string) to open.
+     */
+    public static void openWebPage(String url) {
+        try {
+            openWebPage(new URL(url));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Open the provided URL in the web browser.
+     *
+     * @param url The URL to open.
+     */
+    public static void openWebPage(URL url) {
+        try {
+            openWebPage(url.toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Open the provided URI in the web browser.
+     *
+     * @param uri The URI to open.
+     */
+    public static void openWebPage(URI uri) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

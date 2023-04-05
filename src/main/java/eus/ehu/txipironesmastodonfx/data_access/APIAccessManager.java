@@ -3,17 +3,10 @@ package eus.ehu.txipironesmastodonfx.data_access;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
-import eus.ehu.txipironesmastodonfx.domain.Account;
-import eus.ehu.txipironesmastodonfx.domain.Follow;
-import eus.ehu.txipironesmastodonfx.domain.SearchResult;
-import eus.ehu.txipironesmastodonfx.domain.Toot;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
+import eus.ehu.txipironesmastodonfx.domain.*;
 import okhttp3.*;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,8 +43,13 @@ public class APIAccessManager {
      * @return (String) - id of the account if the token is valid, null if it is not
      */
     public static String verifyAndGetId(String token) {
-        String response = request("accounts/verify_credentials", token);
-        if (response.equals("")) {
+        String response;
+        try {
+            response = request("accounts/verify_credentials", token);
+        } catch (IOException e) {
+            return null;
+        }
+        if (response == null || response.equals("")) {
             // token is invalid
             return null;
         }
@@ -68,7 +66,7 @@ public class APIAccessManager {
      * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
      */
-    public static List<Toot> getProfileToots(String selectedAccId, String token) {
+    public static List<Toot> getProfileToots(String selectedAccId, String token) throws IOException {
         String response = request("accounts/" + selectedAccId + "/statuses", token);
         if (response.equals("")) {
             // token is invalid
@@ -99,8 +97,13 @@ public class APIAccessManager {
      */
     public static List<Follow> getFollow(String selectedAccId, String token, boolean following) {
         String endtarget = following ? "following" : "followers";
-        String response = request("accounts/" + selectedAccId + "/" + endtarget, token);
-        if (response.equals("")) {
+        String response;
+        try {
+            response = request("accounts/" + selectedAccId + "/" + endtarget, token);
+        } catch (IOException e) {
+            return null;
+        }
+        if (response == null || response.equals("")) {
             // token is invalid
             return null;
         }
@@ -119,8 +122,13 @@ public class APIAccessManager {
      * @return (Account) - the account
      */
     public static Account getAccount(String id, String token) {
-        String response = request("accounts/" + id, token);
-        if (response.equals("")) {
+        String response = null;
+        try {
+            response = request("accounts/" + id, token);
+        } catch (IOException e) {
+            return null;
+        }
+        if (response == null || response.equals("")) {
             // token is invalid
             return null;
         }
@@ -194,7 +202,7 @@ public class APIAccessManager {
      * @param token    - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    private static String request(String endpoint, String token) {
+    private static String request(String endpoint, String token) throws IOException {
         String result = null;
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()

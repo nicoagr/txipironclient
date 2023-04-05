@@ -4,34 +4,30 @@ package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
+import eus.ehu.txipironesmastodonfx.data_access.Regex;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
-import org.jsoup.select.NodeVisitor;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 /**
  * Controller for the TootCell
@@ -61,7 +57,7 @@ public class TootCellController   {
     private Label numLikes;
     @FXML
     private Label numReboots;
-
+    private static final Pattern POST_LINE_BREAKS = Pattern.compile("\n+");
     @FXML
     private TextFlow textFlow;
     @FXML
@@ -117,45 +113,63 @@ public class TootCellController   {
         numReboots.setText(Integer.toString(toot.reblogs_count));
         numComments.setText(Integer.toString(toot.replies_count));
         uri = toot.uri;
+        AsyncUtils.asyncTask(() -> updateContent(toot.content), param -> {
+            for (Text t : param)
+                textFlow.getChildren().add(t);
+        });
+    }
 
-        String html = toot.content;
-        Document doc = Jsoup.parse(html);
-        Element body = doc.body();
+    private List<Text> updateContent(String text) {
+        List<Text> lista = new ArrayList<>();
+        List<String> parsedTweet = Regex.parseTweet(text);
+        for (String element : parsedTweet) {
+            if (element == null || element.equals("") || element.isEmpty())
+                continue;
 
-        body.traverse(new NodeVisitor() {
-            @Override
-            public void head(Node node, int depth) {
-                if (node instanceof TextNode) {
-                    String text = ((TextNode) node).text();
-                    Text textNode = new Text(text);
-                    textFlow.getChildren().add(textNode);
-                } else if (node instanceof Element) {
-                    Element element = (Element) node;
-                    if (element.tagName().equals("br")) {
-                        textFlow.getChildren().add(new Text("\n"));
-                    } else if (element.tagName().equals("a")) {
-                        // Create a Hyperlink object for the link and add it to the TextFlow
-                        String link = element.attr("href");
-                        String text = element.text();
-                        Hyperlink hyperlink = new Hyperlink(text);
-                        hyperlink.setOnAction(e -> {
-                            try {
-                                Desktop.getDesktop().browse(new URI(link));
-                            } catch (IOException | URISyntaxException ex) {
-                                ex.printStackTrace();
-                            }
-                        });
-                        textFlow.getChildren().add(hyperlink);
-                    }
+            Text textElement = new Text();
+
+            // User tag
+            if (element.startsWith("@")) {
+                textElement.setText(element);
+                textElement.setFill(Color.LIGHTBLUE);
+                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: darkblue; -fx-cursor: hand"));
+                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: lightblue; -fx-cursor: inherit"));
+                textElement.setOnMouseClicked(event -> AsyncUtils.asyncTask(() -> {
+                    // TODO HANDLE CLICK ON USERNAME
+                    return null;
+                }, param -> {
+
+                }));
+            }
+            // HashTags
+            else if (element.startsWith("#")) {
+                textElement.setText(element);
+                textElement.setFill(Color.GRAY);
+                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: lightgray; -fx-cursor: hand"));
+                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: gray; -fx-cursor: inherit"));
+            }
+            // URLs
+            else {
+                if (element.startsWith("http://") || element.startsWith("https://")) {
+                    textElement.setText(element);
+                    textElement.setFill(Color.LIGHTBLUE);
+                    textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: darkgreen; -fx-cursor: hand"));
+                    textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: lightgreen; -fx-cursor: inherit"));
+                    textElement.setOnMouseClicked(event -> NetworkUtils.openWebPage(element));
+                }
+                // Regular text
+                else if (element.startsWith("<p>")) {
+                    String finaltxt = element.replace("<p>", "");
+                    finaltxt = finaltxt.replace("</p>", "");
+                    textElement.setText(finaltxt);
                 }
             }
 
-            @Override
-            public void tail(Node node, int depth) {
-                // Do nothing
-            }
-        });
+            lista.add(textElement);
+        }
+        return lista;
     }
+
 
     /**
      * Method to format a given date into our preferred format

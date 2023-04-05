@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -199,7 +200,11 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            toots = APIAccessManager.getProfileToots(authenticatedId, token);
+            try {
+                toots = APIAccessManager.getProfileToots(authenticatedId, token);
+            } catch (IOException e) {
+                toots = null;
+            }
             return toots;
         }, toots -> {
             listViewItems.clear();
