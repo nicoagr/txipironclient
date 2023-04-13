@@ -3,8 +3,8 @@ package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
+import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
-import eus.ehu.txipironesmastodonfx.data_access.Regex;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -119,10 +119,17 @@ public class TootCellController   {
         });
     }
 
+    /**
+     * Method to update and get the (Text type) contents of the toot
+     *
+     * @param text (String) - The content of the toot as HTML
+     * @return (List < Text >) - The contents of the toot as Text
+     */
     private List<Text> updateContent(String text) {
         List<Text> lista = new ArrayList<>();
-        List<String> parsedTweet = Regex.parseTweet(text);
-        for (String element : parsedTweet) {
+        List<String> parsedTweet = HTMLParser.parseHTML(text);
+        for (int i = 0; i < parsedTweet.size(); i++) {
+            String element = parsedTweet.get(i);
             if (element == null || element.equals("") || element.isEmpty())
                 continue;
 
@@ -131,9 +138,9 @@ public class TootCellController   {
             // User tag
             if (element.startsWith("@")) {
                 textElement.setText(element);
-                textElement.setFill(Color.LIGHTBLUE);
-                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: darkblue; -fx-cursor: hand"));
-                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: lightblue; -fx-cursor: inherit"));
+                textElement.setFill(Color.BLUE);
+                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: white; -fx-cursor: hand"));
+                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: blue; -fx-cursor: inherit"));
                 textElement.setOnMouseClicked(event -> AsyncUtils.asyncTask(() -> {
                     // TODO HANDLE CLICK ON USERNAME
                     return null;
@@ -142,30 +149,28 @@ public class TootCellController   {
                 }));
             }
             // HashTags
-            else if (element.startsWith("#")) {
-                textElement.setText(element);
-                textElement.setFill(Color.GRAY);
-                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: lightgray; -fx-cursor: hand"));
-                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: gray; -fx-cursor: inherit"));
-            }
+//            else if (element.startsWith("#")) {
+//                textElement.setText(element);
+//                textElement.setFill(Color.BLUE);
+//                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: white; -fx-cursor: hand"));
+//                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: blue; -fx-cursor: inherit"));
+//            }
             // URLs
-            else {
-                if (element.startsWith("http://") || element.startsWith("https://")) {
-                    textElement.setText(element);
-                    textElement.setFill(Color.LIGHTBLUE);
-                    textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: darkgreen; -fx-cursor: hand"));
-                    textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: lightgreen; -fx-cursor: inherit"));
-                    textElement.setOnMouseClicked(event -> NetworkUtils.openWebPage(element));
-                }
-                // Regular text
-                else if (element.startsWith("<p>")) {
-                    String finaltxt = element.replace("<p>", "");
-                    finaltxt = finaltxt.replace("</p>", "");
-                    textElement.setText(finaltxt);
-                }
+            else if (element.startsWith("http://") || element.startsWith("https://")) {
+                textElement.setText(element);
+                textElement.setFill(Color.BLUE);
+                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: white; -fx-cursor: hand"));
+                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: blue; -fx-cursor: inherit"));
+                textElement.setOnMouseClicked(event -> NetworkUtils.openWebPage(element));
             }
-
+            // Regular text
+            else {
+                textElement.setText(element);
+            }
             lista.add(textElement);
+            // Add spacing between elements
+            if (i != parsedTweet.size() - 1)
+                lista.add(new Text(" "));
         }
         return lista;
     }

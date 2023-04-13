@@ -195,7 +195,6 @@ public class AuthWindowController implements WindowController {
             return;
         }
         // modify the ListView's cell factory to use our custom cells and styles
-        accountListView.getStyleClass().add("list-cell");
         AuthWindowController thisclass = this;
         accountListView.setCellFactory(param -> new ListCell<>() {
             @Override
