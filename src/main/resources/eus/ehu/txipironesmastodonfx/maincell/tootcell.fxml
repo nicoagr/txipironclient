@@ -8,9 +8,8 @@
             xmlns:fx="http://javafx.com/fxml/1">
     <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0" pickOnBounds="true"
                preserveRatio="true"/>
-    <Label fx:id="Id" layoutX="647.0" layoutY="5.0" text="Id" textFill="#00000066"/>
     <Label fx:id="username" layoutX="22.0" layoutY="122.0" text="\@username" textFill="#605f5f"/>
-    <Label fx:id="date" layoutX="114.0" layoutY="10.0" text="Loading..."/>
+    <Label fx:id="date" layoutX="670.0" layoutY="8.0" text="Loading..."/>
     <Label fx:id="numLikes" layoutX="518.0" layoutY="121.0" text="Likes"/>
     <Label fx:id="numReboots" layoutX="586.0" layoutY="122.0" text="Reboots"/>
     <Label fx:id="numComments" layoutX="663.0" layoutY="122.0" text="Comments"/>
@@ -31,4 +30,11 @@
         <Image url="@../mainassets/dark-share-900.png"/>
     </ImageView>
     <TextFlow fx:id="textFlow" layoutX="114.0" layoutY="38.0" prefHeight="75.0" prefWidth="658.0"/>
+    <Label fx:id="rebootedText" layoutX="146.0" layoutY="13.0" text="Rebooted by" visible="false"/>
+    <ImageView fx:id="rebootedBy" fitHeight="30.0" fitWidth="25.0" layoutX="114.0" layoutY="9.0" pickOnBounds="true"
+               preserveRatio="true" visible="false">
+        <image>
+            <Image url="@../mainassets/dark-retweet-512.png"/>
+        </image>
+    </ImageView>
 </AnchorPane>

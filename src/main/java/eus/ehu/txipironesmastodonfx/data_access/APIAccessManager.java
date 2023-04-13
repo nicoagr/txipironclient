@@ -75,14 +75,7 @@ public class APIAccessManager {
         Type statusListType = new TypeToken<ArrayList<Toot>>() {
         }.getType();
         // get json array and then convert it to a list of Toots
-        List<Toot> toots = gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), statusListType);
-        // Unflip the reblog recursion stack
-        for (int i = 0; i < toots.size(); i++) {
-            Toot t = toots.get(i);
-            while (t.reblog != null) t = t.reblog;
-            toots.set(i, t);
-        }
-        return toots;
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), statusListType);
     }
 
     /**

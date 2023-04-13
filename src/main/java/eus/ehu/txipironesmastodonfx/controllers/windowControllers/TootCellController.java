@@ -1,6 +1,5 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
-
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
@@ -26,8 +25,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 /**
  * Controller for the TootCell
@@ -39,14 +36,15 @@ import java.util.regex.Pattern;
  * @author Marcos Chouciño
  * @author Xiomara Cáceces
  */
-public class TootCellController   {
-    @FXML
-    private ResourceBundle resources;
+public class TootCellController {
     private String uri;
     @FXML
     private ImageView shareImg;
+    private String Id;
     @FXML
-    private Label Id;
+    private ImageView rebootedBy;
+    @FXML
+    private Label rebootedText;
     @FXML
     private Label date;
     @FXML
@@ -57,7 +55,6 @@ public class TootCellController   {
     private Label numLikes;
     @FXML
     private Label numReboots;
-    private static final Pattern POST_LINE_BREAKS = Pattern.compile("\n+");
     @FXML
     private TextFlow textFlow;
     @FXML
@@ -90,15 +87,23 @@ public class TootCellController   {
      * @param toot (Toot) - The toot to be displayed
      */
     public void loadToot(Toot toot) {
+        // Unflip the retoot recursion stack
+        if (toot.reblog != null) {
+            rebootedBy.setVisible(true);
+            rebootedText.setVisible(true);
+            rebootedText.setText("Rebooted by @" + toot.account.acct);
+        }
+        while (toot.reblog != null) toot = toot.reblog;
         // set the values for the toot cell
-        Id.setText(toot.account.id);
+        Id = toot.account.id;
         username.setText("@" + toot.account.acct);
         imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
+        Toot finalToot = toot;
         AsyncUtils.asyncTask(() ->
                 {
                     Image img = null;
                     if (NetworkUtils.hasInternet())
-                        img = new Image(toot.account.avatar);
+                        img = new Image(finalToot.account.avatar);
                     return img;
                 }, param -> {
                     if (param != null) imagen.setImage(param);
@@ -107,13 +112,13 @@ public class TootCellController   {
 
                 }
         );
-        AsyncUtils.asyncTask(() -> formatDate(toot.created_at), param -> date.setText(param));
-        date.setText(formatDate(toot.created_at));
-        numLikes.setText(Integer.toString(toot.favourites_count));
-        numReboots.setText(Integer.toString(toot.reblogs_count));
-        numComments.setText(Integer.toString(toot.replies_count));
+        AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
+        date.setText(formatDate(finalToot.created_at));
+        numLikes.setText(Integer.toString(finalToot.favourites_count));
+        numReboots.setText(Integer.toString(finalToot.reblogs_count));
+        numComments.setText(Integer.toString(finalToot.replies_count));
         uri = toot.uri;
-        AsyncUtils.asyncTask(() -> updateContent(toot.content), param -> {
+        AsyncUtils.asyncTask(() -> updateContent(finalToot.content), param -> {
             for (Text t : param)
                 textFlow.getChildren().add(t);
         });
