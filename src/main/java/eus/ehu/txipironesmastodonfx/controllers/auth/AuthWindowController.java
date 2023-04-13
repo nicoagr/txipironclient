@@ -174,26 +174,38 @@ public class AuthWindowController implements WindowController {
      */
     @FXML
     void initialize() {
-        // Check for internet connection
-        if (!NetworkUtils.hasInternet()) {
-            errorLabel.setText("Error! No internet connection / Mastodon API Unreachable");
-        }
-        // Check if db file exists
-        if (!DBAccessManager.isDbReachable()) {
-            try {
-                DBAccessManager.createDbFile();
-            } catch (IOException io) {
-                errStop("Error! Couldn't create db file. " + io.getMessage());
-                return;
-            }
-        }
-        // Check if db tables are created
-        try {
-            DBAccessManager.checkAndCreateTables();
-        } catch (SQLException e) {
-            errStop("Error! Couldn't create db tables. " + e.getMessage());
-            return;
-        }
+        errorLabel.setText("Loading...");
+        AsyncUtils.asyncTask(() -> {
+                    // Check for internet connection
+                    if (!NetworkUtils.hasInternet()) {
+                        errorLabel.setText("Error! No internet connection / Mastodon API Unreachable");
+                    }
+                    // Check if db file exists
+                    if (!DBAccessManager.isDbReachable()) {
+                        try {
+                            DBAccessManager.createDbFile();
+                        } catch (IOException io) {
+                            return "Error! Couldn't create db file. " + io.getMessage();
+                        }
+                    }
+                    // Check if db tables are created
+                    try {
+                        DBAccessManager.checkAndCreateTables();
+                    } catch (SQLException e) {
+                        return "Error! Couldn't create db tables. " + e.getMessage();
+                    }
+                    return null;
+                }, param -> {
+                    if (param != null) {
+                        errStop(param);
+                    } else {
+                        errorLabel.setText("");
+                        // Update ListView
+                        updateListView();
+                    }
+                }
+        );
+
         // modify the ListView's cell factory to use our custom cells and styles
         AuthWindowController thisclass = this;
         accountListView.setCellFactory(param -> new ListCell<>() {
@@ -207,6 +219,12 @@ public class AuthWindowController implements WindowController {
                     setText(null);
                     AuthAccoCellController a = new AuthAccoCellController((Account) item);
                     a.setReference(thisclass);
+                    a.getUI().setOnMouseClicked(event -> {
+                        if (event.getClickCount() == 2) {
+                            // perform login action on double-click
+                            loginBtnClick();
+                        }
+                    });
                     setGraphic(a.getUI());
                 } else if (item instanceof String && item.equals("Add Account")) {
                     setText(null);
@@ -229,7 +247,5 @@ public class AuthWindowController implements WindowController {
                 loginBtn.setDisable(true);
             }
         });
-        // Update ListView
-        updateListView();
     }
 }
