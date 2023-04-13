@@ -1,18 +1,19 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
+import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
     public class PostTootController {
         private MainWindowController master;
@@ -41,14 +42,17 @@ import javafx.scene.layout.AnchorPane;
             }
             master.listViewItems.add("Posting toot...");
             AsyncUtils.asyncTask(() -> {
+                if (!NetworkUtils.hasInternet()) {
+                    return null;
+                }
                 TootToBePosted toot = new TootToBePosted(content.getText());
-                String res = APIAccessManager.postToot(master.token,toot);
+                String res = APIAccessManager.postToot(master.token, toot);
                 return res;
             }, res -> {
                 if (res != null)
                     master.homeListView();//despues de postear el toot, se resetea y se muestra home
                 else {
-                    master.listViewItems.add("Error when posting toot to mastodon server. PLease try again.");
+                    master.listViewItems.add("Error when posting toot to the servers. Please check connection and try again.");
                     master.listViewItems.add("Post Toot");
                 }
             });

@@ -91,10 +91,6 @@ public class AuthWindowController implements WindowController {
         AsyncUtils.asyncTask(() -> {
             // get ref, token, id from account id
             List<Object> result = DBAccessManager.getRefTokenFromId(selectedAccId);
-            // check if there is internet connection
-            if (!NetworkUtils.hasInternet()) {
-                return null;
-            }
             // return the result
             return result;
         }, result -> {
@@ -106,7 +102,7 @@ public class AuthWindowController implements WindowController {
                 // change scene to main window
                 mainApp.changeScene("Main", result);
             } else {
-                errorLabel.setText("Error when getting account id & token from database. Check connection.");
+                errorLabel.setText("Error when getting account id & token from database.");
             }
         });
     }
