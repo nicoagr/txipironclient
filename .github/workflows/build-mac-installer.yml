@@ -24,24 +24,18 @@ jobs:
         run: npm install @actions/glob
       - name: Build with Maven
         run: mvn -B install --file pom.xml
-      - name: Upload DMG
+      - name: Upload DMG to GitHub Actions
         uses: actions/upload-artifact@v3
         with:
           name: DMG file
           path: target/installer/*.dmg
-      - name: Attach DMG to release
-        uses: actions/github-script@v4
+      - name: Upload DMG to Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          script: |
-            const globPromise = require('@actions/glob');
-            const release_id = core.getInput("release_id");
-            const artifacts = await globPromise.glob("target/installer/*.deb");
-            const { data: upload_url } = await github.repos.uploadReleaseAsset({
-            url: `https://uploads.github.com/repos/${context.repo.owner}/${context.repo.repo}/releases/${release_id}/assets{?name,label}`,
-            headers: {
-              "content-type": "application/octet-stream",
-              "content-length": artifacts[0].size,
-            },
-            name: artifacts[0].name,
-            data: artifacts[0].content,
-            });
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: target/installer/*.dmg
+          asset_name: txipironclient-mac.dmg
+          asset_content_type: application/zip
