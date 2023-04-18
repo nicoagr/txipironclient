@@ -33,15 +33,15 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const { glob: globPromise } = require('@actions/glob');
+            const globPromise = require('@actions/glob');
             const release_id = core.getInput("release_id");
-            const artifacts = await globPromise("target/installer/*.dmg");
+            const artifacts = await globPromise.glob("target/installer/*.deb");
             const { data: upload_url } = await github.repos.uploadReleaseAsset({
-              url: `https://uploads.github.com/repos/${context.repo.owner}/${context.repo.repo}/releases/${release_id}/assets{?name,label}`,
-              headers: {
-                "content-type": "application/octet-stream",
-                "content-length": artifacts[0].size,
-              },
-              name: artifacts[0].name,
-              data: artifacts[0].content,
+            url: `https://uploads.github.com/repos/${context.repo.owner}/${context.repo.repo}/releases/${release_id}/assets{?name,label}`,
+            headers: {
+              "content-type": "application/octet-stream",
+              "content-length": artifacts[0].size,
+            },
+            name: artifacts[0].name,
+            data: artifacts[0].content,
             });
