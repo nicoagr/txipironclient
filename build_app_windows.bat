@@ -84,7 +84,7 @@ rem In the end we will find the package inside the target/installer directory.
 call "%JAVA_HOME%\bin\jpackage" ^
   --type %INSTALLER_TYPE% ^
   --dest target/installer ^
-  --input target/installer/input/libs ^
+  --input target/installer/input/libs/ ^
   --name TxipironClient ^
   --main-class eus.ehu.txipironesmastodonfx.TxipironClient ^
   --main-jar %MAIN_JAR% ^

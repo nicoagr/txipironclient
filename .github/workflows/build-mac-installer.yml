@@ -31,9 +31,9 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const glob = require('@actions/glob');
+            const { glob: globPromise } = require('@actions/glob');
             const release_id = core.getInput("release_id");
-            const artifacts = await glob.glob("target/installer/*.dmg");
+            const artifacts = await globPromise("target/installer/*.dmg");
             const { data: upload_url } = await github.repos.uploadReleaseAsset({
               url: `https://uploads.github.com/repos/${context.repo.owner}/${context.repo.repo}/releases/${release_id}/assets{?name,label}`,
               headers: {
