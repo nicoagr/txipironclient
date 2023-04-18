@@ -48,13 +48,15 @@ public class MainWindowController implements WindowController {
     @FXML
     private BorderPane mainWraper;
     @FXML
-    private ListView<Object> listView;
+    public ListView<Object> listView;
     public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
 
     @FXML
-    void postTootListview() {
+    public void postTootListview() {
         listViewItems.clear();
         listViewItems.add("Post Toot");
+        listView.getFocusModel().focus(0);
+        listView.getSelectionModel().select(0);
     }
 
     public Application TxipironClient() {

@@ -6,6 +6,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Helper class used to parse HTML.
@@ -19,6 +20,18 @@ import java.util.List;
  * @author Xiomara Cáceces
  */
 public class HTMLParser {
+
+    /**
+     * Mastodon username matcher pattern.
+     * It will match any username in the form of:
+     * <p>
+     * "@nagr"
+     * "@nagr@mastodon.social"
+     * "@nagr@sub.do.main"
+     */
+    public static final Pattern USERNAME_PATTERN = Pattern.compile("@[a-zA-Z0-9][a-zA-Z0-9_-]{0,28}[a-zA-Z0-9](@[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](\\.[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])+)?");
+
+
     /**
      * Method to parse HTML.
      * It will divide the elements and separate them
@@ -29,10 +42,9 @@ public class HTMLParser {
      */
     public static List<String> parseHTML(String html) {
         Document doc = Jsoup.parse(html);
-        List<String> output = new ArrayList<String>();
+        List<String> output = new ArrayList<>();
         boolean hashtag = false;
         boolean at = false;
-        String s;
         for (Element element : doc.getAllElements()) {
             if (!element.ownText().isEmpty() && !element.tagName().equalsIgnoreCase("span")) {
                 if (element.ownText().equals("#")) {
