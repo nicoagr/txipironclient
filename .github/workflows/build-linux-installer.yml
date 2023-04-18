@@ -31,6 +31,7 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
+            const glob = require('@actions/glob');
             const release_id = core.getInput("release_id");
             const artifacts = await glob.glob("target/installer/*.deb");
             const { data: upload_url } = await github.repos.uploadReleaseAsset({
