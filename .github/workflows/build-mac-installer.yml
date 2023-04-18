@@ -27,20 +27,18 @@ jobs:
         with:
           name: DMG file
           path: target/installer/*.dmg
-      - name: Get Latest Release
-        id: latest_release
-        uses: actions/github@v3
+      - name: Attach DMG to release
+        uses: actions/github-script@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          ref: latest
-      - name: Upload DMG to Release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.latest_release.outputs.upload_url }}
-          asset_path: target/installer/*.dmg
-          asset_name: txipironclient-mac.dmg
-          asset_content_type: application/octet-stream
+          script: |
+            const release_id = core.getInput("release_id");
+            const artifacts = await glob.glob("target/installer/*.dmg");
+            const { data: upload_url } = await github.repos.uploadReleaseAsset({
+              url: `https://uploads.github.com/repos/${context.repo.owner}/${context.repo.repo}/releases/${release_id}/assets{?name,label}`,
+              headers: {
+                "content-type": "application/octet-stream",
+                "content-length": artifacts[0].size,
+              },
+              name: artifacts[0].name,
+              data: artifacts[0].content,
+            });
