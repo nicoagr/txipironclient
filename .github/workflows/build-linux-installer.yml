@@ -20,6 +20,8 @@ jobs:
           java-version: '19'
           distribution: 'adopt'
           cache: maven
+      - name: Install @actions/glob
+        run: npm install @actions/glob
       - name: Build with Maven
         run: mvn -B install --file pom.xml
       - name: Upload DEB package to GitHub Actions
