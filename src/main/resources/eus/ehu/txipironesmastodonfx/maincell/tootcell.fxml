@@ -9,7 +9,7 @@
     <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0" pickOnBounds="true"
                preserveRatio="true"/>
     <Label fx:id="username" layoutX="22.0" layoutY="122.0" text="\@username" textFill="#605f5f"/>
-    <Label fx:id="date" layoutX="670.0" layoutY="8.0" text="Loading..."/>
+    <Label fx:id="date" layoutX="670.0" layoutY="13.0" text="Loading..."/>
     <Label fx:id="numLikes" layoutX="518.0" layoutY="121.0" text="Likes"/>
     <Label fx:id="numReboots" layoutX="586.0" layoutY="122.0" text="Reboots"/>
     <Label fx:id="numComments" layoutX="663.0" layoutY="122.0" text="Comments"/>

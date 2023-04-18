@@ -1,0 +1,46 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Linux Installer
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'adopt'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B install --file pom.xml
+      - name: Upload DEB package to GitHub Actions
+        uses: actions/upload-artifact@v3
+        with:
+          name: Installer files
+          path: target/installer/*.deb
+      - name: Get Latest Release
+        id: latest_release
+        uses: actions/github@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          ref: latest
+      - name: Upload DEB to Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.latest_release.outputs.upload_url }}
+          asset_path: target/installer/*.deb
+          asset_name: txipironclient-debian.deb
+          asset_content_type: application/octet-stream
