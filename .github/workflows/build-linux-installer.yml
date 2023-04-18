@@ -29,7 +29,7 @@ jobs:
           path: target/installer/*.deb
       - name: Get Latest Release
         id: latest_release
-        uses: actions/github@v4
+        uses: actions/github@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
