@@ -30,12 +30,8 @@ jobs:
           name: Installer files
           path: target/installer/*.deb
       - name: Upload DEB to Release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
+        uses: Roang-zero1/github-upload-release-artifacts-action@v2
+        with:
+          args: target/installer/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: target/installer/*.deb
-          asset_name: txipironclient-debian.deb
-          asset_content_type: application/zip
