@@ -1,5 +1,7 @@
 package eus.ehu.txipironesmastodonfx.domain;
 
+import java.util.List;
+
 /**
  * Represents a Mastodon toot/status.
  * It will contain all attributes needed for our application.
@@ -28,9 +30,14 @@ public class Toot {
     // Recursion!
     public Toot reblog;
 
-    // TODO: Sprint 2: Media attachments
-    // TODO: Sprint 2: Mentions
-    // TODO: Sprint 2: Card
+    public List<MediaAttachment> media_attachments;
+
+    public List<Mention> mentions;
+
+    public class Mention {
+        public String id;
+        public String username;
+    }
 
     /**
      * For quick testing and debugging,
@@ -55,6 +62,8 @@ public class Toot {
                 ", content='" + content + '\'' +
                 ", account=" + account +
                 ", reblog=" + reblog +
+                ", media_attachments=" + media_attachments +
+                ", mentions=" + mentions +
                 '}';
     }
 }

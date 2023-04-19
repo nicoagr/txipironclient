@@ -4,9 +4,13 @@ import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
+import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +18,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -38,6 +44,8 @@ import java.util.List;
  */
 public class TootCellController {
     private String uri;
+    List<MediaAttachment> media;
+    List<Toot.Mention> mentions;
     @FXML
     private ImageView shareImg;
     private String Id;
@@ -51,6 +59,10 @@ public class TootCellController {
     private AnchorPane anchor;
     @FXML
     private Label numComments;
+    @FXML
+    private ImageView mediaImg;
+    @FXML
+    private Hyperlink viewMediaTxt;
     @FXML
     private Label numLikes;
     @FXML
@@ -113,11 +125,16 @@ public class TootCellController {
                 }
         );
         AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
-        date.setText(formatDate(finalToot.created_at));
         numLikes.setText(Integer.toString(finalToot.favourites_count));
         numReboots.setText(Integer.toString(finalToot.reblogs_count));
+        mentions = toot.mentions;
         numComments.setText(Integer.toString(finalToot.replies_count));
         uri = toot.uri;
+        if (toot.media_attachments != null && !toot.media_attachments.isEmpty()) {
+            media = toot.media_attachments;
+            mediaImg.setVisible(true);
+            viewMediaTxt.setVisible(true);
+        }
         AsyncUtils.asyncTask(() -> updateContent(finalToot.content), param -> {
             for (Text t : param)
                 textFlow.getChildren().add(t);
@@ -135,7 +152,7 @@ public class TootCellController {
         List<String> parsedTweet = HTMLParser.parseHTML(text);
         for (int i = 0; i < parsedTweet.size(); i++) {
             String element = parsedTweet.get(i);
-            if (element == null || element.equals("") || element.isEmpty())
+            if (element == null || element.isEmpty())
                 continue;
 
             Text textElement = new Text();
@@ -215,6 +232,36 @@ public class TootCellController {
         }
         // return the formatted the output date
         return outputDate + " " + zdtSpain.format(hourOutputFormatter);
+    }
+
+    /**
+     * This method will handle
+     * click event on "view media"
+     * text. It will open a popup
+     * with the corresponding video/image
+     */
+    @FXML
+    void viewMedia() {
+        viewMediaTxt.setText("Loading...");
+        AsyncUtils.asyncTask(() -> {
+            // create the popup
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"));
+            Parent root = fxmlLoader.load();
+            MediaViewController contr = fxmlLoader.getController();
+            contr.setMedia(media);
+            Scene scene = new Scene(root);
+            return List.of(scene, contr);
+        }, list -> {
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setScene((Scene) list.get(0));
+            popupStage.setResizable(false);
+            popupStage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Media Viewer");
+            popupStage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/mainassets/dark-media-512.png"));
+            ((MediaViewController) list.get(1)).setPopupStage(popupStage);
+            viewMediaTxt.setText("View attached media");
+            popupStage.showAndWait();
+        });
     }
 
 
