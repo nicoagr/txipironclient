@@ -3,8 +3,11 @@ package eus.ehu.txipironesmastodonfx.data_access;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -43,33 +46,43 @@ public class HTMLParser {
     public static List<String> parseHTML(String html) {
         Document doc = Jsoup.parse(html);
         List<String> output = new ArrayList<>();
-        boolean hashtag = false;
-        boolean at = false;
-        for (Element element : doc.getAllElements()) {
-            if (!element.ownText().isEmpty() && !element.tagName().equalsIgnoreCase("span")) {
-                if (element.ownText().equals("#")) {
-                    hashtag = true;
-                    continue;
-                }
-                if (element.ownText().equals("@")) {
-                    at = true;
-                    continue;
-                }
-                output.add(element.ownText());
-            } else if (element.tagName().equalsIgnoreCase("a")) {
-                output.add(element.attr("href"));
-            } else if (element.tagName().equalsIgnoreCase("br")) {
-                output.add("\n");
-            } else if (element.tagName().equalsIgnoreCase("span")) {
-                if (at) {
-                    output.add("@" + element.ownText());
-                    at = false;
-                } else if (hashtag) {
-                    output.add("#" + element.ownText());
-                    hashtag = false;
-                }
+        List<String> temp = new ArrayList<>();
+        List<Element> allElements = doc.getAllElements();
+        if (allElements.size() > 3) {
+            // why 3 you may ask? Well, we have to get trough
+            // html -> head -> body -> content. Inspecting it, we get
+            // index 3 as the first element of what we need.
+            temp.addAll(traverseNode(allElements.get(3)));
+        }
+        // join hashtags and mentions
+        Iterator<String> it = temp.iterator();
+        String s, t;
+        while (it.hasNext()) {
+            s = it.next();
+            if (s.equals("#") || s.equals("@")) {
+                output.add(s + it.next());
+            } else if (s.startsWith("http://") || s.startsWith("https://")) {
+                t = s + it.next();
+                if (it.hasNext())
+                    t = t + it.next();
+                output.add(t);
+            } else if (!s.isEmpty() && !s.equals(" ")) {
+                output.add(s);
             }
         }
         return output;
     }
+
+    public static List<String> traverseNode(Node e) {
+        if (e instanceof TextNode) {
+            return List.of(((TextNode) e).text());
+        } else {
+            List<String> output = new ArrayList<>();
+            for (Node child : e.childNodes()) {
+                output.addAll(traverseNode(child));
+            }
+            return output;
+        }
+    }
+
 }
