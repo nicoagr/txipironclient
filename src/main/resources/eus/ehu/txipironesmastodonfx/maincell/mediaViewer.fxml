@@ -12,8 +12,9 @@
               preserveRatio="true" visible="false"/>
    <MediaView fx:id="mediaView" fitHeight="400.0" fitWidth="600.0" layoutX="50.0" layoutY="30.0" visible="false"/>
    <Button layoutX="566.0" layoutY="449.0" mnemonicParsing="false" onAction="#closePopup" text="Close Popup"/>
-   <Button layoutX="50.0" layoutY="449.0" mnemonicParsing="false" onAction="#prevAction" text="Previous"/>
-   <Button layoutX="126.0" layoutY="449.0" mnemonicParsing="false" onAction="#nextAction" text="Next"/>
+   <Button fx:id="prevBtn" layoutX="50.0" layoutY="449.0" mnemonicParsing="false" onAction="#prevAction"
+           text="Previous"/>
+   <Button fx:id="nextBtn" layoutX="126.0" layoutY="449.0" mnemonicParsing="false" onAction="#nextAction" text="Next"/>
    <Label fx:id="loadingTxt" layoutX="299.0" layoutY="212.0" text="Loading...">
       <font>
          <Font size="24.0"/>
@@ -21,4 +22,6 @@
    </Label>
    <Label fx:id="mediaCounterTxt" layoutX="184.0" layoutY="453.0" text="Viewing media 0 of 0"/>
    <HBox fx:id="mediaBar" layoutX="51.0" layoutY="404.0" prefHeight="25.0" prefWidth="600.0"/>
+   <Button layoutX="412.0" layoutY="449.0" mnemonicParsing="false" onAction="#openInBrowser"
+           text="Open Media in Browser"/>
 </AnchorPane>

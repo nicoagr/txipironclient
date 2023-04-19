@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
+import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -30,11 +31,19 @@ public class MediaViewController {
     private ImageView imageView;
     @FXML
     private MediaView mediaView;
+    @FXML
+    private Button nextBtn;
+    @FXML
+    private Button prevBtn;
 
     public void setMedia(List<MediaAttachment> list) {
         media = list;
         i = 0;
         loadContent(i);
+        if (media.size() == 1) {
+            nextBtn.setDisable(true);
+            prevBtn.setDisable(true);
+        }
     }
 
     @FXML
@@ -62,6 +71,7 @@ public class MediaViewController {
             } else {
                 mp = (MediaPlayer) list.get(1);
                 mediaView.setMediaPlayer(mp);
+                mp.setAutoPlay(true);
                 buildbar(mp);
                 mediaView.setVisible(true);
                 mediaBar.setVisible(true);
@@ -79,6 +89,7 @@ public class MediaViewController {
 
     @FXML
     void closePopup() {
+        mp.stop();
         popupStage.close();
     }
 
@@ -96,6 +107,11 @@ public class MediaViewController {
             return;
         }
         loadContent(--i);
+    }
+
+    @FXML
+    void openInBrowser() {
+        NetworkUtils.openWebPage(media.get(i).url);
     }
 
     private MediaPlayer mp;
