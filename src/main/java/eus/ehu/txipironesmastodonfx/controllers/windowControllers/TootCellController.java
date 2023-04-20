@@ -47,6 +47,8 @@ public class TootCellController {
     List<MediaAttachment> media;
     List<Toot.Mention> mentions;
     @FXML
+    private ImageView sensitiveImg;
+    @FXML
     private ImageView shareImg;
     private String Id;
     @FXML
@@ -126,6 +128,8 @@ public class TootCellController {
         );
         AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
         numLikes.setText(Integer.toString(finalToot.favourites_count));
+        if (finalToot.sensitive)
+            sensitiveImg.setVisible(true);
         numReboots.setText(Integer.toString(finalToot.reblogs_count));
         mentions = toot.mentions;
         numComments.setText(Integer.toString(finalToot.replies_count));
@@ -281,6 +285,11 @@ public class TootCellController {
         clipboard.setContents(selection, null);
         // Change image to a checkbox
         shareImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-ok.png")));
+    }
+
+    @FXML
+    void sensitiveClose() {
+        sensitiveImg.setVisible(false);
     }
 
     /**

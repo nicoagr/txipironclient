@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.TextFlow?>
@@ -40,5 +41,12 @@
     <ImageView fx:id="mediaImg" fitHeight="25.0" fitWidth="25.0" layoutX="365.0" layoutY="117.0" pickOnBounds="true"
                preserveRatio="true" visible="false">
         <Image url="@../mainassets/dark-media-512.png"/>
+    </ImageView>
+    <ImageView fx:id="sensitiveImg" fitHeight="75.0" fitWidth="658.0" layoutX="114.0" layoutY="38.0"
+               onMouseClicked="#sensitiveClose" pickOnBounds="true" preserveRatio="true" visible="false">
+        <cursor>
+            <Cursor fx:constant="HAND"/>
+        </cursor>
+        <Image url="@../mainassets/sensitive.jpg"/>
     </ImageView>
 </AnchorPane>
