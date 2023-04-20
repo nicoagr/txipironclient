@@ -89,7 +89,8 @@ public class MediaViewController {
 
     @FXML
     void closePopup() {
-        mp.stop();
+        if (mp != null)
+            mp.stop();
         popupStage.close();
     }
 
