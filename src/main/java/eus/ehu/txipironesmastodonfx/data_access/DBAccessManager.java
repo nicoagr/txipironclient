@@ -23,7 +23,23 @@ import java.util.List;
 public class DBAccessManager {
 
     public final static String dbName = "TxipironData.db";
-    private final static File dbPointer = new File(dbName);
+    private final static File dbPointer = new File(System.getProperty("user.home"), getConfigDir() + File.separator + dbName);
+
+    /**
+     * Returns the configuration directory
+     * for the database. Will take into account
+     * the three different OSes.
+     *
+     * @return (String) - The configuration directory
+     */
+    private static String getConfigDir() {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("mac"))
+            return "Library" + File.separator + "Application Support" + File.separator + "TxipironClient";
+        else if (os.contains("linux") || os.contains("nux")) return ".config" + File.separator + "TxipironClient";
+        else if (os.contains("win")) return "AppData" + File.separator + "Roaming" + File.separator + "TxipironClient";
+        return null;
+    }
 
     /**
      * This method will check if the database is reachable.
@@ -43,6 +59,10 @@ public class DBAccessManager {
      * @throws IOException - If the file can't be created
      */
     public static void createDbFile() throws IOException {
+        File dir = new File(System.getProperty("user.home"), getConfigDir());
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
         dbPointer.createNewFile();
     }
 
