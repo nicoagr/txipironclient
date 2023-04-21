@@ -24,6 +24,16 @@ import javafx.util.Duration;
 
 import java.util.List;
 
+/**
+ * This class is used to represent a media player
+ * It will show up when viewing a media attachment
+ * in a toot.
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Marcos Chouciño
+ * @author Xiomara Cáceces
+ */
 public class MediaViewController {
     List<MediaAttachment> media;
     private int i;
@@ -36,6 +46,13 @@ public class MediaViewController {
     @FXML
     private Button prevBtn;
 
+    /**
+     * First method called when the view is loaded.
+     * It loads the first element in the passed-as-parameter
+     * media attachment list
+     *
+     * @param list (List<MediaAttachment>) - List of media attachments to be shown.
+     */
     public void setMedia(List<MediaAttachment> list) {
         media = list;
         i = 0;
@@ -51,6 +68,15 @@ public class MediaViewController {
     @FXML
     private Label mediaCounterTxt;
 
+    /**
+     * Loads a specific media attachment
+     * from the media list.
+     * It will distinguish between images and videos
+     * so that it can load an ImageView or a MediaView
+     * accordingly.
+     *
+     * @param i (int) - Index of the media attachment to be loaded.
+     */
     private void loadContent(int i) {
         loadingTxt.setVisible(true);
         mediaView.setVisible(false);
@@ -83,10 +109,21 @@ public class MediaViewController {
 
     private Stage popupStage;
 
+    /*
+     * This method is called by the main controller
+     * and it will set a reference to the popup stage
+     * (which is the stage that contains this view)
+     */
     public void setPopupStage(Stage popupStage) {
         this.popupStage = popupStage;
     }
 
+    /**
+     * This method is called when the user clicks
+     * the close button.
+     * It will stop the media player if it is playing
+     * and close the popup stage.
+     */
     @FXML
     void closePopup() {
         if (mp != null)
@@ -94,6 +131,13 @@ public class MediaViewController {
         popupStage.close();
     }
 
+    /**
+     * This method is called when the user clicks
+     * the next button.
+     * It will load the next media attachment in the list.
+     * If the current media attachment is the last one,
+     * it will do nothing.
+     */
     @FXML
     void nextAction() {
         if (i == media.size() - 1) {
@@ -102,6 +146,13 @@ public class MediaViewController {
         loadContent(++i);
     }
 
+    /**
+     * This method is called when the user clicks
+     * the previous button.
+     * It will load the previous media attachment in the list.
+     * If the current media attachment is the first one,
+     * it will do nothing.
+     */
     @FXML
     void prevAction() {
         if (i == 0) {
@@ -110,10 +161,27 @@ public class MediaViewController {
         loadContent(--i);
     }
 
+    /**
+     * This method is called when the user clicks
+     * the open in browser button.
+     * It will open the current media attachment
+     * in the default browser defined in the OS.
+     */
     @FXML
     void openInBrowser() {
         NetworkUtils.openWebPage(media.get(i).url);
     }
+
+        /* --------------------------------------------------------------------------------------
+                                BEWARE TRAVELER, HERE BE DRAGONS
+                    The code contained below this line is an adaptation of some
+                    ancient code found in the oracle documentation. It has been
+                    adapted to fit our needs, but it's assembled together poorly
+                    and without much care. If you shall try to modify it, I
+                        suggest you to read the following web page first:
+               https://docs.oracle.com/javase/8/javafx/media-tutorial/playercontrol.htm
+                 (It has also been saved on web.archive.org in case the link goes down)
+       --------------------------------------------------------------------------------------*/
 
     private MediaPlayer mp;
     private final boolean repeat = false;
@@ -126,6 +194,12 @@ public class MediaViewController {
     @FXML
     private HBox mediaBar;
 
+    /**
+     * This method will build the media bar
+     * if the media type is a video.
+     *
+     * @param mp (MediaPlayer) - Media player to be used
+     */
     private void buildbar(final MediaPlayer mp) {
         mediaBar.setAlignment(Pos.CENTER);
         mediaBar.setPadding(new Insets(5, 10, 5, 10));
@@ -228,6 +302,11 @@ public class MediaViewController {
         mediaBar.setVisible(true);
     }
 
+    /**
+     * This method will update the values of the media bar
+     * if the media type is a video.
+     * It will control the time slider and the volume slider.
+     */
     protected void updateValues() {
         if (playTime != null && timeSlider != null && volumeSlider != null) {
             Platform.runLater(() -> {
@@ -237,6 +316,7 @@ public class MediaViewController {
                 if (!timeSlider.isDisabled()
                         && duration.greaterThan(Duration.ZERO)
                         && !timeSlider.isValueChanging()) {
+                    // yes, this method is deprecated, couldn't bother finding the updated one
                     timeSlider.setValue(currentTime.divide(duration).toMillis()
                             * 100.0);
                 }
@@ -248,6 +328,14 @@ public class MediaViewController {
         }
     }
 
+    /**
+     * This method will format the time of the media bar
+     * so that it fits the adequate time format.
+     *
+     * @param elapsed  (Duration) - Media Elapsed time
+     * @param duration (Duration) - Media Duration
+     * @return (String) - Formatted time
+     */
     private static String formatTime(Duration elapsed, Duration duration) {
         int intElapsed = (int) Math.floor(elapsed.toSeconds());
         int elapsedHours = intElapsed / (60 * 60);

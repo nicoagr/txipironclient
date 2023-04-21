@@ -14,13 +14,11 @@ import java.util.regex.Pattern;
 /**
  * Helper class used to parse HTML.
  * It will be used to parse the HTML returned by the mastodon API.
- * It has an ad-hoc implementation for the specific HTML, so don't spect
- * it to work with any HTML.
+ * It has an ad-hoc implementation for the specific HTML.
+ * From the regex to the recursive algorithm, it's the best tool
+ * for THIS SPECIFIC job.
  *
  * @author Nicolás Aguado
- * @author Haizea Bermejo
- * @author Marcos Chouciño
- * @author Xiomara Cáceces
  */
 public class HTMLParser {
 
@@ -55,6 +53,12 @@ public class HTMLParser {
             temp.addAll(traverseNode(allElements.get(3)));
         }
         // join hashtags and mentions
+        // by design, when getting the output from the HTML
+        // and after recursively traversing the tree, we get
+        // that hashtags and mentions are always in the form of:
+        // # - text // @ - text
+        // And links are always in the form of:
+        // http(s):// - text - (optional text depending on if last elem or not)
         Iterator<String> it = temp.iterator();
         String s, t;
         while (it.hasNext()) {
@@ -73,6 +77,19 @@ public class HTMLParser {
         return output;
     }
 
+    /**
+     * Recursive method to traverse the Node tree.
+     * It will return a list of strings with the text of the node
+     * and its children.
+     * <p>
+     * In the end, this resulted to be the most effective parser,
+     * as it just goes element by element getting its root text.
+     * By the design of the HTML, this is a textbook example of
+     * a recursive tree algorithm.
+     *
+     * @param e (Node) - Node to traverse
+     * @return (List < String >) - list of strings with the text of the node
+     */
     public static List<String> traverseNode(Node e) {
         if (e instanceof TextNode) {
             return List.of(((TextNode) e).text());

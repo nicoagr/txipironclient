@@ -287,6 +287,11 @@ public class TootCellController {
         shareImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-ok.png")));
     }
 
+    /**
+     * On sensitive content toots,
+     * when clicking on the image it will hide it
+     * so the toot's contents can be seen
+     */
     @FXML
     void sensitiveClose() {
         sensitiveImg.setVisible(false);
