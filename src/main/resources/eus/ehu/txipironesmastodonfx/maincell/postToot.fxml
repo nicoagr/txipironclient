@@ -5,17 +5,17 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane fx:id="anchor" prefHeight="293.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1">
-   <Button layoutX="608.0" layoutY="221.0" mnemonicParsing="false" onAction="#PostAction" prefHeight="45.0"
-           prefWidth="112.0" text="Post!">
-      <font>
-         <Font size="15.0"/>
-      </font>
-   </Button>
-   <TextArea fx:id="content" layoutX="60.0" layoutY="29.0" prefHeight="172.0" prefWidth="699.0"
-             promptText="Lorem ipsum..."/>
-   <Label fx:id="charLabel" layoutX="60.0" layoutY="213.0" text="0/500 Characters"/>
-   <CheckBox fx:id="sensitiveId" layoutX="229.0" layoutY="213.0" mnemonicParsing="false"
-             text="Mark toot as sensitive"/>
-   <Label layoutX="60.0" layoutY="244.0" text="Tagged Accounts:"/>
-   <Label fx:id="taggedAcctTxt" layoutX="166.0" layoutY="244.0" text="None"/>
+    <Button layoutX="608.0" layoutY="221.0" mnemonicParsing="false" onAction="#PostAction" prefHeight="45.0"
+            prefWidth="112.0" text="Post!">
+        <font>
+            <Font size="15.0"/>
+        </font>
+    </Button>
+    <TextArea fx:id="content" layoutX="60.0" layoutY="29.0" prefHeight="172.0" prefWidth="699.0"
+              promptText="Lorem ipsum..."/>
+    <Label fx:id="charLabel" layoutX="60.0" layoutY="213.0" text="0/500 Characters"/>
+    <CheckBox fx:id="sensitiveId" layoutX="229.0" layoutY="213.0" mnemonicParsing="false"
+              text="Mark toot as sensitive"/>
+    <Label layoutX="60.0" layoutY="244.0" text="Recognized Accounts:"/>
+    <Label fx:id="taggedAcctTxt" layoutX="180.0" layoutY="244.0" text="None"/>
 </AnchorPane>
