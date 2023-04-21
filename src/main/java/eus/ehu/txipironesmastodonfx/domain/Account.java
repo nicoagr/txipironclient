@@ -40,9 +40,7 @@ public class Account {
      * @param display_name    (String) - The account's display name
      */
     public Account(String id, String acct, String avatar, String header, int statuses_count, int followers_count, int following_count, String note, String last_status_at, String display_name) {
-        this.id = id;
-        this.acct = acct;
-        this.avatar = avatar;
+        this(id, acct, avatar);
         this.header = header;
         this.statuses_count = statuses_count;
         this.followers_count = followers_count;
@@ -57,6 +55,12 @@ public class Account {
      * It will set all the attributes to null.
      */
     public Account() {
+    }
+
+    public Account(String id, String acct, String avatar) {
+        this.id = id;
+        this.acct = acct;
+        this.avatar = avatar;
     }
 
     /**

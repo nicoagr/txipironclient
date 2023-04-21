@@ -253,6 +253,7 @@ public class TootCellController {
             Parent root = fxmlLoader.load();
             MediaViewController contr = fxmlLoader.getController();
             contr.setMedia(media);
+            contr.setReference(master);
             Scene scene = new Scene(root);
             return List.of(scene, contr);
         }, list -> {

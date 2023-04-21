@@ -80,23 +80,27 @@ public class DBAccessManager {
         // in sqllite it will auto increment.
         // see https://stackoverflow.com/a/7906029
         String accsql = """
-                CREATE TABLE IF NOT EXISTS accounts (
-                ref INTEGER PRIMARY KEY,
-                mstdtoken VARCHAR(255) NOT NULL,
-                id VARCHAR(255) NOT NULL,
-                acct VARCHAR(255) NOT NULL,
-                avatar VARCHAR(1024) NOT NULL,
-                header VARCHAR(1024),
-                display_name VARCHAR(255),
-                statuses_count INT,
-                followers_count INT,
-                following_count INT,
-                note VARCHAR(2048),
-                last_status_at VARCHAR(255),
-                CONSTRAINT accounts_tk UNIQUE (mstdtoken)
-                );""";
+                 CREATE TABLE IF NOT EXISTS accounts (
+                 ref INTEGER PRIMARY KEY,
+                 mstdtoken VARCHAR(255) NOT NULL,
+                 id VARCHAR(255) NOT NULL,
+                 acct VARCHAR(255) NOT NULL,
+                 avatar VARCHAR(1024) NOT NULL,
+                 CONSTRAINT accounts_tk UNIQUE (mstdtoken)
+                 );
+                """;
+        String setsql = """
+                CREATE TABLE IF NOT EXISTS clientsettings (
+                mainrow INTEGER PRIMARY KEY,
+                autoplaymedia BOOLEAN NOT NULL
+                );
+                """;
+        String defaultsql = "INSERT OR IGNORE INTO clientsettings (mainrow, autoplaymedia) VALUES (1, 1);";
         // Execute query
         executeQuery(accsql, null);
+        executeQuery(setsql, null);
+        executeQuery(defaultsql, null);
+
     }
 
     /**
@@ -110,10 +114,21 @@ public class DBAccessManager {
         List<Account> accounts = new ArrayList<>();
         CachedRowSet rs = executeQuery("SELECT * FROM accounts", null);
         while (rs.next()) {
-            Account acc = new Account(rs.getString("id"), rs.getString("acct"), rs.getString("avatar"), rs.getString("header"), rs.getInt("statuses_count"), rs.getInt("followers_count"), rs.getInt("following_count"), rs.getString("note"), rs.getString("last_status_at"), rs.getString("display_name"));
+            Account acc = new Account(rs.getString("id"), rs.getString("acct"), rs.getString("avatar"));
             accounts.add(acc);
         }
         return accounts;
+    }
+
+    /**
+     * This method will set the given settings
+     * in the database.
+     *
+     * @param autoplaymedia (boolean) - The value of the setting
+     * @throws SQLException - If the query fails to execute
+     */
+    public static void updateSettings(boolean autoplaymedia) throws SQLException {
+        executeQuery("UPDATE clientsettings SET autoplaymedia = ?", List.of(autoplaymedia));
     }
 
     /**
@@ -182,7 +197,7 @@ public class DBAccessManager {
         Account acc = APIAccessManager.getAccount(id, token);
         // Insert the account in the database
         if (acc != null)
-            executeQuery("INSERT INTO accounts (mstdtoken, id, acct, avatar, header, display_name, statuses_count, followers_count, following_count, note, last_status_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", List.of(token, acc.id, acc.acct, acc.avatar, acc.header, acc.display_name, acc.statuses_count, acc.followers_count, acc.following_count, acc.note, acc.last_status_at));        // set destination sys variable into system
+            executeQuery("INSERT INTO accounts (mstdtoken, id, acct, avatar) VALUES (?, ?, ?, ?)", List.of(token, acc.id, acc.acct, acc.avatar)); // set destination sys variable into system
     }
 
     /**
@@ -253,28 +268,18 @@ public class DBAccessManager {
     }
 
     /**
-     * Method to get user account from a reference
+     * This method will return the config
+     * settings of the client for the local user
      *
-     * @param ref (Integer) - The reference of the account
-     * @return (Account) - The account
-     * @throws SQLException - If the query fails to execute
+     * @return (List < Object >) - The settings
      */
-    public Account getUserAccount(Integer ref) throws SQLException {
-        CachedRowSet rs = executeQuery("SELECT * FROM accounts WHERE ref = ?;", List.of(ref));
-        if(rs.next()) {
-            Account a = new Account();
-            a.acct = rs.getString("acct");
-            a.avatar = rs.getString("avatar");
-            a.id = rs.getString("id");
-            a.header= rs.getString("header");
-            a.display_name = rs.getString("display_name");
-            a.statuses_count = rs.getInt("statuses_count");
-            a.followers_count = rs.getInt("followers_count");
-            a.following_count = rs.getInt("following_count");
-            a.note = rs.getString("note");
-            a.last_status_at = rs.getString("last_status_at");
-            return a;
+    public static List<Object> getSettings() throws SQLException {
+        ResultSet rs = executeQuery("SELECT * FROM clientsettings", null);
+        List<Object> list = new ArrayList<>();
+        // we use if and not while because we'll only have 1 row
+        if (rs.next()) {
+            list.add(rs.getBoolean("autoplaymedia"));
         }
-        return null;
+        return (list.size() != 0) ? list : null;
     }
 }

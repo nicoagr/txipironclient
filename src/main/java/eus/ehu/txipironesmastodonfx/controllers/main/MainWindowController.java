@@ -50,6 +50,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public ListView<Object> listView;
     public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
+    public boolean autoplayMedia = false;
 
     @FXML
     public void postTootListview() {
@@ -103,6 +104,18 @@ public class MainWindowController implements WindowController {
             }
             return (avatarUrl != null) ? new Image(avatarUrl) : new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg"));
         }, image -> icon.setImage(image));
+        // Download defaults asynchronously
+        AsyncUtils.asyncTask(DBAccessManager::getSettings, res -> {
+            if (res != null) {
+                autoplayMedia = (Boolean) res.get(0);
+            }
+        });
+    }
+
+    @FXML
+    void settings() {
+        listViewItems.clear();
+        listViewItems.add("Settings");
     }
 
     /**
@@ -250,6 +263,11 @@ public class MainWindowController implements WindowController {
                     setText(null);
                     PostTootController c = new PostTootController(thisclass);
                     setGraphic(c.getUI());
+                } else if (item instanceof String && item.equals("Settings")) {
+                    setText(null);
+                    SettingsController s = new SettingsController(thisclass);
+                    s.loadDefaultSettings();
+                    setGraphic(s.getUI());
                 } else if (item instanceof String) {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);

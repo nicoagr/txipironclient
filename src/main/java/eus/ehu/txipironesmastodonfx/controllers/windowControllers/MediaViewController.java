@@ -1,5 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
+import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
@@ -45,6 +46,7 @@ public class MediaViewController {
     private Button nextBtn;
     @FXML
     private Button prevBtn;
+    private MainWindowController master;
 
     /**
      * First method called when the view is loaded.
@@ -97,7 +99,8 @@ public class MediaViewController {
             } else {
                 mp = (MediaPlayer) list.get(1);
                 mediaView.setMediaPlayer(mp);
-                mp.setAutoPlay(true);
+                if (master != null && master.autoplayMedia)
+                    mp.setAutoPlay(true);
                 buildbar(mp);
                 mediaView.setVisible(true);
                 mediaBar.setVisible(true);
@@ -116,6 +119,15 @@ public class MediaViewController {
      */
     public void setPopupStage(Stage popupStage) {
         this.popupStage = popupStage;
+    }
+
+    /**
+     * Setter for the reference to the main window controller
+     *
+     * @param master (MainWindowController) - The reference to the main window controller
+     */
+    public void setReference(MainWindowController master) {
+        this.master = master;
     }
 
     /**

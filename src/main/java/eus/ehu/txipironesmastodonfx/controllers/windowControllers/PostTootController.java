@@ -102,7 +102,7 @@ public class PostTootController {
     /**
      * Setter for the reference to the auth window controller
      *
-     * @param master (AuthWindowController) - The reference to the auth window controller
+     * @param master (MainWindowController) - The reference to the main window controller
      */
     public void setReference(MainWindowController master) {
         this.master = master;
