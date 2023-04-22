@@ -6,8 +6,8 @@ package eus.ehu.txipironesmastodonfx.domain;
  *
  * @author Nicolás Aguado
  * @author Haizea Bermejo
- * @author Marcos Chouciño
  * @author Xiomara Cáceces
+ * @author Marcos Chouciño
  */
 public class MediaAttachment {
     public String id;

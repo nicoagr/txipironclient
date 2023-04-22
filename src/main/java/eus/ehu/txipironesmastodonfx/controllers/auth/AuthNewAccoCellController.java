@@ -1,6 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.auth;
 
-import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.*;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
@@ -19,8 +19,8 @@ import java.sql.SQLException;
  *
  * @author Nicolás Aguado
  * @author Haizea Bermejo
- * @author Marcos Chouciño
  * @author Xiomara Cáceces
+ * @author Marcos Chouciño
  */
 public class AuthNewAccoCellController {
     @FXML

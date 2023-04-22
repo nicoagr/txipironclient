@@ -19,8 +19,8 @@ import java.util.List;
  *
  * @author Nicolás Aguado
  * @author Haizea Bermejo
- * @author Marcos Chouciño
  * @author Xiomara Cáceces
+ * @author Marcos Chouciño
  * @version 1.0
  */
 public class TxipironClient extends Application {

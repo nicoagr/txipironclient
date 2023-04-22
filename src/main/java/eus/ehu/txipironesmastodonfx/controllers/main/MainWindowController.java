@@ -3,7 +3,7 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
-import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.*;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
@@ -30,8 +30,8 @@ import java.util.List;
  *
  * @author Nicolás Aguado
  * @author Haizea Bermejo
- * @author Marcos Chouciño
  * @author Xiomara Cáceces
+ * @author Marcos Chouciño
  */
 public class MainWindowController implements WindowController {
 
@@ -231,7 +231,6 @@ public class MainWindowController implements WindowController {
             listViewItems.addAll(toots);
         });
     }
-
 
     /**
      * Initializes the list view

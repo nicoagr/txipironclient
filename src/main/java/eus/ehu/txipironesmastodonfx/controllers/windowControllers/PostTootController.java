@@ -1,7 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
+import eus.ehu.txipironesmastodonfx.data_access.*;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
@@ -20,6 +20,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 
+/**
+ * Controller class for posting a toot.
+ * It will be used to allow user post a toot the way he/she prefers with a limit amount of characters.
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Xiomara Cáceces
+ * @author Marcos Chouciño
+ */
 public class PostTootController {
     private MainWindowController master;
     @FXML

@@ -1,7 +1,7 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
 import eus.ehu.txipironesmastodonfx.domain.Account;
-
+import eus.ehu.txipironesmastodonfx.data_access.*;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
 import java.io.File;
@@ -17,8 +17,8 @@ import java.util.List;
  *
  * @author Nicolás Aguado
  * @author Haizea Bermejo
- * @author Marcos Chouciño
  * @author Xiomara Cáceces
+ * @author Marcos Chouciño
  */
 public class DBAccessManager {
 

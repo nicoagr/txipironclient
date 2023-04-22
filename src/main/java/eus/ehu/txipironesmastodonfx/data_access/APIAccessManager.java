@@ -20,8 +20,8 @@ import java.util.List;
  *
  * @author Nicolás Aguado
  * @author Haizea Bermejo
- * @author Marcos Chouciño
  * @author Xiomara Cáceces
+ * @author Marcos Chouciño
  */
 public class APIAccessManager {
 
