@@ -46,11 +46,19 @@ public class MainWindowController implements WindowController {
     @FXML
     private Button searchBtn;
     @FXML
-    private BorderPane mainWraper;
+    private ImageView loading;
     @FXML
     public ListView<Object> listView;
     public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
+
+    public void showLoading() {
+        loading.setVisible(true);
+    }
+
+    public void hideLoading() {
+        loading.setVisible(false);
+    }
 
     @FXML
     public void postTootListview() {
@@ -131,6 +139,7 @@ public class MainWindowController implements WindowController {
             return;
         }
         listViewItems.add("Loading...");
+        showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             SearchResult srslt;
@@ -138,6 +147,7 @@ public class MainWindowController implements WindowController {
             return srslt;
         }, res -> {
             listViewItems.clear();
+            hideLoading();
             if (res == null) {
                 listViewItems.add("Error downloading search results. Please check your connection and try again.");
                 return;
@@ -164,6 +174,7 @@ public class MainWindowController implements WindowController {
     void followerListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             List<Follow> follower;
@@ -175,6 +186,7 @@ public class MainWindowController implements WindowController {
                 listViewItems.add("Error downloading followers. Please check your connection and try again.");
                 return;
             }
+            hideLoading();
             listViewItems.add("Followers");
             listViewItems.addAll(follower);
         });
@@ -187,6 +199,7 @@ public class MainWindowController implements WindowController {
     void followingListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             List<Follow> follower;
@@ -198,6 +211,7 @@ public class MainWindowController implements WindowController {
                 listViewItems.add("Error downloading following. Please check your connection and try again.");
                 return;
             }
+            hideLoading();
             listViewItems.add("Followers");
             listViewItems.addAll(follower);
         });
@@ -210,6 +224,7 @@ public class MainWindowController implements WindowController {
     public void homeListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             List<Toot> toots;
@@ -227,6 +242,7 @@ public class MainWindowController implements WindowController {
                 listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
                 return;
             }
+            hideLoading();
             listViewItems.add("Profile toots");
             listViewItems.addAll(toots);
         });
@@ -236,6 +252,7 @@ public class MainWindowController implements WindowController {
     void likedTootsListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             List<Toot> toots;
@@ -253,6 +270,7 @@ public class MainWindowController implements WindowController {
                 listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
                 return;
             }
+            hideLoading();
             listViewItems.add("Liked toots");
             listViewItems.addAll(toots);
         });

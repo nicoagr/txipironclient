@@ -24,10 +24,15 @@
            <ImageView fx:id="logo" fitHeight="75.0" fitWidth="75.0" layoutX="901.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@logos/light_transparent_75.png" />
            </ImageView>
+         <ImageView fx:id="loading" fitHeight="55.0" fitWidth="55.0" layoutX="825.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@loading-gif.gif" />
+            </image>
+         </ImageView>
            <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
-           <Label fx:id="searchbar" layoutX="259.0" layoutY="26.0" prefHeight="40.0" prefWidth="541.0" />
-           <Button fx:id="searchBtn" layoutX="787.0" layoutY="25.0" minHeight="40.0" mnemonicParsing="false" onAction="#performSearch" prefHeight="40.0" prefWidth="102.0" text="Perform Search" />
-           <TextField fx:id="searchQuery" layoutX="192.0" layoutY="25.0" prefHeight="40.0" prefWidth="586.0" promptText="Search here for an account name or an specific status" />
+           <Label fx:id="searchbar" layoutX="259.0" layoutY="26.0" prefHeight="40.0" prefWidth="403.0" />
+           <Button fx:id="searchBtn" layoutX="686.0" layoutY="25.0" minHeight="40.0" mnemonicParsing="false" onAction="#performSearch" prefHeight="40.0" prefWidth="102.0" text="Perform Search" />
+           <TextField fx:id="searchQuery" layoutX="192.0" layoutY="25.0" prefHeight="40.0" prefWidth="485.0" promptText="Search here for an account name or an specific status" />
        </AnchorPane>
    </top>
     <center>
