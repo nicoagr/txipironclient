@@ -139,6 +139,7 @@ public class MainWindowController implements WindowController {
             return;
         }
         listViewItems.add("Loading...");
+        showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             SearchResult srslt;
@@ -146,6 +147,7 @@ public class MainWindowController implements WindowController {
             return srslt;
         }, res -> {
             listViewItems.clear();
+            hideLoading();
             if (res == null) {
                 listViewItems.add("Error downloading search results. Please check your connection and try again.");
                 return;
