@@ -296,10 +296,13 @@ public class APIAccessManager {
         }
         Type fTootListType = new TypeToken<ArrayList<Toot>>() {
         }.getType();
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
+    }
+
     /**
      *  Obtains the list of views of  a user wich is introduced as parameter
      *
-     * @param String username   - Mastodon account token
+     * @param username (String)  - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
     public static List<Toot> getTootFromUsername(String username, String token) throws IOException {
@@ -314,15 +317,7 @@ public class APIAccessManager {
             // token is invalid
             return null;
         }
-
         aBorrar = gson.fromJson(response, Account.class).id;
-
-
         return getProfileToots(aBorrar,token);
-    }
-
-
-
-        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
     }
 }

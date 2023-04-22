@@ -114,12 +114,6 @@ public class TootCellController {
 
     }
 
-
-
-
-
-
-
     /**
      * Method to set the values for the toot cell
      *
