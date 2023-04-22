@@ -46,6 +46,7 @@ public class TootCellController {
     private String uri;
     List<MediaAttachment> media;
     List<Toot.Mention> mentions;
+    private String idauxi;
     @FXML
     private ImageView sensitiveImg;
     @FXML
@@ -103,14 +104,14 @@ public class TootCellController {
      */
     @FXML
     void usernameClicked() {
-    master.userTootListView(username.getText());
+    master.userTootListViewFromUsername(username.getText());
     }
     /**
      * Method to change to the toots of the user who posted that toot
      */
     @FXML
     void profilePIctureClicked() {
-        master.userTootListView(username.getText());
+        master.userTootListViewFromUsername(username.getText());
 
     }
 
@@ -199,7 +200,7 @@ public class TootCellController {
                     return null;
                 }, param -> {
                     System.out.println(element);
-                    master.userTootListView(element);
+                    master.userTootListViewFromUsername(element);
                 }));
             }
             // HashTags

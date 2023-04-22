@@ -216,7 +216,7 @@ public class MainWindowController implements WindowController {
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
             try {
-                toots = APIAccessManager.getProfileToots(authenticatedId, token);
+                toots = APIAccessManager.getTootId(authenticatedId, token);
             } catch (IOException e) {
                 toots = null;
             }
@@ -234,10 +234,10 @@ public class MainWindowController implements WindowController {
 
 
     /**
-     * Sets the list view to show the toots of the current logged in user
+     * Sets the list view to show the toots of the current logged in user from an username
      */
     @FXML
-    public void userTootListView(String username) {
+    public void userTootListViewFromUsername(String username) {
         listViewItems.clear();
         listViewItems.add("Loading...");
         AsyncUtils.asyncTask(() -> {
@@ -262,6 +262,37 @@ public class MainWindowController implements WindowController {
         });
     }
 
+
+
+
+    /*
+            * Sets the list view to show the toots of the current logged in user from an username
+     */
+    @FXML
+    public void userTootListViewFromId(String id) {
+        listViewItems.clear();
+        listViewItems.add("Loading...");
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Toot> toots;
+            // Here, the id parameter is going to control which toots
+            // from which are going to be downloaded
+            try {
+                toots = APIAccessManager.getTootId(id, token);
+            } catch (IOException e) {
+                toots = null;
+            }
+            return toots;
+        }, toots -> {
+            listViewItems.clear();
+            if (toots == null) {
+                listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
+                return;
+            }
+            listViewItems.add("Profile toots");
+            listViewItems.addAll(toots);
+        });
+    }
 
 
 

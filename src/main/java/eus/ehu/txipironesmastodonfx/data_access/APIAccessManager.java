@@ -66,7 +66,7 @@ public class APIAccessManager {
      * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
      */
-    public static List<Toot> getProfileToots(String selectedAccId, String token) throws IOException {
+    public static List<Toot> getTootId(String selectedAccId, String token) throws IOException {
         String response = request("accounts/" + selectedAccId + "/statuses", token);
 
         if (response.equals("")) {
@@ -278,14 +278,10 @@ public class APIAccessManager {
 
     /**
      *  Obtains the list of views of  a user wich is introduced as parameter
-     *
-
-
      * @param String username   - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
     public static List<Toot> getTootFromUsername(String username, String token) throws IOException {
-        String aBorrar;
         String response = null;
         try {
             response = requestNoToken("accounts/lookup?acct=" + username);
@@ -297,11 +293,14 @@ public class APIAccessManager {
             return null;
         }
 
-        aBorrar = gson.fromJson(response, Account.class).id;
 
 
-        return getProfileToots(aBorrar,token);
+        return getTootId(gson.fromJson(response, Account.class).id,token);
     }
+
+
+
+
 
 
 
