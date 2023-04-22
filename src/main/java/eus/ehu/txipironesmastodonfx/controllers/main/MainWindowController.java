@@ -242,7 +242,7 @@ public class MainWindowController implements WindowController {
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
             try {
-                toots = APIAccessManager.getLikedToots(authenticatedId, token);
+                toots = APIAccessManager.getLikedToots(token);
             } catch (IOException e) {
                 toots = null;
             }

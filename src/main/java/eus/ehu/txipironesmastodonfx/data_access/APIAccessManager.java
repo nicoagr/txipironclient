@@ -249,14 +249,13 @@ public class APIAccessManager {
      * It will return a list of toots. If the request can't be made,
      * it will return null.
      *
-     * @param selectedAccId (String) - id of the account
      * @param token         (String) - token of the account
      * @return (List<Toot>) - the list of liked toots
      *
      * @exception IOException - if the request can't be made
      */
-    public static List<Toot> getLikedToots(String selectedAccId, String token) throws IOException{
-        String response = request("accounts/"+selectedAccId+"s/favourites", token);
+    public static List<Toot> getLikedToots(String token) throws IOException{
+        String response = request("/favourites", token);
         if (response.equals("")) {
             // token is invalid
             return null;
