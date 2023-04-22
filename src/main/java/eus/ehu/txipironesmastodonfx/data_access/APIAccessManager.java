@@ -65,6 +65,8 @@ public class APIAccessManager {
      * @param selectedAccId (String) - id of the account
      * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
+     *
+     * @throws IOException - When the request can't be made
      */
     public static List<Toot> getProfileToots(String selectedAccId, String token) throws IOException {
         String response = request("accounts/" + selectedAccId + "/statuses", token);
@@ -277,10 +279,26 @@ public class APIAccessManager {
     }
 
     /**
+     * Method to get the toots liked by a user
+     * It will return a list of toots. If the request can't be made,
+     * it will return null.
+     *
+     * @param token         (String) - token of the account
+     * @return (List<Toot>) - the list of liked toots
+     *
+     * @exception IOException - if the request can't be made
+     */
+    public static List<Toot> getLikedToots(String token) throws IOException{
+        String response = request("/favourites", token);
+        if (response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        Type fTootListType = new TypeToken<ArrayList<Toot>>() {
+        }.getType();
+    /**
      *  Obtains the list of views of  a user wich is introduced as parameter
      *
-
-
      * @param String username   - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
@@ -305,4 +323,6 @@ public class APIAccessManager {
 
 
 
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
+    }
 }
