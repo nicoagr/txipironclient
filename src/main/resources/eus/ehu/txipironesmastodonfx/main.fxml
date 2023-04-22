@@ -39,6 +39,7 @@
             <ListView fx:id="listView" layoutX="185.0" prefHeight="627.0" prefWidth="805.0" />
             <Button fx:id="postToot" layoutY="210.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="186.0" text="Post toot" />
             <Button layoutY="484.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="185.0" text="Settings" />
+         <Button fx:id="likedToots" layoutY="280.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="185.0" text="Liked toots" />
         </AnchorPane>
     </center>
 </BorderPane>

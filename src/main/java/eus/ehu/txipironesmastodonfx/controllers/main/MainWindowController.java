@@ -232,6 +232,32 @@ public class MainWindowController implements WindowController {
         });
     }
 
+    @FXML
+    void likedTootsListView() {
+        listViewItems.clear();
+        listViewItems.add("Loading...");
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Toot> toots;
+            // Here, the id parameter is going to control which toots
+            // from which are going to be downloaded
+            try {
+                toots = APIAccessManager.getLikedToots(authenticatedId, token);
+            } catch (IOException e) {
+                toots = null;
+            }
+            return toots;
+        }, toots -> {
+            listViewItems.clear();
+            if (toots == null) {
+                listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
+                return;
+            }
+            listViewItems.add("Liked toots");
+            listViewItems.addAll(toots);
+        });
+    }
+
     /**
      * Initializes the list view
      */
