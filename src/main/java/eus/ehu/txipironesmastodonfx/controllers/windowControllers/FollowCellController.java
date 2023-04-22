@@ -37,6 +37,14 @@ public class FollowCellController {
     @FXML
     private Label username;
 
+
+    @FXML
+    void usenameCliked() {
+
+        System.out.println("adf");
+        master.userTootListView(username.getText());
+    }
+
     /**
      * Constructor for the controller.
      * It will load itself at take consciousness (set itself as controller)

@@ -95,6 +95,31 @@ public class TootCellController {
         setReference(master);
     }
 
+
+
+
+    /**
+     * Method to change to the toots of the user who posted that toot
+     *
+     *
+     */
+    @FXML
+    void usernameClicked() {
+    master.userTootListView(username.getText());
+    }
+    @FXML
+    void profilePIctureClicked() {
+        System.out.println("the username is clicked");
+        master.userTootListView(username.getText());
+
+    }
+
+
+
+
+
+
+
     /**
      * Method to set the values for the toot cell
      *
@@ -168,10 +193,12 @@ public class TootCellController {
                 textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: white; -fx-cursor: hand"));
                 textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: blue; -fx-cursor: inherit"));
                 textElement.setOnMouseClicked(event -> AsyncUtils.asyncTask(() -> {
-                    // TODO HANDLE CLICK ON USERNAME
+
+
                     return null;
                 }, param -> {
-
+                    System.out.println(element);
+                    master.userTootListView(element);
                 }));
             }
             // HashTags
