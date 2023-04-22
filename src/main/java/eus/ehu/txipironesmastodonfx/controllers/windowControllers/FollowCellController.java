@@ -37,7 +37,9 @@ public class FollowCellController {
     @FXML
     private Label username;
 
-
+    /**
+     * goes to the profile of the user wich has been clicked
+     */
     @FXML
     void clickedThings() {
         System.out.println("adf");
@@ -45,6 +47,15 @@ public class FollowCellController {
     }
 
 
+
+    /**
+     * goes to the profile of the user wich has been clicked
+     */
+    @FXML
+    void pickClick() {
+        System.out.println("adf");
+        master.userTootListView(username.getText());
+    }
 
     /**
      * Constructor for the controller.

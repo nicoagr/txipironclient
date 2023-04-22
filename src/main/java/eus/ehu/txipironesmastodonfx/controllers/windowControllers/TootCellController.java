@@ -100,14 +100,14 @@ public class TootCellController {
 
     /**
      * Method to change to the toots of the user who posted that toot
-     *
-     *
      */
     @FXML
     void usernameClicked() {
     master.userTootListView(username.getText());
     }
-
+    /**
+     * Method to change to the toots of the user who posted that toot
+     */
     @FXML
     void profilePIctureClicked() {
         master.userTootListView(username.getText());

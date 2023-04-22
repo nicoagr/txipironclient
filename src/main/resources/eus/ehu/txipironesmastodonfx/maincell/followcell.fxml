@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="anchor" prefHeight="90.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" onMouseClicked="#pickClick" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="id" layoutX="111.0" layoutY="14.0" prefHeight="17.0" prefWidth="211.0" text="Id" wrapText="true" />
       <Label fx:id="username" layoutX="111.0" layoutY="36.0" onMouseClicked="#clickedThings" text="\@username">
          <font>
