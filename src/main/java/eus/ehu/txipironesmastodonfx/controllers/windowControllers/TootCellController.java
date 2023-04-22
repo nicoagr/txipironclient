@@ -107,12 +107,13 @@ public class TootCellController {
     void usernameClicked() {
     master.userTootListView(username.getText());
     }
+
     @FXML
     void profilePIctureClicked() {
-        System.out.println("the username is clicked");
         master.userTootListView(username.getText());
 
     }
+
 
 
 
