@@ -39,11 +39,12 @@ public class FollowCellController {
 
 
     @FXML
-    void usenameCliked() {
-
+    void clickedThings() {
         System.out.println("adf");
         master.userTootListView(username.getText());
     }
+
+
 
     /**
      * Constructor for the controller.
