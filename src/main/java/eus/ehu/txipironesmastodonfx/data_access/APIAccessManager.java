@@ -321,4 +321,13 @@ public class APIAccessManager {
         return getProfileToots(aBorrar,token);
     }
 
+    /*public static void addFavouriteToot(String selectedAccId, String token) throws IOException {
+        String response = request("statuses/" + selectedAccId + "/favourite", token);
+
+        if (response.equals("")) {
+            // token is invalid
+            //return null;
+        }
+    }*/
+
 }

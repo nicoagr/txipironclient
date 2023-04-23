@@ -343,14 +343,16 @@ public class TootCellController {
         this.master = thisclass;
     }
 
-    /*@FXML
+    @FXML
     void likedModified() {
-        if (liked) {
-            likeImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-like.png")));
-            liked = false;
-        } else {
-            likeImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-like-active.png")));
-            liked = true;
-        }
-    }*/
+        //if (!toot.favourited) {
+            //likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
+            numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
+            likes.setDisable(true);
+        //}
+        /*else {
+            //likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-heart_160.png")));
+            numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
+        }*/
+    }
 }
