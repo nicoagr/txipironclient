@@ -145,8 +145,10 @@ public class TootCellController {
                 }
         );
         AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
-        if (toot.favourited)
+        if (toot.favourited){
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+            likes.setDisable(true);
+        }
         else
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
         numLikes.setText(Integer.toString(finalToot.favourites_count));
