@@ -36,8 +36,12 @@ import java.util.List;
 public class MainWindowController implements WindowController {
 
     private TxipironClient mainApp;
+
+    public String id;
+
     private Integer ref;
-    protected String authenticatedId;
+    public String authenticatedId;
+
     public String token;
     @FXML
     private ImageView icon;
@@ -53,8 +57,7 @@ public class MainWindowController implements WindowController {
     public boolean autoplayMedia = false;
 
     /**
-     * Initializes the controller class
-     * and sets a loading gif to inform the user that the application is loading
+     * Changes title and Shows loading gif
      */
     public void showLoading() {
         mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Loading...");
@@ -62,14 +65,17 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Initializes the controller class
-     * and hides the loading gif the application has finished loading
+     * Changes the title
+     * and hides the loading gif
      */
     public void hideLoading() {
         mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
         loading.setVisible(false);
     }
 
+    /**
+     * Loads the post Toot screen
+     */
     @FXML
     public void postTootListview() {
         listViewItems.clear();
@@ -78,6 +84,10 @@ public class MainWindowController implements WindowController {
         listView.getSelectionModel().select(0);
     }
 
+    /**
+     * Gets the reference to the main application
+     * @return
+     */
     public Application TxipironClient() {
         return mainApp;
     }
@@ -130,6 +140,9 @@ public class MainWindowController implements WindowController {
         });
     }
 
+    /**
+     * Adds the settings to the list view
+     */
     @FXML
     void settings() {
         listViewItems.clear();
@@ -259,7 +272,7 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the list view to show the toots of the current logged in user has liked
+     * Sets the list view to show the toots liked by the current logged in user
      */
     @FXML
     void likedTootsListView() {
@@ -376,7 +389,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void initialize() {
         MainWindowController thisclass = this;
-        listView.setCellFactory(param -> new ListCell<>() {
+        listView.setCellFactory(param -> new ListCell<>(){
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);

@@ -16,6 +16,7 @@ public class Follow {
     public String id;
     public String acct;
     public String avatar;
+    public Boolean following;
 
     /**
      * For quick testing and debugging,

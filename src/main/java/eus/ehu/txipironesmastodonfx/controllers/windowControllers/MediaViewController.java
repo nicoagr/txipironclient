@@ -112,7 +112,7 @@ public class MediaViewController {
 
     private Stage popupStage;
 
-    /*
+    /**
      * This method is called by the main controller
      * and it will set a reference to the popup stage
      * (which is the stage that contains this view)

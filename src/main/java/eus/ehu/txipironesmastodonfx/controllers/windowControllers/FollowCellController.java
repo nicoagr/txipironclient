@@ -1,17 +1,22 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller class for the follow cell.
@@ -35,7 +40,37 @@ public class FollowCellController {
     private Label id;
 
     @FXML
+    private Button followButton;
+
+    @FXML
     private Label username;
+
+    /**
+     * Button to follow or unfollow the user
+     */
+    @FXML
+    void onClickFollowButton() {
+        if (followButton.getText().equals("Follow")) {
+            followButton.setText("Loading...");
+            AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, idauxi), param -> {
+                if (param == null) {
+                    followButton.setText("Error!");
+                } else {
+                    followButton.setText("Unfollow");
+                }
+            });
+        } else if (followButton.getText().equals("Unfollow")) {
+            followButton.setText("Loading...");
+            AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, idauxi), param -> {
+                if (param == null) {
+                    followButton.setText("Error!");
+                } else {
+                    followButton.setText("Follow");
+                }
+            });
+        }
+    }
+
 
     /**
      * goes to the profile of the user wich has been clicked
@@ -72,7 +107,21 @@ public class FollowCellController {
             e.printStackTrace();
         }
         this.setReference(master);
-        // set the values for the account cell
+        followButton.setText("Loading...");
+        // set the values for the follow button
+        AsyncUtils.asyncTask(() -> {
+            List<Follow> following = APIAccessManager.getFollow(master.authenticatedId, master.token, true);
+            if (following == null) return "Error!";
+            for (Follow f : following) {
+                if (f.id.equals(follow.id)) {
+                    return "Unfollow";
+                }
+            }
+            return "Follow";
+        }, param -> {
+            if (!param.equals("Error!")) followButton.setDisable(false);
+            followButton.setText(param);
+        });
         username.setText(follow.acct);
         id.setText(follow.id);
         idauxi = follow.id;
