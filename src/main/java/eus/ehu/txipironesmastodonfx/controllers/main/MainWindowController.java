@@ -56,16 +56,25 @@ public class MainWindowController implements WindowController {
     public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
 
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the fxml file has been loaded.
+     */
     public void showLoading() {
         mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Loading...");
         loading.setVisible(true);
     }
 
+    /** Hides the loading icon */
     public void hideLoading() {
         mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
         loading.setVisible(false);
     }
 
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the fxml file has been loaded.
+     */
     @FXML
     public void postTootListview() {
         listViewItems.clear();
@@ -74,6 +83,10 @@ public class MainWindowController implements WindowController {
         listView.getSelectionModel().select(0);
     }
 
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the fxml file has been loaded.
+     */
     public Application TxipironClient() {
         return mainApp;
     }
@@ -126,6 +139,9 @@ public class MainWindowController implements WindowController {
         });
     }
 
+    /**
+     * Adds the settings to the list view
+     */
     @FXML
     void settings() {
         listViewItems.clear();
@@ -254,6 +270,9 @@ public class MainWindowController implements WindowController {
         });
     }
 
+    /**
+     * Sets the list view to show the toots liked by the current logged in user
+     */
     @FXML
     void likedTootsListView() {
         listViewItems.clear();

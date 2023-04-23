@@ -53,6 +53,10 @@ public class SettingsController {
         });
     }
 
+    /**
+     * This method will be used to
+     * load the default settings
+     */
     public void loadDefaultSettings() {
         autoplaycheck.setSelected(master.autoplayMedia);
     }

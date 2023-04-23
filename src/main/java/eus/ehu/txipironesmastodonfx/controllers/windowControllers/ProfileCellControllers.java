@@ -143,11 +143,7 @@ public class ProfileCellControllers {
             );
         }
 
-        @FXML
-        void initialize() {
 
-
-        }
 
         /**
          * Getter for the UI (AnchorPane)
