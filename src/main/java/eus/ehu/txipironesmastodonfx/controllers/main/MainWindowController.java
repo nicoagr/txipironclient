@@ -52,11 +52,19 @@ public class MainWindowController implements WindowController {
     public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
 
+    /**
+     * Initializes the controller class
+     * and sets a loading gif to inform the user that the application is loading
+     */
     public void showLoading() {
         mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Loading...");
         loading.setVisible(true);
     }
 
+    /**
+     * Initializes the controller class
+     * and hides the loading gif the application has finished loading
+     */
     public void hideLoading() {
         mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
         loading.setVisible(false);
@@ -250,6 +258,9 @@ public class MainWindowController implements WindowController {
         });
     }
 
+    /**
+     * Sets the list view to show the toots of the current logged in user has liked
+     */
     @FXML
     void likedTootsListView() {
         listViewItems.clear();

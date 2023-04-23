@@ -38,6 +38,13 @@ public class Toot {
         public String id;
         public String username;
     }
+
+    /**
+     * Constructor for the Toot class.
+     * It will be used to create a Toot object from a JSON file.
+     *
+     * @param id (String) - The ID of the toot
+     */
     public Toot (String id){
         this.id = id;
     }
@@ -70,6 +77,11 @@ public class Toot {
                 '}';
     }
 
+    /**
+     * A method to compare two Toot objects.
+     * @param toot
+     * @return boolean - True if the IDs are the same, false otherwise
+     */
     public boolean equals(Toot toot){
         return this.id.equals(toot.id);
     }
