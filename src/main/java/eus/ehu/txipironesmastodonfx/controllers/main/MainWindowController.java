@@ -293,6 +293,24 @@ public class MainWindowController implements WindowController {
         listViewItems.add("Loading...");
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
+            Account account;
+            // Here, the id parameter is going to control which toots
+            // from which are going to be downloaded
+            account = APIAccessManager.getAccount(id, token);
+            return account;
+        }, account -> {
+            listViewItems.clear();
+            if (account == null) {
+                listViewItems.add("Error downloading profile . Please check your connection and try again.");
+                return;
+            }
+
+
+
+            listViewItems.add(account);
+        });
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
@@ -303,12 +321,12 @@ public class MainWindowController implements WindowController {
             }
             return toots;
         }, toots -> {
-            listViewItems.clear();
+
             if (toots == null) {
                 listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
                 return;
             }
-            listViewItems.add("Toots of " + username);
+
             listViewItems.addAll(toots);
         });
     }
@@ -347,7 +365,7 @@ public class MainWindowController implements WindowController {
                         // Here, the id parameter is going to control which toots
                         // from which are going to be downloaded
                         try {
-                            toots = APIAccessManager.getProfileToots(authenticatedId, token);
+                            toots = APIAccessManager.getTootId(authenticatedId, token);
                         } catch (IOException e) {
                             toots = null;
                         }
