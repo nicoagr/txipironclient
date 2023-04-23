@@ -71,7 +71,7 @@ public class APIAccessManager {
      *
      * @throws IOException - When the request can't be made
      */
-    public static List<Toot> getProfileToots(String selectedAccId, String token) throws IOException {
+    public static List<Toot> getTootId(String selectedAccId, String token) throws IOException {
         String response = request("accounts/" + selectedAccId + "/statuses", token);
 
         if (response.equals("")) {
@@ -314,7 +314,7 @@ public class APIAccessManager {
             return null;
         }
         aBorrar = gson.fromJson(response, Account.class).id;
-        return getProfileToots(aBorrar,token);
+        return getTootId(aBorrar,token);
     }
 
     /**
@@ -341,4 +341,29 @@ public class APIAccessManager {
         return responseCode;
 
     }
+
+    /**
+     * Obtains the list of views of  a user wich is introduced as parameter
+     *
+     * @param selectedAccId (String) - id of the account
+     * @param token (String) - token of the account
+     * @return (List<Toot>) - the list of views of a user
+     * @throws IOException - if the request can't be made
+     */
+    public static List<Toot> getAllTootsId(String selectedAccId, String token) throws IOException {
+        String response = request("timelines/home", token);
+
+
+        if (response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        Type statusListType = new TypeToken<ArrayList<Toot>>() {
+        }.getType();
+        // get json array and then convert it to a list of Toots
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), statusListType);
+    }
+
+
+
 }

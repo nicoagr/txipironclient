@@ -100,18 +100,18 @@ public class TootCellController {
 
     /**
      * Method to change to the toots of the user who posted that toot
-     *
-     *
      */
     @FXML
     void usernameClicked() {
-    master.userTootListView(username.getText());
+        master.userTootListViewFromId(Id);
     }
-    @FXML
-    void profilePIctureClicked() {
-        System.out.println("the username is clicked");
-        master.userTootListView(username.getText());
 
+    /**
+     * Method to change to the toots of the user who posted that toot
+     */
+    @FXML
+    void profilePictureClicked() {
+        master.userTootListViewFromId(Id);
     }
 
     /**
@@ -193,12 +193,14 @@ public class TootCellController {
                 textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: white; -fx-cursor: hand"));
                 textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: blue; -fx-cursor: inherit"));
                 textElement.setOnMouseClicked(event -> AsyncUtils.asyncTask(() -> {
-
-
+                    for (Toot.Mention aux : mentions) {
+                        if (("@" + aux.username).equals(element)) {
+                            return aux.id;
+                        }
+                    }
                     return null;
                 }, param -> {
-                    System.out.println(element);
-                    master.userTootListView(element);
+                    if (param != null) master.userTootListViewFromId(param);
                 }));
             }
             // HashTags

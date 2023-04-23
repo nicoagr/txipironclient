@@ -37,7 +37,7 @@
    </top>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="185.0" text="My profile toots" />
+            <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="185.0" text="Home" />
             <Button fx:id="following" layoutY="70.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#followingListView" prefHeight="70.0" prefWidth="186.0" text="Following" />
             <Button fx:id="followers" layoutY="140.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#followerListView" prefHeight="70.0" prefWidth="186.0" text="Followers" />
             <Button fx:id="changeAcctBtn" layoutY="555.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#changeAcctBtnClick" prefHeight="70.0" prefWidth="185.0" text="Change account" />
@@ -45,6 +45,7 @@
             <Button fx:id="postToot" layoutY="210.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="186.0" text="Post toot" />
             <Button layoutY="484.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="185.0" text="Settings" />
          <Button fx:id="likedToots" layoutY="280.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="185.0" text="Liked toots" />
+         <Button fx:id="profile" layoutY="350.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#profileListView" prefHeight="70.0" prefWidth="185.0" text="My profile" />
         </AnchorPane>
     </center>
 </BorderPane>

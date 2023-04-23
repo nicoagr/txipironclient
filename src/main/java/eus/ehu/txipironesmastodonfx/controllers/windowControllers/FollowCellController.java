@@ -27,7 +27,7 @@ public class FollowCellController {
 
     @FXML
     private AnchorPane anchor;
-
+    String idauxi;//porsi luego modificamos la otra, necesitamos esto para ir a su perfil
     @FXML
     private ImageView icon;
 
@@ -37,12 +37,22 @@ public class FollowCellController {
     @FXML
     private Label username;
 
-
+    /**
+     * goes to the profile of the user wich has been clicked
+     */
     @FXML
-    void usenameCliked() {
+    void clickedThings() {
+        master.userTootListViewFromId(idauxi);
+    }
 
-        System.out.println("adf");
-        master.userTootListView(username.getText());
+
+
+    /**
+     * goes to the profile of the user wich has been clicked
+     */
+    @FXML
+    void pickClick() {
+        master.userTootListViewFromId(idauxi);
     }
 
     /**
@@ -65,7 +75,7 @@ public class FollowCellController {
         // set the values for the account cell
         username.setText(follow.acct);
         id.setText(follow.id);
-
+        idauxi = follow.id;
         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         AsyncUtils.asyncTask(() ->
                 {

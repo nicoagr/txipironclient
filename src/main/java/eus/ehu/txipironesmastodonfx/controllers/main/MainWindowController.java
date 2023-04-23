@@ -3,10 +3,11 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
-import eus.ehu.txipironesmastodonfx.data_access.*;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
+import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.SearchResult;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
@@ -19,7 +20,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -53,10 +53,12 @@ public class MainWindowController implements WindowController {
     public boolean autoplayMedia = false;
 
     public void showLoading() {
+        mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Loading...");
         loading.setVisible(true);
     }
 
     public void hideLoading() {
+        mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
         loading.setVisible(false);
     }
 
@@ -113,9 +115,9 @@ public class MainWindowController implements WindowController {
             return (avatarUrl != null) ? new Image(avatarUrl) : new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg"));
         }, image -> icon.setImage(image));
         // Download defaults asynchronously
-        AsyncUtils.asyncTask(DBAccessManager::getSettings, res -> {
+        AsyncUtils.asyncTask(() -> DBAccessManager.getSetting("autoplaymedia", true), res -> {
             if (res != null) {
-                autoplayMedia = (Boolean) res.get(0);
+                autoplayMedia = (Boolean) res;
             }
         });
     }
@@ -231,7 +233,7 @@ public class MainWindowController implements WindowController {
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
             try {
-                toots = APIAccessManager.getProfileToots(authenticatedId, token);
+                toots = APIAccessManager.getAllTootsId(authenticatedId, token);
             } catch (IOException e) {
                 toots = null;
             }
@@ -243,7 +245,7 @@ public class MainWindowController implements WindowController {
                 return;
             }
             hideLoading();
-            listViewItems.add("Profile toots");
+            listViewItems.add("Home");
             listViewItems.addAll(toots);
         });
     }
@@ -276,35 +278,59 @@ public class MainWindowController implements WindowController {
         });
     }
 
-
     /**
-     * Sets the list view to show the toots of the current logged in user
+     * Sets the list view to show the toots of the current logged in user from an id
      */
     @FXML
-    public void userTootListView(String username) {
+    public void userTootListViewFromId(String id) {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        showLoading();
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            Account account;
+            account = APIAccessManager.getAccount(id, token);
+            return account;
+        }, account -> {
+            listViewItems.clear();
+            if (account == null) {
+                listViewItems.add("Error downloading profile . Please check your connection and try again.");
+                return;
+            }
+            listViewItems.add(account);
+            listViewItems.add("Loading...");
+        });
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
             try {
-                toots = APIAccessManager.getTootFromUsername(username, token);
+                toots = APIAccessManager.getTootId(id, token);
             } catch (IOException e) {
                 toots = null;
             }
             return toots;
         }, toots -> {
-            listViewItems.clear();
             if (toots == null) {
                 listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
                 return;
             }
-            listViewItems.add("Profile toots");
+            listViewItems.remove("Loading...");
+            listViewItems.add("Toots and replies");
             listViewItems.addAll(toots);
+            hideLoading();
         });
     }
+
+    /**
+     * Sets the list view to show the profile of the current logged in user
+     */
+    @FXML
+    void profileListView() {
+        userTootListViewFromId(authenticatedId);
+    }
+
 
     /**
      * Initializes the list view
@@ -345,6 +371,13 @@ public class MainWindowController implements WindowController {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
                     setGraphic(c.getUI());
+                }else if (item instanceof Account) {
+                    setText(null);
+                    AsyncUtils.asyncTask(() -> new ProfileCellControllers(thisclass), param -> {
+                                setGraphic(param.getUI());
+                                param.loadAccount((Account) item);
+                            }
+                    );
                 }
                 // Remove horizontal scrollbar for each item that we load
                 // (Yes! necessary!) for each item, because the list view

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane fx:id="anchor" prefHeight="356.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1">
+   <ImageView fx:id="bannerPic" fitHeight="160.0" fitWidth="795.0" pickOnBounds="true" preserveRatio="true"/>
+   <ImageView fx:id="profilePic" fitHeight="118.0" fitWidth="122.0" layoutX="49.0" layoutY="110.0"
+              pickOnBounds="true" preserveRatio="true"/>
+   <Label fx:id="name" layoutX="213.0" layoutY="182.0" prefHeight="30.0" prefWidth="525.0" text="name">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Label>
+   <Label fx:id="username" layoutX="213.0" layoutY="214.0" prefHeight="18.0" prefWidth="526.0" text="\@username"/>
+   <TextFlow fx:id="description" layoutX="213.0" layoutY="236.0" prefHeight="63.0" prefWidth="466.0"/>
+   <Label layoutX="155.0" layoutY="327.0" text="Posts">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Label>
+   <Label layoutX="338.0" layoutY="327.0" text="Following">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Label>
+   <Label layoutX="525.0" layoutY="327.0" text="Followers">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Label>
+   <Label fx:id="numPost" layoutX="209.0" layoutY="327.0" text="n">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Label>
+   <Label fx:id="numFollowing" layoutX="425.0" layoutY="327.0" text="n">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Label>
+   <Label fx:id="numFollowers" layoutX="601.0" layoutY="327.0" text="n">
+      <font>
+         <Font size="14.0"/>
+      </font>
+   </Label>
+</AnchorPane>
