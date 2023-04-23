@@ -2,14 +2,13 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.ProfileCellControllers;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
 import eus.ehu.txipironesmastodonfx.data_access.*;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
-import eus.ehu.txipironesmastodonfx.domain.Follow;
-import eus.ehu.txipironesmastodonfx.domain.SearchResult;
-import eus.ehu.txipironesmastodonfx.domain.Toot;
+import eus.ehu.txipironesmastodonfx.domain.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 
+import javax.accessibility.AccessibleComponent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -306,6 +306,58 @@ public class MainWindowController implements WindowController {
         });
     }
 
+    /**
+     * Sets the list view to show the profile of the current logged in user
+     */
+    @FXML
+    void profileListView() {
+
+        listViewItems.clear();
+        listViewItems.add("Loading...");
+        showLoading();
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            Account account;
+            // Here, the id parameter is going to control which toots
+            // from which are going to be downloaded
+                    account = APIAccessManager.getAccount(authenticatedId, token);
+                    return account;
+        }, account -> {
+            listViewItems.clear();
+            if (account == null) {
+                listViewItems.add("Error downloading profile . Please check your connection and try again.");
+                return;
+            }
+
+            hideLoading();
+            listViewItems.add("Profile");
+            listViewItems.add(account);
+        });
+
+                    AsyncUtils.asyncTask(() -> {
+                        if (!NetworkUtils.hasInternet()) return null;
+                        List<Toot> toots;
+                        // Here, the id parameter is going to control which toots
+                        // from which are going to be downloaded
+                        try {
+                            toots = APIAccessManager.getProfileToots(authenticatedId, token);
+                        } catch (IOException e) {
+                            toots = null;
+                        }
+                        return toots;
+                    }, toots -> {
+
+                        if (toots == null) {
+                            listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
+                            return;
+                        }
+
+            listViewItems.add("Post and replies");
+            listViewItems.addAll(toots);
+        });
+
+
+    }
 
 
 
@@ -348,6 +400,11 @@ public class MainWindowController implements WindowController {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
                     setGraphic(c.getUI());
+                }else if (item instanceof Account) {
+                    setText(null);
+                    ProfileCellControllers c = new ProfileCellControllers((Account) item, thisclass);
+                    setGraphic(c.getUI());
+
                 }
                 // Remove horizontal scrollbar for each item that we load
                 // (Yes! necessary!) for each item, because the list view
