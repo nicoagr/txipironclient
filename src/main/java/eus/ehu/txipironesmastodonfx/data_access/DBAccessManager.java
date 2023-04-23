@@ -1,7 +1,6 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
 import eus.ehu.txipironesmastodonfx.domain.Account;
-import eus.ehu.txipironesmastodonfx.data_access.*;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
 import java.io.File;
@@ -271,15 +270,29 @@ public class DBAccessManager {
      * This method will return the config
      * settings of the client for the local user
      *
+     * @param settingName (String) - The name of the setting
+     * @param settingType (Object) - The type of the setting
      * @return (List < Object >) - The settings
      */
-    public static List<Object> getSettings() throws SQLException {
-        ResultSet rs = executeQuery("SELECT * FROM clientsettings", null);
-        List<Object> list = new ArrayList<>();
+    public static Object getSetting(String settingName, Object settingType) throws SQLException {
+        ResultSet rs = executeQuery("SELECT " + settingName + " FROM clientsettings", null);
+        Object obj = null;
         // we use if and not while because we'll only have 1 row
         if (rs.next()) {
-            list.add(rs.getBoolean("autoplaymedia"));
+            if (settingType instanceof String) {
+                obj = rs.getString(settingName);
+            } else if (settingType instanceof Integer) {
+                obj = rs.getInt(settingName);
+            } else if (settingType instanceof Boolean) {
+                obj = rs.getBoolean(settingName);
+            } else if (settingType instanceof Long) {
+                obj = rs.getLong(settingName);
+            } else if (settingType instanceof Double) {
+                obj = rs.getDouble(settingName);
+            } else if (settingType instanceof Float) {
+                obj = rs.getFloat(settingName);
+            }
         }
-        return (list.size() != 0) ? list : null;
+        return obj;
     }
 }

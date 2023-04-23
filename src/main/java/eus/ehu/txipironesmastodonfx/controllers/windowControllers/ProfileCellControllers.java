@@ -88,17 +88,13 @@ public class ProfileCellControllers {
             bannerPic.setSmooth(true);
             bannerPic.setCache(true);
 
-// Bind the fitWidth and fitHeight properties to the width and height of the bannerPic
-
-
-
-            this.username.setText(account.id);
-            this.name.setText(account.acct);
+            this.username.setText("@" + account.acct);
+            this.name.setText(account.display_name);
             this.numPost.setText(String.valueOf(account.statuses_count));
             this.numFollowers.setText(String.valueOf(account.followers_count));
             this.numFollowing.setText(String.valueOf(account.following_count));
             List<Text> texts = new ArrayList<>();
-            for(String string: HTMLParser.parseHTML(account.note)){
+            for (String string : HTMLParser.parseHTML(account.note)) {
                 Text text = new Text(string);
                 texts.add(text);
                 texts.add(new Text(" "));

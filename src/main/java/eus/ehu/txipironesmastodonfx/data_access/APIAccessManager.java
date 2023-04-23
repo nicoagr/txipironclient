@@ -131,7 +131,6 @@ public class APIAccessManager {
         return gson.fromJson(response, Account.class);
     }
 
-
     /**
      * Method to perform a search on the mastodon servers.
      * It will return a SearchResult object with the results.
@@ -217,9 +216,6 @@ public class APIAccessManager {
         return result;
     }
 
-
-
-
     /**
      * Method to post a toot, NOT FINISHED
      *
@@ -297,31 +293,4 @@ public class APIAccessManager {
         }
         return result;
     }
-
-    /**
-     *  Obtains the list of views of  a user wich is introduced as parameter
-     *
-     * @param token (String) - token of the account
-     * @return (List<Toot>) - the list of views of a user
-     * @return (String) - The response of the request - Usually formatted as json
-     */
-    public static List<Toot> getTootFromUsername(String username, String token) throws IOException {
-        String aBorrar;
-        String response = null;
-        try {
-            response = requestNoToken("accounts/lookup?acct=" + username);
-        } catch (IOException e) {
-            return null;
-        }
-        if (response == null || response.equals("")) {
-            // token is invalid
-            return null;
-        }
-
-        aBorrar = gson.fromJson(response, Account.class).id;
-
-
-        return getTootId(aBorrar,token);
-    }
-
 }

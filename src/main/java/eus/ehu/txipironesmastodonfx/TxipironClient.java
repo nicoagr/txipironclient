@@ -91,6 +91,10 @@ public class TxipironClient extends Application {
         launch();
     }
 
+    public void setStageTitle(String title) {
+        stage.setTitle(title);
+    }
+
     /**
      * Dinamically Change Scenes on-the-fly.
      * Will change the scene to the one passed as parameter.
@@ -101,11 +105,11 @@ public class TxipironClient extends Application {
     public void changeScene(String sceneName, List<Object> result) {
         switch (sceneName) {
             case "Auth" -> {
-                stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
+                setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
                 scene.setRoot(authWindow.ui);
             }
             case "Main" -> {
-                stage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
+                setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
                 scene.setRoot(mainWindow.ui);
                 mainWindow.controller.setRefTokenId(result);
                 mainWindow.controller.homeListView();

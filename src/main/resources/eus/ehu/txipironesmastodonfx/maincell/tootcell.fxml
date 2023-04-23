@@ -8,18 +8,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="anchor" prefHeight="151.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-    <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0" onMouseClicked="#profilePIctureClicked" onMousePressed="#profilePIctureClicked" pickOnBounds="true" preserveRatio="true" />
-    <Label fx:id="username" layoutX="22.0" layoutY="122.0" onMouseClicked="#usernameClicked" text="\@username" textFill="#0645ad" underline="true" />
-    <Label fx:id="date" layoutX="670.0" layoutY="13.0" text="Loading..." />
-    <Label fx:id="numLikes" layoutX="548.0" layoutY="121.0" text="Likes" />
-    <Label fx:id="numReboots" layoutX="616.0" layoutY="122.0" text="Reboots" />
-    <Label fx:id="numComments" layoutX="679.0" layoutY="122.0" text="Comments" />
-    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="517.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../mainassets/black-heart_160.png" />
+<AnchorPane fx:id="anchor" prefHeight="151.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0"
+               onMouseClicked="#profilePictureClicked" onMousePressed="#profilePictureClicked" pickOnBounds="true"
+               preserveRatio="true"/>
+    <Label fx:id="username" layoutX="22.0" layoutY="122.0" onMouseClicked="#usernameClicked" text="\@username"
+           textFill="#0645ad" underline="true"/>
+    <Label fx:id="date" layoutX="670.0" layoutY="13.0" text="Loading..."/>
+    <Label fx:id="numLikes" layoutX="548.0" layoutY="121.0" text="Likes"/>
+    <Label fx:id="numReboots" layoutX="616.0" layoutY="122.0" text="Reboots"/>
+    <Label fx:id="numComments" layoutX="679.0" layoutY="122.0" text="Comments"/>
+    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="517.0" layoutY="117.0" pickOnBounds="true"
+               preserveRatio="true">
+        <Image url="@../mainassets/black-heart_160.png"/>
     </ImageView>
-    <ImageView fitHeight="30.0" fitWidth="25.0" layoutX="584.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../mainassets/dark-retweet-512.png" />
+    <ImageView fitHeight="30.0" fitWidth="25.0" layoutX="584.0" layoutY="117.0" pickOnBounds="true"
+               preserveRatio="true">
+        <Image url="@../mainassets/dark-retweet-512.png"/>
     </ImageView>
     <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="649.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../mainassets/dark-comment-512.png" />
