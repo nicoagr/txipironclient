@@ -291,6 +291,7 @@ public class MainWindowController implements WindowController {
     public void userTootListViewFromId(String id, String username) {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             Account account;
@@ -304,9 +305,6 @@ public class MainWindowController implements WindowController {
                 listViewItems.add("Error downloading profile . Please check your connection and try again.");
                 return;
             }
-
-
-
             listViewItems.add(account);
         });
         AsyncUtils.asyncTask(() -> {
@@ -328,6 +326,7 @@ public class MainWindowController implements WindowController {
             }
 
             listViewItems.addAll(toots);
+            hideLoading();
         });
     }
 
@@ -353,13 +352,9 @@ public class MainWindowController implements WindowController {
                 listViewItems.add("Error downloading profile . Please check your connection and try again.");
                 return;
             }
-
-
-
             listViewItems.add(account);
         });
-
-                    AsyncUtils.asyncTask(() -> {
+                AsyncUtils.asyncTask(() -> {
                         if (!NetworkUtils.hasInternet()) return null;
                         List<Toot> toots;
                         // Here, the id parameter is going to control which toots

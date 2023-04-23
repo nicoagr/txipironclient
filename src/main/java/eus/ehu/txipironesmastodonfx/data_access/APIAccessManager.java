@@ -271,11 +271,38 @@ public class APIAccessManager {
 
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
     }
+    /**
+     * Generic method to perform a request to the
+     * mastodon API without token. The endpoint must be formated by the part
+     * that comes after "https://mastodon.social/api/v1/"
+     *
+     * @param endpoint (String) - The endpoint to request
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    private static String requestNoToken(String endpoint) throws IOException {
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v1/" + endpoint)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     /**
      *  Obtains the list of views of  a user wich is introduced as parameter
      *
-     * @param String username   - Mastodon account token
+     * @param token (String) - token of the account
+     * @return (List<Toot>) - the list of views of a user
      * @return (String) - The response of the request - Usually formatted as json
      */
     public static List<Toot> getTootFromUsername(String username, String token) throws IOException {
@@ -294,7 +321,7 @@ public class APIAccessManager {
         aBorrar = gson.fromJson(response, Account.class).id;
 
 
-        return getProfileToots(aBorrar,token);
+        return getTootId(aBorrar,token);
     }
 
 }
