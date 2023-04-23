@@ -9,7 +9,7 @@
 <?import javafx.scene.text.TextFlow?>
 
 <AnchorPane fx:id="anchor" prefHeight="151.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-    <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0" onMouseClicked="#profilePIctureClicked" onMousePressed="#profilePIctureClicked" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0" onMouseClicked="#profilePictureClicked" onMousePressed="#profilePictureClicked" pickOnBounds="true" preserveRatio="true" />
     <Label fx:id="username" layoutX="22.0" layoutY="122.0" onMouseClicked="#usernameClicked" text="\@username" textFill="#605f5f" />
     <Label fx:id="date" layoutX="670.0" layoutY="13.0" text="Loading..." />
     <Label fx:id="numLikes" layoutX="548.0" layoutY="121.0" text="Likes" />
