@@ -9,7 +9,6 @@ import okhttp3.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +73,7 @@ public class APIAccessManager {
     public static List<Toot> getTootId(String selectedAccId, String token) throws IOException {
         String response = request("accounts/" + selectedAccId + "/statuses", token);
 
-        if (response.equals("")) {
+        if (response == null || response.equals("")) {
             // token is invalid
             return null;
         }
@@ -296,12 +295,12 @@ public class APIAccessManager {
     }
 
     /**
-     *  Obtains the list of views of  a user wich is introduced as parameter
+     * Obtains the list of views of  a user wich is introduced as parameter
      *
      * @param username (String)  - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    public static List<Toot> getTootFromUsername(String username, String token) throws IOException {
+    public static String getIdFromUsername(String username, String token) throws IOException {
         String aBorrar;
         String response = null;
         try {
@@ -313,8 +312,7 @@ public class APIAccessManager {
             // token is invalid
             return null;
         }
-        aBorrar = gson.fromJson(response, Account.class).id;
-        return getTootId(aBorrar,token);
+        return gson.fromJson(response, Account.class).id;
     }
 
     /**
@@ -346,11 +344,11 @@ public class APIAccessManager {
      * Obtains the list of views of  a user wich is introduced as parameter
      *
      * @param selectedAccId (String) - id of the account
-     * @param token (String) - token of the account
-     * @return (List<Toot>) - the list of views of a user
+     * @param token         (String) - token of the account
+     * @return (List < Toot >) - the list of views of a user
      * @throws IOException - if the request can't be made
      */
-    public static List<Toot> getAllTootsId(String selectedAccId, String token) throws IOException {
+    public static List<Toot> getHomeTootsId(String selectedAccId, String token) throws IOException {
         String response = request("timelines/home", token);
 
 

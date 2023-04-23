@@ -103,7 +103,7 @@ public class TootCellController {
      */
     @FXML
     void usernameClicked() {
-        master.userTootListViewFromId(Id);
+        master.userTootListView(username.getText());
     }
 
     /**
@@ -111,7 +111,7 @@ public class TootCellController {
      */
     @FXML
     void profilePictureClicked() {
-        master.userTootListViewFromId(Id);
+        master.userTootListView(username.getText());
     }
 
     /**

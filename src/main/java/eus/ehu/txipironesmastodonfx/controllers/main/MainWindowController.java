@@ -241,7 +241,7 @@ public class MainWindowController implements WindowController {
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
             try {
-                toots = APIAccessManager.getAllTootsId(authenticatedId, token);
+                toots = APIAccessManager.getHomeTootsId(authenticatedId, token);
             } catch (IOException e) {
                 toots = null;
             }
@@ -344,12 +344,39 @@ public class MainWindowController implements WindowController {
 
 
     /**
+     * Sets the list view to show the toots of the current logged in user
+     */
+    @FXML
+    public void userTootListView(String username) {
+        listViewItems.clear();
+        listViewItems.add("Loading...");
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            String id;
+            // Here, the id parameter is going to control which toots
+            // from which are going to be downloaded
+            try {
+                id = APIAccessManager.getIdFromUsername(username, token);
+            } catch (IOException e) {
+                id = null;
+            }
+            return id;
+        }, id -> {
+            if (id == null) {
+                listViewItems.add("Error getting id from account. Please check your connection and try again.");
+                return;
+            }
+            userTootListViewFromId(id);
+        });
+    }
+
+    /**
      * Initializes the list view
      */
     @FXML
     void initialize() {
         MainWindowController thisclass = this;
-        listView.setCellFactory(param -> new ListCell<>(){
+        listView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);
