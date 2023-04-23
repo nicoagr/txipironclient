@@ -66,7 +66,6 @@ public class DBAccessManager {
         dbPointer.createNewFile();
     }
 
-
     /**
      * This method will create the tables needed for the application.
      * If the tables already exist, it will send the queries,

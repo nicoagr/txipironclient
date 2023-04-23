@@ -66,6 +66,8 @@ public class TootCellController {
     @FXML
     private Hyperlink viewMediaTxt;
     @FXML
+    private ImageView likes;
+    @FXML
     private Label numLikes;
     @FXML
     private Label numReboots;
@@ -94,9 +96,6 @@ public class TootCellController {
         }
         setReference(master);
     }
-
-
-
 
     /**
      * Method to change to the toots of the user who posted that toot
@@ -146,6 +145,10 @@ public class TootCellController {
                 }
         );
         AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
+        if (toot.favourited)
+            likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+        else
+            likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
         numLikes.setText(Integer.toString(finalToot.favourites_count));
         if (finalToot.sensitive)
             sensitiveImg.setVisible(true);
@@ -339,5 +342,15 @@ public class TootCellController {
     public void setReference(MainWindowController thisclass) {
         this.master = thisclass;
     }
-    
+
+    /*@FXML
+    void likedModified() {
+        if (liked) {
+            likeImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-like.png")));
+            liked = false;
+        } else {
+            likeImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-like-active.png")));
+            liked = true;
+        }
+    }*/
 }
