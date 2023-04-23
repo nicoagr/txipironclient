@@ -68,7 +68,7 @@ public class APIAccessManager {
      *
      * @throws IOException - When the request can't be made
      */
-    public static List<Toot> getProfileToots(String selectedAccId, String token) throws IOException {
+    public static List<Toot> getTootId(String selectedAccId, String token) throws IOException {
         String response = request("accounts/" + selectedAccId + "/statuses", token);
 
         if (response.equals("")) {
@@ -219,36 +219,6 @@ public class APIAccessManager {
 
 
 
-    /**
-     * Generic method to perform a request to the
-     * mastodon API without token. The endpoint must be formated by the part
-     * that comes after "https://mastodon.social/api/v1/"
-     *
-     * @param endpoint (String) - The endpoint to request
-     * @return (String) - The response of the request - Usually formatted as json
-     */
-    private static String requestNoToken(String endpoint) throws IOException {
-        String result = null;
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("https://mastodon.social/api/v1/" + endpoint)
-                .get()
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.code() == 200 && response.body() != null) {
-                result = response.body().string();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-
-
-
 
     /**
      * Method to post a toot, NOT FINISHED
@@ -303,29 +273,5 @@ public class APIAccessManager {
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
     }
 
-    /**
-     *  Obtains the list of views of  a user wich is introduced as parameter
-     *
-     * @param token (String) - token of the account
-     * @param username (String) - username of the user
-     * @return (String) - The response of the request - Usually formatted as json
-     */
-    public static List<Toot> getTootFromUsername(String username, String token) throws IOException {
-        String aBorrar;
-        String response = null;
-        try {
-            response = requestNoToken("accounts/lookup?acct=" + username);
-        } catch (IOException e) {
-            return null;
-        }
-        if (response == null || response.equals("")) {
-            // token is invalid
-            return null;
-        }
 
-        aBorrar = gson.fromJson(response, Account.class).id;
-
-
-        return getProfileToots(aBorrar,token);
-    }
 }
