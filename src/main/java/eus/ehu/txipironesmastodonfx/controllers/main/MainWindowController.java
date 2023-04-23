@@ -330,7 +330,7 @@ public class MainWindowController implements WindowController {
             }
 
 
-            listViewItems.add("Profile");
+
             listViewItems.add(account);
         });
 
