@@ -131,7 +131,6 @@ public class APIAccessManager {
         return gson.fromJson(response, Account.class);
     }
 
-
     /**
      * Method to perform a search on the mastodon servers.
      * It will return a SearchResult object with the results.
@@ -217,8 +216,6 @@ public class APIAccessManager {
         return result;
     }
 
-
-
     /**
      * Generic method to perform a request to the
      * mastodon API without token. The endpoint must be formated by the part
@@ -245,10 +242,6 @@ public class APIAccessManager {
         }
         return result;
     }
-
-
-
-
 
     /**
      * Method to post a toot, NOT FINISHED
@@ -290,7 +283,7 @@ public class APIAccessManager {
      */
     public static List<Toot> getLikedToots(String token) throws IOException{
         String response = request("/favourites", token);
-        if (response.equals("")) {
+        if (response == null || response.equals("")) {
             // token is invalid
             return null;
         }
@@ -321,13 +314,31 @@ public class APIAccessManager {
         return getProfileToots(aBorrar,token);
     }
 
-    /*public static void addFavouriteToot(String selectedAccId, String token) throws IOException {
-        String response = request("statuses/" + selectedAccId + "/favourite", token);
-
-        if (response.equals("")) {
-            // token is invalid
-            //return null;
+    /**
+     * Method to add a favourite toot to the list of favourites
+     *
+     * @param tootId (String) - The id of the account
+     * @param token (String) - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static String addFavouriteToot(String tootId, String token){
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        RequestBody req = RequestBody.create(null, "");
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v1/statuses/"+tootId+"/favourite")
+                .post(req)
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+        try{
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+            }
         }
-    }*/
-
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

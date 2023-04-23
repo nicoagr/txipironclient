@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+import eus.ehu.txipironesmastodonfx.data_access.*;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
@@ -347,8 +348,13 @@ public class TootCellController {
 
     @FXML
     void likedModified() {
-        numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
-        likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
-        likes.setDisable(true);
+        if(APIAccessManager.addFavouriteToot(Id, master.token)!=null){
+            int index = master.listViewItems.indexOf(new Toot(Id));
+            ((Toot) master.listViewItems.get(index)).favourited=true;
+            ((Toot) master.listViewItems.get(index)).favourites_count++;
+            numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
+            likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+            likes.setDisable(true);
+        }
     }
 }

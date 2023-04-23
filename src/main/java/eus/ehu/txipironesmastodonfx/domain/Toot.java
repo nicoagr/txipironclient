@@ -38,6 +38,9 @@ public class Toot {
         public String id;
         public String username;
     }
+    public Toot (String id){
+        this.id = id;
+    }
 
     /**
      * For quick testing and debugging,
@@ -65,5 +68,9 @@ public class Toot {
                 ", media_attachments=" + media_attachments +
                 ", mentions=" + mentions +
                 '}';
+    }
+
+    public boolean equals(Toot toot){
+        return this.id.equals(toot.id);
     }
 }
