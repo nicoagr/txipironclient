@@ -58,17 +58,14 @@ public class ProfileCellControllers {
         private TextFlow description;
 
 
-        @FXML
-        void profilePIctureClicked() {
 
-        }
 
         /**
          * Constructor for the profile cell controller
          *
          * @param master (MainWindowController) - The reference to the main window controller
          */
-        public ProfileCellControllers(Account account, MainWindowController master) {
+        public ProfileCellControllers( MainWindowController master) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/profileCell.fxml"));
             fxmlLoader.setController(this);
             try {
@@ -77,7 +74,10 @@ public class ProfileCellControllers {
                 e.printStackTrace();
             }
             setReference(master);
-            // set the values for the account cell
+        }
+
+
+        public void loadAccount(Account account){
 
             this.username.setText(account.id);
             this.name.setText(account.acct);
@@ -100,11 +100,19 @@ public class ProfileCellControllers {
 
                     }
             );
-            Image imgg = new Image(account.header);
-            this.bannerPic.setImage(imgg);
+
+            AsyncUtils.asyncTask(() ->
+                    {
+                        Image imgg = null;
+                        if (NetworkUtils.hasInternet())
+                            imgg = new Image(account.header);
+                        return imgg;
+                    }, param -> {
+                        if (param != null) bannerPic.setImage(param);
+
+                    }
+            );
         }
-
-
 
         @FXML
         void initialize() {

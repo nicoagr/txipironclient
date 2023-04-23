@@ -329,7 +329,7 @@ public class MainWindowController implements WindowController {
                 return;
             }
 
-            hideLoading();
+
             listViewItems.add("Profile");
             listViewItems.add(account);
         });
@@ -354,6 +354,7 @@ public class MainWindowController implements WindowController {
 
             listViewItems.add("Post and replies");
             listViewItems.addAll(toots);
+            hideLoading();
         });
 
 
@@ -402,8 +403,17 @@ public class MainWindowController implements WindowController {
                     setGraphic(c.getUI());
                 }else if (item instanceof Account) {
                     setText(null);
-                    ProfileCellControllers c = new ProfileCellControllers((Account) item, thisclass);
-                    setGraphic(c.getUI());
+                    AsyncUtils.asyncTask(() ->
+                            {
+                    ProfileCellControllers p = new ProfileCellControllers( thisclass);
+                    return p;
+                            }, param -> {
+                        setGraphic(param.getUI());
+                        param.loadAccount((Account) item);
+
+                    }
+                );
+
 
                 }
                 // Remove horizontal scrollbar for each item that we load
