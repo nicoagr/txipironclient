@@ -4,7 +4,7 @@ import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
-import eus.ehu.txipironesmastodonfx.domain.Profile;
+
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;

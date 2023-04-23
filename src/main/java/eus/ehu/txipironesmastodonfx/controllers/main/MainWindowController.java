@@ -233,7 +233,7 @@ public class MainWindowController implements WindowController {
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
             try {
-                toots = APIAccessManager.getTootId(authenticatedId, token);
+                toots = APIAccessManager.getAllTootsId(authenticatedId, token);
             } catch (IOException e) {
                 toots = null;
             }
@@ -245,7 +245,7 @@ public class MainWindowController implements WindowController {
                 return;
             }
             hideLoading();
-            listViewItems.add("Profile toots");
+            listViewItems.add("Home");
             listViewItems.addAll(toots);
         });
     }
