@@ -36,8 +36,12 @@ import java.util.List;
 public class MainWindowController implements WindowController {
 
     private TxipironClient mainApp;
+
+    public String id;
+
     private Integer ref;
-    protected String authenticatedId;
+    public String authenticatedId;
+
     public String token;
     @FXML
     private ImageView icon;
@@ -215,9 +219,6 @@ public class MainWindowController implements WindowController {
             }
             hideLoading();
             listViewItems.add("Followers");
-            for(Follow f : follower) {
-                f.
-            }
             listViewItems.addAll(follower);
         });
     }

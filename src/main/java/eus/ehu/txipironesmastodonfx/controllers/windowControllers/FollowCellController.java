@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
@@ -14,6 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller class for the follow cell.
@@ -93,7 +96,26 @@ public class FollowCellController {
             e.printStackTrace();
         }
         this.setReference(master);
+        List<Follow> following= new ArrayList<>();
+        followButton.setText("Loading...");
         // set the values for the account cell
+        AsyncUtils.asyncTask(()->
+
+                APIAccessManager.getFollow(master.authenticatedId, master.token, true)
+
+        , param -> {
+
+                    if (param != null) {
+                        for (Follow f : param) {
+                            if (f.id.equals(follow.id)) {
+                                followButton.setText("Unfollow");
+                            }
+                        }
+                    }
+        }
+                );
+
+
         username.setText(follow.acct);
         id.setText(follow.id);
         idauxi = follow.id;
