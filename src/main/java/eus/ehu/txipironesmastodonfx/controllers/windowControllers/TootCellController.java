@@ -103,7 +103,7 @@ public class TootCellController {
      */
     @FXML
     void usernameClicked() {
-    master.userTootListViewFromUsername(username.getText());
+        master.userTootListViewFromId(Id,username.getText());;
     }
     /**
      * Method to change to the toots of the user who posted that toot
@@ -197,7 +197,11 @@ public class TootCellController {
 
                     return null;
                 }, param -> {
-                    System.out.println(element);
+                    for (Toot.Mention aux : mentions){
+                        if(aux.username.equals(element)){
+                            master.userTootListViewFromId(Id,username.getText());
+                        }
+                    }
                     master.userTootListViewFromUsername(element);
                 }));
             }
