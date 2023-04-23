@@ -31,7 +31,7 @@ public class HTMLParser {
      * Taken from the official mastodon code
      * https://github.com/mastodon/mastodon/blob/88ce59505e701763468c83b3ac352bcc4be553d9/app/models/account.rb#L65
      */
-    public static final Pattern USERNAME_PATTERN = Pattern.compile("(?<=^|[^\\/\\w])@(([a-z0-9_]+([a-z0-9_\\.-]+[a-z0-9_]+)?)(?:@[\\w\\.\\-]+[\\w]+)?)");
+    public static final Pattern USERNAME_PATTERN = Pattern.compile("(?<=^|[^\\/\\w])@(([a-zA-Z0-9_]+([a-zA-Z0-9_\\.-]+[a-zA-Z0-9_]+)?)(?:@[\\w\\.\\-]+[\\w]+)?)");
 
 
     /**
