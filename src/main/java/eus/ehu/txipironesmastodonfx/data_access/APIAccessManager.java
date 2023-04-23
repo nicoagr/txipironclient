@@ -277,8 +277,8 @@ public class APIAccessManager {
     }
 
     /**
-     *  Obtains the list of views of  a user wich is introduced as parameter
-     * @param String username   - Mastodon account token
+     *  Obtains the list of views of  a user which is introduced as parameter
+
      * @return (String) - The response of the request - Usually formatted as json
      */
     public static List<Toot> getTootFromUsername(String username, String token) throws IOException {

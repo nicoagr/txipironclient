@@ -46,7 +46,6 @@ public class TootCellController {
     private String uri;
     List<MediaAttachment> media;
     List<Toot.Mention> mentions;
-    private String idauxi;
     @FXML
     private ImageView sensitiveImg;
     @FXML
@@ -111,8 +110,7 @@ public class TootCellController {
      */
     @FXML
     void profilePIctureClicked() {
-        master.userTootListViewFromUsername(username.getText());
-
+        master.userTootListViewFromId(Id,username.getText());
     }
 
 

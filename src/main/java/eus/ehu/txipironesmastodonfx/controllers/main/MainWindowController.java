@@ -265,8 +265,10 @@ public class MainWindowController implements WindowController {
 
 
 
-    /*
-            * Sets the list view to show the toots of the current logged in user from an username
+
+
+    /**
+     * Sets the list view to show the toots of the current logged in user from an id
      */
     @FXML
     public void userTootListViewFromId(String id, String username) {
