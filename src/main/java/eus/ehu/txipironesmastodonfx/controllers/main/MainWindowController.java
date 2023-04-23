@@ -257,7 +257,7 @@ public class MainWindowController implements WindowController {
                 listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
                 return;
             }
-            listViewItems.add("Profile toots");
+            listViewItems.add("Toots of" + username);
             listViewItems.addAll(toots);
         });
     }
@@ -269,7 +269,7 @@ public class MainWindowController implements WindowController {
             * Sets the list view to show the toots of the current logged in user from an username
      */
     @FXML
-    public void userTootListViewFromId(String id) {
+    public void userTootListViewFromId(String id, String username) {
         listViewItems.clear();
         listViewItems.add("Loading...");
         AsyncUtils.asyncTask(() -> {
@@ -289,7 +289,7 @@ public class MainWindowController implements WindowController {
                 listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
                 return;
             }
-            listViewItems.add("Profile toots");
+            listViewItems.add("Toots of " + username);
             listViewItems.addAll(toots);
         });
     }

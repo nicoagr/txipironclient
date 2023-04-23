@@ -43,7 +43,7 @@ public class FollowCellController {
     @FXML
     void clickedThings() {
         System.out.println("adf");
-        master.userTootListViewFromId(idauxi);
+        master.userTootListViewFromId(idauxi, username.getText());
     }
 
 
@@ -53,8 +53,7 @@ public class FollowCellController {
      */
     @FXML
     void pickClick() {
-        System.out.println("adf");
-        master.userTootListViewFromId(idauxi);
+        master.userTootListViewFromId(idauxi, username.getText());
     }
 
     /**
