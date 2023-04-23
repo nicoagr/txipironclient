@@ -202,8 +202,7 @@ public class TootCellController {
                             master.userTootListViewFromId(Id,username.getText());
                             System.out.println("funciona");
                         }
-                        System.out.println(aux.username);
-                        System.out.println(element);
+
                     }
 
                 }));
