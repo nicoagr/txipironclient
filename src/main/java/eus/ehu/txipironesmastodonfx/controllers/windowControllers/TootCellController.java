@@ -345,14 +345,8 @@ public class TootCellController {
 
     @FXML
     void likedModified() {
-        //if (!toot.favourited) {
-            //likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
-            numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
-            likes.setDisable(true);
-        //}
-        /*else {
-            //likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-heart_160.png")));
-            numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
-        }*/
+        numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
+        likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+        likes.setDisable(true);
     }
 }
