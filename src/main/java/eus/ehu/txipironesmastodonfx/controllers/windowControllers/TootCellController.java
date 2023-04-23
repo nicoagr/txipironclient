@@ -198,11 +198,14 @@ public class TootCellController {
                     return null;
                 }, param -> {
                     for (Toot.Mention aux : mentions){
-                        if(aux.username.equals(element)){
+                        if(("@" +aux.username).equals(element) ){
                             master.userTootListViewFromId(Id,username.getText());
+                            System.out.println("funciona");
                         }
+                        System.out.println(aux.username);
+                        System.out.println(element);
                     }
-                    master.userTootListViewFromUsername(element);
+
                 }));
             }
             // HashTags
