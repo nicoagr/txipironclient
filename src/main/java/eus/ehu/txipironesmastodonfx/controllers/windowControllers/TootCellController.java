@@ -346,6 +346,11 @@ public class TootCellController {
         this.master = thisclass;
     }
 
+    /**
+     * This method controls the actions done after the favourite image is clicked
+     * If the toot is not favourited, it will add it to the favourites
+     * If the toot is already favourited, it will not do anything
+     */
     @FXML
     void likedModified() {
         if(APIAccessManager.addFavouriteToot(Id, master.token)==200){
