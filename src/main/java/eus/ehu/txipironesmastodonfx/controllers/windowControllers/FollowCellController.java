@@ -47,16 +47,27 @@ public class FollowCellController {
 
     /**
      * Button to follow or unfollow the user
-     * @param event (ActionEvent) - The event that triggers the method
      */
     @FXML
-    void onClickFollowButton(ActionEvent event) {
+    void onClickFollowButton() {
         if (followButton.getText().equals("Follow")) {
-
-            followButton.setText("Unfollow");
-        } else {
-
-            followButton.setText("Follow");
+            followButton.setText("Loading...");
+            AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, idauxi), param -> {
+                if (param == null) {
+                    followButton.setText("Error!");
+                } else {
+                    followButton.setText("Unfollow");
+                }
+            });
+        } else if (followButton.getText().equals("Unfollow")) {
+            followButton.setText("Loading...");
+            AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, idauxi), param -> {
+                if (param == null) {
+                    followButton.setText("Error!");
+                } else {
+                    followButton.setText("Follow");
+                }
+            });
         }
     }
 
@@ -96,26 +107,21 @@ public class FollowCellController {
             e.printStackTrace();
         }
         this.setReference(master);
-        List<Follow> following= new ArrayList<>();
         followButton.setText("Loading...");
-        // set the values for the account cell
-        AsyncUtils.asyncTask(()->
-
-                APIAccessManager.getFollow(master.authenticatedId, master.token, true)
-
-        , param -> {
-
-                    if (param != null) {
-                        for (Follow f : param) {
-                            if (f.id.equals(follow.id)) {
-                                followButton.setText("Unfollow");
-                            }
-                        }
-                    }
-        }
-                );
-
-
+        // set the values for the follow button
+        AsyncUtils.asyncTask(() -> {
+            List<Follow> following = APIAccessManager.getFollow(master.authenticatedId, master.token, true);
+            if (following == null) return "Error!";
+            for (Follow f : following) {
+                if (f.id.equals(follow.id)) {
+                    return "Unfollow";
+                }
+            }
+            return "Follow";
+        }, param -> {
+            if (!param.equals("Error!")) followButton.setDisable(false);
+            followButton.setText(param);
+        });
         username.setText(follow.acct);
         id.setText(follow.id);
         idauxi = follow.id;

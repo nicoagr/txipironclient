@@ -354,8 +354,8 @@ public class APIAccessManager {
         Request request = new Request.Builder()
                 .url("https://mastodon.social/api/v1/accounts/" + id + "/follow")
                 .addHeader("Authorization", "Bearer " + token)
+                .post(RequestBody.create(null, new byte[0]))
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             if (response.code() == 200 && response.body() != null) {
@@ -379,8 +379,8 @@ public class APIAccessManager {
         Request request = new Request.Builder()
                 .url("https://mastodon.social/api/v1/accounts/" + id + "/unfollow ")
                 .addHeader("Authorization", "Bearer " + token)
+                .post(RequestBody.create(null, new byte[0]))
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             if (response.code() == 200 && response.body() != null) {

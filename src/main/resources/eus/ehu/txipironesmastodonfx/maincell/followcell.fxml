@@ -18,5 +18,6 @@
          <Font size="13.0" />
       </font>
    </Label>
-   <Button fx:id="followButton" layoutX="629.0" layoutY="22.0" mnemonicParsing="false" onAction="#onClickFollowButton" prefHeight="45.0" prefWidth="122.0" text="Follow//TODO" />
+   <Button fx:id="followButton" disable="true" layoutX="629.0" layoutY="22.0" mnemonicParsing="false"
+           onAction="#onClickFollowButton" prefHeight="45.0" prefWidth="122.0" text="Loading..."/>
 </AnchorPane>
