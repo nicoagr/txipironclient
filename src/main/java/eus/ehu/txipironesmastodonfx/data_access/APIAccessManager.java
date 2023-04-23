@@ -342,6 +342,55 @@ public class APIAccessManager {
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), statusListType);
     }
 
+    /**
+     * Makes a request to the mastodon API to follow an account
+     * @param token (String) - token of the account
+     * @param id (String) - id of the account
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static String follow(String token,String id) {
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v1/accounts/" + id + "/follow")
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * Makes a request to the mastodon API to unfollow an account
+     * @param token (String) - token of the account
+     * @param id (String) - id of the account
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static String unfollow(String token,String id) {
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v1/accounts/" + id + "/unfollow ")
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 
 }

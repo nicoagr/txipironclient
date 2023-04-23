@@ -4,8 +4,10 @@ import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,7 +37,26 @@ public class FollowCellController {
     private Label id;
 
     @FXML
+    private Button followButton;
+
+    @FXML
     private Label username;
+
+    /**
+     * Button to follow or unfollow the user
+     * @param event (ActionEvent) - The event that triggers the method
+     */
+    @FXML
+    void onClickFollowButton(ActionEvent event) {
+        if (followButton.getText().equals("Follow")) {
+
+            followButton.setText("Unfollow");
+        } else {
+
+            followButton.setText("Follow");
+        }
+    }
+
 
     /**
      * goes to the profile of the user wich has been clicked

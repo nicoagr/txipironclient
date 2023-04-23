@@ -215,6 +215,9 @@ public class MainWindowController implements WindowController {
             }
             hideLoading();
             listViewItems.add("Followers");
+            for(Follow f : follower) {
+                f.
+            }
             listViewItems.addAll(follower);
         });
     }

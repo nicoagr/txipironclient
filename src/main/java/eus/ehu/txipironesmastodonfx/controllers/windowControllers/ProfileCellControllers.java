@@ -24,6 +24,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+/**
+ * Controller for the profile cell
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Xiomara Cáceces
+ * @author Marcos Chouciño
+ */
 public class ProfileCellControllers {
 
 
@@ -81,7 +89,11 @@ public class ProfileCellControllers {
             setReference(master);
         }
 
-
+    /**
+     * Method to set the reference to the main window controller
+     *
+     * @param account (Account) - The account to load
+     */
         public void loadAccount(Account account){
 
             bannerPic.setPreserveRatio(false);
