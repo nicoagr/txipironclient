@@ -200,7 +200,6 @@ public class TootCellController {
                     for (Toot.Mention aux : mentions){
                         if(("@" +aux.username).equals(element) ){
                             master.userTootListViewFromId(Id,username.getText());
-                            System.out.println("funciona");
                         }
 
                     }

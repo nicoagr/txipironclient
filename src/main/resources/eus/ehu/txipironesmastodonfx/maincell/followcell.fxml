@@ -10,7 +10,7 @@
    <children>
       <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" onMouseClicked="#pickClick" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="id" layoutX="111.0" layoutY="14.0" prefHeight="17.0" prefWidth="211.0" text="Id" wrapText="true" />
-      <Label fx:id="username" layoutX="111.0" layoutY="36.0" onMouseClicked="#clickedThings" text="\@username">
+      <Label fx:id="username" layoutX="111.0" layoutY="36.0" onMouseClicked="#clickedThings" text="\@username" textFill="#0645ad" underline="true">
          <font>
             <Font size="13.0" />
          </font>
