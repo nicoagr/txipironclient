@@ -128,7 +128,7 @@ public class TootCellController {
         }
         while (toot.reblog != null) toot = toot.reblog;
         // set the values for the toot cell
-        Id = toot.account.id;
+        Id = toot.id;
         username.setText("@" + toot.account.acct);
         imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         Toot finalToot = toot;
@@ -348,7 +348,7 @@ public class TootCellController {
 
     @FXML
     void likedModified() {
-        if(APIAccessManager.addFavouriteToot(Id, master.token)!=200){
+        if(APIAccessManager.addFavouriteToot(Id, master.token)==200){
             int j=-1;
             for (int i=0; i<master.listViewItems.size(); i++){
                 if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
