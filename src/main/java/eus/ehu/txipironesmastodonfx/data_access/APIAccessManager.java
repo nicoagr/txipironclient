@@ -8,6 +8,9 @@ import okhttp3.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -321,24 +324,21 @@ public class APIAccessManager {
      * @param token (String) - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    public static String addFavouriteToot(String tootId, String token){
-        String result = null;
-        OkHttpClient client = new OkHttpClient();
-        RequestBody req = RequestBody.create(null, "");
-        Request request = new Request.Builder()
-                .url("https://mastodon.social/api/v1/statuses/"+tootId+"/favourite")
-                .post(req)
-                .addHeader("Authorization", "Bearer " + token)
-                .build();
+    public static int addFavouriteToot(String tootId, String token) {
+        URL url = null;
+        int responseCode = 0;
         try{
-            Response response = client.newCall(request).execute();
-            if (response.code() == 200 && response.body() != null) {
-                result = response.body().string();
-            }
+            url = new URL("https://mastodon.social/api/v1/statuses/"+tootId+"/favourite");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            responseCode = conn.getResponseCode();
         }
-        catch (Exception e) {
+        catch (Exception e){
             e.printStackTrace();
         }
-        return result;
+
+        return responseCode;
+
     }
 }

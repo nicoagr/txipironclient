@@ -348,10 +348,16 @@ public class TootCellController {
 
     @FXML
     void likedModified() {
-        if(APIAccessManager.addFavouriteToot(Id, master.token)!=null){
-            int index = master.listViewItems.indexOf(new Toot(Id));
-            ((Toot) master.listViewItems.get(index)).favourited=true;
-            ((Toot) master.listViewItems.get(index)).favourites_count++;
+        if(APIAccessManager.addFavouriteToot(Id, master.token)!=200){
+            int j=-1;
+            for (int i=0; i<master.listViewItems.size(); i++){
+                if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                    j=i;
+                    break;
+                }
+            }
+            ((Toot) master.listViewItems.get(j)).favourited=true;
+            ((Toot) master.listViewItems.get(j)).favourites_count++;
             numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
             likes.setDisable(true);
