@@ -269,9 +269,32 @@ public class APIAccessManager {
 
 
 
-
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
     }
 
+    /**
+     *  Obtains the list of views of  a user wich is introduced as parameter
+     *
+     * @param String username   - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static List<Toot> getTootFromUsername(String username, String token) throws IOException {
+        String aBorrar;
+        String response = null;
+        try {
+            response = requestNoToken("accounts/lookup?acct=" + username);
+        } catch (IOException e) {
+            return null;
+        }
+        if (response == null || response.equals("")) {
+            // token is invalid
+            return null;
+        }
+
+        aBorrar = gson.fromJson(response, Account.class).id;
+
+
+        return getProfileToots(aBorrar,token);
+    }
 
 }
