@@ -91,7 +91,7 @@ public class HTMLParser {
      * @param e (Node) - Node to traverse
      * @return (List < String >) - list of strings with the text of the node
      */
-    public static List<String> traverseNode(Node e) {
+    private static List<String> traverseNode(Node e) {
         if (e instanceof TextNode) {
             return List.of(((TextNode) e).text());
         } else {
