@@ -7,12 +7,20 @@ public class APIAccessManagerTest {
 
     @Test
     public void checkIfCorrectTkn() {
+        // Read-only token from @nagr
+        String token = "QjkejVq_kjyeqY3D3ZyIUFuTtL8Dj1vPRcTA012KBRI";
         Assertions.assertNull(APIAccessManager.verifyAndGetId(null));
         Assertions.assertNull(APIAccessManager.verifyAndGetId(""));
-        // Read-only token from @nagr
-        String tkn = "QjkejVq_kjyeqY3D3ZyIUFuTtL8Dj1vPRcTA012KBRI";
         String idresult = "109897228835942792";
-        Assertions.assertEquals(idresult, APIAccessManager.verifyAndGetId(tkn));
+        Assertions.assertEquals(idresult, APIAccessManager.verifyAndGetId(token));
     }
+
+    @Test
+    public void getTootIdCheck() {
+        // Read-only token from @nagr
+        String token = "QjkejVq_kjyeqY3D3ZyIUFuTtL8Dj1vPRcTA012KBRI";
+        // Movidote, método mal hecho, hay que tratar las excepciones (Cuando param son null)
+    }
+
 
 }
