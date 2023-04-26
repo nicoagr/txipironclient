@@ -46,6 +46,7 @@
             <Button layoutY="484.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="185.0" text="Settings" />
          <Button fx:id="likedToots" layoutY="280.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="185.0" text="Liked toots" />
          <Button fx:id="profile" layoutY="350.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#profileListView" prefHeight="70.0" prefWidth="185.0" text="My profile" />
+         <Button fx:id="profile1" layoutX="1.0" layoutY="420.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#NotificationListView" prefHeight="70.0" prefWidth="185.0" text="Notifications " />
         </AnchorPane>
     </center>
 </BorderPane>

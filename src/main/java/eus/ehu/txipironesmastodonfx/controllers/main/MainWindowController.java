@@ -84,6 +84,16 @@ public class MainWindowController implements WindowController {
         listView.getSelectionModel().select(0);
     }
 
+
+
+    /**
+     * Loads the notification
+     */
+    @FXML
+    void NotificationListView() {
+
+    }
+
     /**
      * Gets the reference to the main application
      * @return

@@ -413,4 +413,22 @@ public class APIAccessManager {
     }
 
 
+
+
+    public static List<Notification> getNewNotification(String token) throws IOException {
+        String response = request("notifications", token);
+
+
+        if (response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        Type NotificationListType = new TypeToken<ArrayList<Notification>>() {
+        }.getType();
+        // get json array and then convert it to a list of Accounts
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
+    }
 }
+
+
+
