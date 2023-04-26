@@ -318,15 +318,40 @@ public class APIAccessManager {
     /**
      * Method to add a favourite toot to the list of favourites
      *
-     * @param tootId (String) - The id of the account
+     * @param tootId (String) - The id of the toot
      * @param token (String) - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    public static int addFavouriteToot(String tootId, String token) {
+    public static int favouriteToot(String tootId, String token) {
         URL url = null;
         int responseCode = 0;
         try{
             url = new URL("https://mastodon.social/api/v1/statuses/"+tootId+"/favourite");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return responseCode;
+
+    }
+
+    /**
+     * Method to delete a favourite toot from the list of favourites
+     *
+     * @param tootId (String) - The id of the toot
+     * @param token (String) - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static int unfavouriteToot(String tootId, String token) {
+        URL url = null;
+        int responseCode = 0;
+        try{
+            url = new URL("https://mastodon.social/api/v1/statuses/"+tootId+"/unfavourite");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", "Bearer " + token);

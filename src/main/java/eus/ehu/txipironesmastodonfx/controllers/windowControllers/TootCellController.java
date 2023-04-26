@@ -15,6 +15,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -22,9 +23,12 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -79,6 +83,7 @@ public class TootCellController {
     @FXML
     private ImageView imagen;
     private MainWindowController master;
+    private boolean fav;
 
     /**
      * Constructor for the controller.
@@ -130,6 +135,7 @@ public class TootCellController {
         // set the values for the toot cell
         Id = toot.id;
         username.setText("@" + toot.account.acct);
+        fav = toot.favourited;
         imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         Toot finalToot = toot;
         AsyncUtils.asyncTask(() ->
@@ -148,7 +154,6 @@ public class TootCellController {
         AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
         if (toot.favourited){
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
-            likes.setDisable(true);
         }
         else
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
@@ -355,19 +360,39 @@ public class TootCellController {
      */
     @FXML
     void likedModified() {
-        if(APIAccessManager.addFavouriteToot(Id, master.token)==200){
-            int j=-1;
-            for (int i=0; i<master.listViewItems.size(); i++){
-                if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
-                    j=i;
-                    break;
+        if(!fav){
+            if(APIAccessManager.favouriteToot(Id, master.token)==200){
+                int j=-1;
+                for (int i=0; i<master.listViewItems.size(); i++){
+                    if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                        j=i;
+                        break;
+                    }
                 }
+                ((Toot) master.listViewItems.get(j)).favourited=true;
+                ((Toot) master.listViewItems.get(j)).favourites_count++;
+                fav = true;
+                numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
+                likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+                //likes.setDisable(true);
             }
-            ((Toot) master.listViewItems.get(j)).favourited=true;
-            ((Toot) master.listViewItems.get(j)).favourites_count++;
-            numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
-            likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
-            likes.setDisable(true);
+        }
+        else{
+            if(APIAccessManager.unfavouriteToot(Id, master.token)==200){
+                int j=-1;
+                for (int i=0; i<master.listViewItems.size(); i++){
+                    if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                        j=i;
+                        break;
+                    }
+                }
+                ((Toot) master.listViewItems.get(j)).favourited=false;
+                ((Toot) master.listViewItems.get(j)).favourites_count--;
+                fav = false;
+                numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) - 1));
+                likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
+                //likes.setDisable(true);
+            }
         }
     }
 }
