@@ -2,9 +2,9 @@ package eus.ehu.txipironesmastodonfx.domain;
 
 public class Notification {
 
-    String id;
-    String type;
-    String created_at;
-    Account account;
-    Toot status;
+    public String id;
+    public String type;
+    public String created_at;
+    public Follow account;
+    public Toot status;
     }

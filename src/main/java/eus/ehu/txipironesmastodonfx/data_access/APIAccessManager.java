@@ -413,6 +413,12 @@ public class APIAccessManager {
     }
 
 
+    public static void clearNotification(String token) throws IOException{
+        String response = request("notifications/clear", token);
+        System.out.println("asdf");
+    }
+
+
 
 
     public static List<Notification> getNewNotification(String token) throws IOException {
@@ -425,7 +431,7 @@ public class APIAccessManager {
         }
         Type NotificationListType = new TypeToken<ArrayList<Notification>>() {
         }.getType();
-        // get json array and then convert it to a list of Accounts
+        // get json array and then convert it to a list of Notifications
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
     }
 }

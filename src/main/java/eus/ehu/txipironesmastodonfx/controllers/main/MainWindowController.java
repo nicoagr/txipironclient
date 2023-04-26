@@ -7,10 +7,7 @@ import eus.ehu.txipironesmastodonfx.data_access.*;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
-import eus.ehu.txipironesmastodonfx.domain.Account;
-import eus.ehu.txipironesmastodonfx.domain.Follow;
-import eus.ehu.txipironesmastodonfx.domain.SearchResult;
-import eus.ehu.txipironesmastodonfx.domain.Toot;
+import eus.ehu.txipironesmastodonfx.domain.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -90,10 +87,41 @@ public class MainWindowController implements WindowController {
      * Loads the notification
      */
     @FXML
-    void NotificationListView() {
-
+    void NotificationListView() throws IOException {
+        listViewItems.clear();
+        listViewItems.add("Loading...");
+        showLoading();
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Notification> notifications;
+            notifications = APIAccessManager.getNewNotification(token);
+            return notifications;
+        }, notifications -> {
+            listViewItems.clear();
+            if (notifications == null) {
+                listViewItems.add("Error downloading following. Please check your connection and try again.");
+                return;
+            }
+            hideLoading();
+            listViewItems.add("Notifications");
+            for (Notification element : notifications) {
+                if (element.type.equals("mention")) {
+                    listViewItems.add(element.account.acct + " has mention you :D");
+                    listViewItems.add(element.status);
+                } else if (element.type.equals("status")) {
+                    listViewItems.add(element.account.acct + ", has posted a toot    :P");
+                    listViewItems.add(element.status);
+                } else if (element.type.equals("follow")) {
+                    listViewItems.add(element.account.acct + ", has followed you");
+                    listViewItems.add(element.account);
+                } else if (element.type.equals("favorite")) {
+                    listViewItems.add(element.account.acct + ", has liked your toot :v");
+                    listViewItems.add(element.status);
+                }
+            }
+        });
+        APIAccessManager.clearNotification(token);
     }
-
     /**
      * Gets the reference to the main application
      * @return
