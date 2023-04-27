@@ -6,6 +6,7 @@ import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -88,12 +89,7 @@ public class AuthWindowController implements WindowController {
         errorLabel.setText("Loading Data...");
 
         // execute database and API access tasks asynchronously
-        AsyncUtils.asyncTask(() -> {
-            // get ref, token, id from account id
-            List<Object> result = DBAccessManager.getRefTokenFromId(selectedAccId);
-            // return the result
-            return result;
-        }, result -> {
+        AsyncUtils.asyncTask(() -> DBAccessManager.getRefTokenFromId(selectedAccId), result -> {
             // show login button again
             loginBtn.setVisible(true);
             accountListView.setVisible(true);
@@ -174,7 +170,7 @@ public class AuthWindowController implements WindowController {
         AsyncUtils.asyncTask(() -> {
                     // Check for internet connection
                     if (!NetworkUtils.hasInternet()) {
-                        errorLabel.setText("Error! No internet connection / Mastodon API Unreachable");
+                        Platform.runLater(() -> errorLabel.setText("Error! No internet connection / Mastodon API Unreachable"));
                     }
                     // Check if db file exists
                     if (!DBAccessManager.isDbReachable()) {
