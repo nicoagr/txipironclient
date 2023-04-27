@@ -360,7 +360,7 @@ public class TootCellController {
      */
     @FXML
     void likedModified() {
-        likes.setDisable(true);
+        likes.setVisible(false);
         if(!fav){
             if(APIAccessManager.favouriteToot(Id, master.token)==200){
                 AsyncUtils.asyncTask(() -> {
@@ -378,7 +378,7 @@ public class TootCellController {
                     fav = true;
                     numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
                     likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
-                    likes.setDisable(false);
+                    likes.setVisible(true);
                 });
             }
         }
@@ -399,7 +399,7 @@ public class TootCellController {
                     fav = false;
                     numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) - 1));
                     likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
-                    likes.setDisable(false);
+                    likes.setVisible(true);
                 });
             }
         }
