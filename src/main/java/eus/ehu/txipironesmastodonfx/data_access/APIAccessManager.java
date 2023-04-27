@@ -335,9 +335,7 @@ public class APIAccessManager {
         catch (Exception e){
             e.printStackTrace();
         }
-
         return responseCode;
-
     }
 
     /**
@@ -360,9 +358,7 @@ public class APIAccessManager {
         catch (Exception e){
             e.printStackTrace();
         }
-
         return responseCode;
-
     }
 
     /**
@@ -437,5 +433,25 @@ public class APIAccessManager {
         return result;
     }
 
+    /**
+     * Method to get the toots bookmarked by a user
+     * It will return a list of toots. If the request can't be made,
+     * it will return null.
+     *
+     * @param token         (String) - token of the account
+     * @return (List<Toot>) - the list of bookmarked toots
+     *
+     * @exception IOException - if the request can't be made
+     */
+    public static List<Toot> getBookmarkedToots(String token) throws IOException{
+        String response = request("/bookmarks", token);
+        if (response == null || response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        Type fTootListType = new TypeToken<ArrayList<Toot>>() {
+        }.getType();
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
+    }
 
 }

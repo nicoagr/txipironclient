@@ -194,24 +194,24 @@ public class MainWindowController implements WindowController {
      * Sets the list view to show the followers of the current logged in user
      */
     @FXML
-    void followerListView() {
+    void bookmarkedTootsListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
         showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
-            List<Follow> follower;
-            follower = APIAccessManager.getFollow(authenticatedId, token, false);
-            return follower;
-        }, follower -> {
+            List<Toot> toot;
+            toot = APIAccessManager.getBookmarkedToots(token);
+            return toot;
+        }, toot -> {
             listViewItems.clear();
-            if (follower == null) {
-                listViewItems.add("Error downloading followers. Please check your connection and try again.");
+            if (toot == null) {
+                listViewItems.add("Error downloading bookmarked toots. Please check your connection and try again.");
                 return;
             }
             hideLoading();
-            listViewItems.add("Followers");
-            listViewItems.addAll(follower);
+            listViewItems.add("Bookmarks");
+            listViewItems.addAll(toot);
         });
     }
 
@@ -219,7 +219,7 @@ public class MainWindowController implements WindowController {
      * Sets the list view to show the users that the current logged in user is following
      */
     @FXML
-    void followingListView() {
+    void rebootedTootsListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
         showLoading();
@@ -345,14 +345,6 @@ public class MainWindowController implements WindowController {
             listViewItems.addAll(toots);
             hideLoading();
         });
-    }
-
-    /**
-     * Sets the list view to show the profile of the current logged in user
-     */
-    @FXML
-    void profileListView() {
-        userTootListViewFromId(authenticatedId);
     }
 
 
