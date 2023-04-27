@@ -360,38 +360,47 @@ public class TootCellController {
      */
     @FXML
     void likedModified() {
+        likes.setDisable(true);
         if(!fav){
             if(APIAccessManager.favouriteToot(Id, master.token)==200){
-                int j=-1;
-                for (int i=0; i<master.listViewItems.size(); i++){
-                    if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
-                        j=i;
-                        break;
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
                     }
-                }
-                ((Toot) master.listViewItems.get(j)).favourited=true;
-                ((Toot) master.listViewItems.get(j)).favourites_count++;
-                fav = true;
-                numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
-                likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
-                //likes.setDisable(true);
+                    return j;
+                }, pos -> {
+                    ((Toot) master.listViewItems.get(pos)).favourited=true;
+                    ((Toot) master.listViewItems.get(pos)).favourites_count++;
+                    fav = true;
+                    numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
+                    likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+                    likes.setDisable(false);
+                });
             }
         }
         else{
             if(APIAccessManager.unfavouriteToot(Id, master.token)==200){
-                int j=-1;
-                for (int i=0; i<master.listViewItems.size(); i++){
-                    if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
-                        j=i;
-                        break;
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
                     }
-                }
-                ((Toot) master.listViewItems.get(j)).favourited=false;
-                ((Toot) master.listViewItems.get(j)).favourites_count--;
-                fav = false;
-                numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) - 1));
-                likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
-                //likes.setDisable(true);
+                    return j;
+                }, pos -> {
+                    ((Toot) master.listViewItems.get(pos)).favourited=false;
+                    ((Toot) master.listViewItems.get(pos)).favourites_count--;
+                    fav = false;
+                    numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) - 1));
+                    likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
+                    likes.setDisable(false);
+                });
             }
         }
     }
