@@ -16,6 +16,7 @@ public class Follow {
     public String id;
     public String acct;
     public String avatar;
+    public String display_name;
     public Boolean following;
 
     /**
@@ -25,11 +26,14 @@ public class Follow {
      *
      * @return String - A string representation of the object
      */
+    @Override
     public String toString() {
         return "Follow{" +
                 "id='" + id + '\'' +
                 ", acct='" + acct + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", display_name='" + display_name + '\'' +
+                ", following=" + following +
                 '}';
     }
 }

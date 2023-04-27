@@ -1,11 +1,10 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.data_access.*;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -15,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,13 +33,10 @@ public class FollowCellController {
     String idauxi;//porsi luego modificamos la otra, necesitamos esto para ir a su perfil
     @FXML
     private ImageView icon;
-
     @FXML
-    private Label id;
-
+    private Label displayNameTxt;
     @FXML
     private Button followButton;
-
     @FXML
     private Label username;
 
@@ -70,17 +65,6 @@ public class FollowCellController {
             });
         }
     }
-
-
-    /**
-     * goes to the profile of the user wich has been clicked
-     */
-    @FXML
-    void clickedThings() {
-        master.userTootListViewFromId(idauxi);
-    }
-
-
 
     /**
      * goes to the profile of the user wich has been clicked
@@ -122,9 +106,9 @@ public class FollowCellController {
             if (!param.equals("Error!")) followButton.setDisable(false);
             followButton.setText(param);
         });
-        username.setText(follow.acct);
-        id.setText(follow.id);
+        username.setText("@" + follow.acct);
         idauxi = follow.id;
+        displayNameTxt.setText(follow.display_name);
         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         AsyncUtils.asyncTask(() ->
                 {
