@@ -216,31 +216,6 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the list view to show the users that the current logged in user is following
-     */
-    @FXML
-    void rebootedTootsListView() {
-        listViewItems.clear();
-        listViewItems.add("Loading...");
-        showLoading();
-        AsyncUtils.asyncTask(() -> {
-            if (!NetworkUtils.hasInternet()) return null;
-            List<Follow> follower;
-            follower = APIAccessManager.getFollow(authenticatedId, token, true);
-            return follower;
-        }, follower -> {
-            listViewItems.clear();
-            if (follower == null) {
-                listViewItems.add("Error downloading following. Please check your connection and try again.");
-                return;
-            }
-            hideLoading();
-            listViewItems.add("Followers");
-            listViewItems.addAll(follower);
-        });
-    }
-
-    /**
      * Sets the list view to show the toots of the current logged in user
      */
     @FXML
@@ -388,10 +363,6 @@ public class MainWindowController implements WindowController {
                 if (empty || item == null) {
                     setText(null);
                     setGraphic(null);
-                } else if (item instanceof Follow) {
-                    setText(null);
-                    FollowCellController a = new FollowCellController((Follow) item, thisclass);
-                    setGraphic(a.getUI());
                 } else if (item instanceof Toot) {
                     setText(null);
                     TootCellController b = new TootCellController(thisclass);
