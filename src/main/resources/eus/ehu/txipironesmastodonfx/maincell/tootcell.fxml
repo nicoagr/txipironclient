@@ -41,5 +41,5 @@
         </cursor>
         <Image url="@../mainassets/sensitive.jpg" />
     </ImageView>
-   <ImageView fx:id="bookmarks" fitHeight="30.0" fitWidth="25.0" layoutX="706.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true" />
+   <ImageView fx:id="bookmarks" fitHeight="30.0" fitWidth="25.0" layoutX="706.0" layoutY="117.0" onMouseClicked="#bookmarkModified" pickOnBounds="true" preserveRatio="true" />
 </AnchorPane>

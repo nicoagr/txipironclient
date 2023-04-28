@@ -492,4 +492,57 @@ public class TootCellController {
             }
         }
     }
+
+    @FXML
+    void bookmarkModified(){
+        bookmarks.setVisible(false);
+        if(!bm){
+            if(APIAccessManager.bookmarkToot(Id, master.token)==200){
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
+                    }
+                    return j;
+                }, pos -> {
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).bookmarked=true;
+                        bm = true;
+                        bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-bookmark.png")));
+                        bookmarks.setVisible(true);
+                    }
+                    else {
+                        System.out.println("Error: Toot not found");
+                    }
+                });
+            }
+        }
+        else{
+            if(APIAccessManager.unbookmarkToot(Id, master.token)==200){
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
+                    }
+                    return j;
+                }, pos -> {
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).bookmarked=false;
+                        bm = false;
+                        bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-bookmark.png")));
+                        bookmarks.setVisible(true);
+                    }
+                    else {
+                        System.out.println("Error: Toot not found");
+                    }
+                });
+            }
+        }
+    }
 }
