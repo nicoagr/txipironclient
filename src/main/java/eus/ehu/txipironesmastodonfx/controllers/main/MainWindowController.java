@@ -211,6 +211,10 @@ public class MainWindowController implements WindowController {
                 return;
             }
             hideLoading();
+            if (toot.size() == 0) {
+                listViewItems.add("No bookmarked toots found");
+                return;
+            }
             listViewItems.add("Bookmarks");
             listViewItems.addAll(toot);
         });
@@ -273,6 +277,10 @@ public class MainWindowController implements WindowController {
                 return;
             }
             hideLoading();
+            if (toots.size() == 0) {
+                listViewItems.add("No liked toots found");
+                return;
+            }
             listViewItems.add("Liked toots");
             listViewItems.addAll(toots);
         });
