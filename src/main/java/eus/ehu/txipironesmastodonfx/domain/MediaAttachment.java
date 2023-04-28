@@ -14,4 +14,9 @@ public class MediaAttachment {
     public String type;
     public String url;
     public String description;
+
+    public MediaAttachment(String type, String url) {
+        this.type = type;
+        this.url = url;
+    }
 }

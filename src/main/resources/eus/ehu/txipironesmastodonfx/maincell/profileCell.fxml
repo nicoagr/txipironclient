@@ -10,8 +10,8 @@
 <AnchorPane fx:id="anchor" prefHeight="356.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1">
    <ImageView fx:id="bannerPic" fitHeight="160.0" fitWidth="795.0" pickOnBounds="true" preserveRatio="true"/>
-   <ImageView fx:id="profilePic" fitHeight="118.0" fitWidth="122.0" layoutX="49.0" layoutY="110.0" pickOnBounds="true"
-              preserveRatio="true"/>
+   <ImageView fx:id="profilePic" fitHeight="118.0" fitWidth="122.0" layoutX="49.0" layoutY="110.0"
+              onMouseClicked="#openProfilePic" pickOnBounds="true" preserveRatio="true"/>
    <Label fx:id="name" layoutX="213.0" layoutY="182.0" prefHeight="30.0" prefWidth="525.0" text="name">
       <font>
          <Font size="20.0"/>

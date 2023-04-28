@@ -7,8 +7,11 @@ import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
+import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -16,6 +19,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -72,6 +77,7 @@ public class ProfileCellControllers {
 
     @FXML
     private TextFlow description;
+    private String imageurl;
 
     /**
      * Constructor for the profile cell controller
@@ -118,8 +124,10 @@ public class ProfileCellControllers {
         AsyncUtils.asyncTask(() ->
                 {
                     Image img = null;
-                    if (NetworkUtils.hasInternet())
+                    if (NetworkUtils.hasInternet()) {
                         img = new Image(account.avatar);
+                        imageurl = account.avatar;
+                    }
                     return img;
                 }, param -> {
                     if (param != null) profilePic.setImage(param);
@@ -156,27 +164,52 @@ public class ProfileCellControllers {
 
     @FXML
     void onClickFollowButton() {
+        followButton.setDisable(true);
+        followButton.setText("Loading...");
         if (followButton.getText().equals("Follow")) {
-            followButton.setText("Loading...");
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, this.id), param -> {
                 if (param == null) {
                     followButton.setText("Error!");
                 } else {
                     followButton.setText("Unfollow");
+                    followButton.setDisable(false);
                 }
             });
         } else if (followButton.getText().equals("Unfollow")) {
-            followButton.setText("Loading...");
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, this.id), param -> {
                 if (param == null) {
                     followButton.setText("Error!");
                 } else {
                     followButton.setText("Follow");
+                    followButton.setDisable(false);
                 }
             });
         }
     }
 
+    @FXML
+    void openProfilePic() {
+        if (imageurl == null) return;
+        AsyncUtils.asyncTask(() -> {
+            // create the popup
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"));
+            Parent root = fxmlLoader.load();
+            MediaViewController contr = fxmlLoader.getController();
+            contr.setMedia(List.of(new MediaAttachment("image", imageurl)));
+            contr.setReference(master);
+            Scene scene = new Scene(root);
+            return List.of(scene, contr);
+        }, list -> {
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setScene((Scene) list.get(0));
+            popupStage.setResizable(false);
+            popupStage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Media Viewer");
+            popupStage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/mainassets/dark-media-512.png"));
+            ((MediaViewController) list.get(1)).setPopupStage(popupStage);
+            popupStage.showAndWait();
+        });
+    }
 
     /**
      * Getter for the UI (AnchorPane)
