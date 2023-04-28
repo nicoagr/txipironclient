@@ -445,7 +445,7 @@ public class APIAccessManager {
      * @param file  (File) -  file to upload
      * @return (String) - id of the uploaded media
      */
-    public static String uploadMedia(String token, File file) {
+    public static MediaAttachment uploadMedia(String token, File file) {
         String result = null;
         OkHttpClient client = new OkHttpClient();
         // Determine the MIME type based on the file extension
@@ -490,7 +490,15 @@ public class APIAccessManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return gson.fromJson(result, MediaAttachment.class).id;
+        return gson.fromJson(result, MediaAttachment.class);
+    }
+
+    public static boolean isMediaProcessed(String token, String mediaId) {
+        try {
+            return (request("media/" + mediaId, token) != null);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 }

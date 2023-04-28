@@ -5,11 +5,14 @@ import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
+import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
 import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -35,6 +38,8 @@ import java.util.regex.Matcher;
 public class PostTootController {
     private MainWindowController master;
     private List<File> paths;
+    @FXML
+    private Button pickFileBtn;
     @FXML
     private Label charLabel;
     @FXML
@@ -68,21 +73,40 @@ public class PostTootController {
             master.listViewItems.add("Error - Toots must not be empty and contain maximum 500 characters.");
             return;
         }
-        if (paths != null)
-            master.listViewItems.add("Uploading media...");
-        master.listViewItems.add("Posting toot...");
+        master.listViewItems.add("Processing...");
+        master.showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) {
                 return null;
             }
             List<String> mediaIds = null;
-            if (paths != null) {
+            if (paths != null && paths.size() != 0) {
+                // Upload media
                 mediaIds = new ArrayList<>();
+                MediaAttachment res;
+                Platform.runLater(() -> master.listViewItems.add("Uploading media..."));
                 for (File path : paths) {
-                    mediaIds.add(APIAccessManager.uploadMedia(master.token, path));
+                    res = APIAccessManager.uploadMedia(master.token, path);
+                    mediaIds.add(res.id);
+                }
+                boolean processed = false;
+                int time = 0;
+                // Check if media was processed correctly
+                Platform.runLater(() -> master.listViewItems.add("Waiting for server response..."));
+                while (!processed) {
+                    for (String id : mediaIds) {
+                        processed = processed || APIAccessManager.isMediaProcessed(master.token, id);
+                    }
+                    Thread.sleep(1000); // wait for 1 seconds
+                    time++;
+                    // wait 30 seconds before timeout
+                    if (time > 31) {
+                        return null;
+                    }
                 }
             }
             TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected(), mediaIds);
+            Platform.runLater(() -> master.listViewItems.add("Posting toot..."));
             return APIAccessManager.postToot(master.token, toot);
         }, res -> {
             if (res != null)
@@ -91,6 +115,7 @@ public class PostTootController {
                 master.listViewItems.clear();
                 master.listViewItems.add("Error when posting toot to the servers. Please check connection and try again.");
             }
+            master.hideLoading();
         });
     }
 
@@ -138,6 +163,12 @@ public class PostTootController {
      */
     @FXML
     void pickFileAction() {
+        if (paths != null && paths.size() > 0) {
+            paths.clear();
+            pickFileBtn.setText("Pick 1 Video or up to 4 Images to Attach");
+            selectTxt.setText("");
+            return;
+        }
         int MAX_IMAGES = 4;
         // Create a file chooser dialog
         FileChooser fileChooser = new FileChooser();
@@ -175,6 +206,9 @@ public class PostTootController {
                 }
                 if (paths.size() == 0)
                     selectTxt.setText("No matching files selected");
+                else {
+                    pickFileBtn.setText("Clear Selection");
+                }
             }
         }
     }
