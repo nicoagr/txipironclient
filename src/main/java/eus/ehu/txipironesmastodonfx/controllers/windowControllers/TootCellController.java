@@ -413,4 +413,55 @@ public class TootCellController {
         }
     }
 
+    /**
+     * This method controls the actions done after the reboot image is clicked
+     * If the toot is not rebooted, it will add it to the reboots
+     * If the toot is already rebooted, it will not do anything
+     */
+    @FXML
+    void rebootModified(){
+        reboot.setVisible(false);
+        if(!reblog){
+            if(APIAccessManager.reblogToot(Id, master.token)==200){
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
+                    }
+                    return j;
+                }, pos -> {
+                    ((Toot) master.listViewItems.get(pos)).reblogged=true;
+                    ((Toot) master.listViewItems.get(pos)).reblogs_count++;
+                    reblog = true;
+                    numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) + 1));
+                    reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-retweet-512.png")));
+                    reboot.setVisible(true);
+                });
+            }
+        }
+        else{
+            if(APIAccessManager.unreblogToot(Id, master.token)==200){
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
+                    }
+                    return j;
+                }, pos -> {
+                    ((Toot) master.listViewItems.get(pos)).reblogged=false;
+                    ((Toot) master.listViewItems.get(pos)).reblogs_count--;
+                    reblog = false;
+                    numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) - 1));
+                    reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
+                    reboot.setVisible(true);
+                });
+            }
+        }
+    }
 }

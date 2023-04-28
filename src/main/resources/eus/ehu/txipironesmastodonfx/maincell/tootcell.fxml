@@ -17,7 +17,7 @@
     <Label fx:id="numReboots" layoutX="616.0" layoutY="122.0" text="Reboots" />
     <Label fx:id="numComments" layoutX="679.0" layoutY="122.0" text="Comments" />
     <ImageView fx:id="likes" fitHeight="25.0" fitWidth="25.0" layoutX="517.0" layoutY="117.0" onMouseClicked="#likedModified" pickOnBounds="true" preserveRatio="true" />
-    <ImageView fx:id="reboot" fitHeight="30.0" fitWidth="25.0" layoutX="584.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="reboot" fitHeight="30.0" fitWidth="25.0" layoutX="584.0" layoutY="117.0" onMouseClicked="#rebootModified" pickOnBounds="true" preserveRatio="true" />
     <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="649.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../mainassets/dark-comment-512.png" />
     </ImageView>
