@@ -24,5 +24,5 @@
     <Label fx:id="taggedAcctTxt" layoutX="180.0" layoutY="244.0" text="None"/>
     <Label fx:id="selectTxt" layoutX="63.0" layoutY="300.0"/>
     <Button fx:id="pickFileBtn" layoutX="60.0" layoutY="271.0" mnemonicParsing="false" onAction="#pickFileAction"
-            prefHeight="26.0" prefWidth="279.0" text="Pick 1 Video or up to 4 Images to Attach"/>
+            prefHeight="26.0" prefWidth="226.0" text="Media Attachment (Optional)"/>
 </AnchorPane>

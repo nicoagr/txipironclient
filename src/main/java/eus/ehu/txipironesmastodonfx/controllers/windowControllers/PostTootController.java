@@ -10,16 +10,15 @@ import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import jfxtras.scene.control.LocalDateTimeTextField;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -56,6 +55,9 @@ public class PostTootController {
     private CheckBox sensitiveId;
     @FXML
     private TextArea content;
+    @FXML
+    private ComboBox<String> comboBox;
+
 
     /**
      * This method controls the actions
@@ -146,6 +148,24 @@ public class PostTootController {
             e.printStackTrace();
         }
         setReference(master);
+
+        // add toot schedule to anchor-pane
+        LocalDateTimeTextField ldtf = new LocalDateTimeTextField();
+        List<LocalDateTime> d = ldtf.disabledLocalDateTimes();
+        LocalDateTime now = LocalDateTime.now();
+        // Set the past 5 years as disabled dates
+        // Done for more user-friendliness. Actual check
+        // will be done later
+        for (int i = 1; i <= 365 * 5; i++) {
+            LocalDateTime pastDateTime = now.minusDays(i);
+            d.add(pastDateTime);
+        }
+        ldtf.setPrefWidth(226);
+        ldtf.setPrefHeight(26);
+        ldtf.setPromptText("Schedule toot (Optional)");
+        anchor.getChildren().add(ldtf);
+        anchor.setTopAnchor(ldtf, 271.0);
+        anchor.setLeftAnchor(ldtf, 300.0);
     }
 
     /**
@@ -165,7 +185,7 @@ public class PostTootController {
     void pickFileAction() {
         if (paths != null && paths.size() > 0) {
             paths.clear();
-            pickFileBtn.setText("Pick 1 Video or up to 4 Images to Attach");
+            pickFileBtn.setText("Media Attachment (Optional)");
             selectTxt.setText("");
             return;
         }
