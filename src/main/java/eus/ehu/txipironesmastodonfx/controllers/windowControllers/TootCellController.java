@@ -75,7 +75,11 @@ public class TootCellController {
     @FXML
     private Label numLikes;
     @FXML
+    private ImageView reboot;
+    @FXML
     private Label numReboots;
+    @FXML
+    private ImageView bookmarks;
     @FXML
     private TextFlow textFlow;
     @FXML
@@ -84,6 +88,8 @@ public class TootCellController {
     private ImageView imagen;
     private MainWindowController master;
     private boolean fav;
+    private boolean reblog;
+    private boolean bm;
 
     /**
      * Constructor for the controller.
@@ -135,7 +141,9 @@ public class TootCellController {
         // set the values for the toot cell
         Id = toot.id;
         username.setText("@" + toot.account.acct);
+        bm = toot.bookmarked;
         fav = toot.favourited;
+        reblog = toot.reblogged;
         imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         Toot finalToot = toot;
         AsyncUtils.asyncTask(() ->
@@ -152,15 +160,23 @@ public class TootCellController {
                 }
         );
         AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
-        if (toot.favourited){
+        if (toot.favourited)
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
-        }
         else
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
         numLikes.setText(Integer.toString(finalToot.favourites_count));
         if (finalToot.sensitive)
             sensitiveImg.setVisible(true);
+        if(toot.reblogged)
+            reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-retweet-512.png")));
+        else
+            reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
+
         numReboots.setText(Integer.toString(finalToot.reblogs_count));
+        if(toot.bookmarked)
+            bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-bookmark.png")));
+        else
+            bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-bookmark.png")));
         mentions = toot.mentions;
         numComments.setText(Integer.toString(finalToot.replies_count));
         uri = toot.uri;
@@ -373,8 +389,10 @@ public class TootCellController {
                     }
                     return j;
                 }, pos -> {
-                    ((Toot) master.listViewItems.get(pos)).favourited=true;
-                    ((Toot) master.listViewItems.get(pos)).favourites_count++;
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).favourited=true;
+                        ((Toot) master.listViewItems.get(pos)).favourites_count++;
+                    }
                     fav = true;
                     numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
                     likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
@@ -394,12 +412,118 @@ public class TootCellController {
                     }
                     return j;
                 }, pos -> {
-                    ((Toot) master.listViewItems.get(pos)).favourited=false;
-                    ((Toot) master.listViewItems.get(pos)).favourites_count--;
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).favourited=false;
+                        ((Toot) master.listViewItems.get(pos)).favourites_count--;
+                    }
                     fav = false;
                     numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) - 1));
                     likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
                     likes.setVisible(true);
+                });
+            }
+        }
+    }
+
+    /**
+     * This method controls the actions done after the reboot image is clicked
+     * If the toot is not rebooted, it will add it to the reboots
+     * If the toot is already rebooted, it will not do anything
+     */
+    @FXML
+    void rebootModified(){
+        reboot.setVisible(false);
+        if(!reblog){
+            if(APIAccessManager.reblogToot(Id, master.token)==200){
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
+                    }
+                    return j;
+                }, pos -> {
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).reblogged=true;
+                        ((Toot) master.listViewItems.get(pos)).reblogs_count++;
+                    }
+                    reblog = true;
+                    numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) + 1));
+                    reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-retweet-512.png")));
+                    reboot.setVisible(true);
+                });
+            }
+        }
+        else{
+            if(APIAccessManager.unreblogToot(Id, master.token)==200){
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
+                    }
+                    return j;
+                }, pos -> {
+                    if(pos!=-1) {
+                        ((Toot) master.listViewItems.get(pos)).reblogged=false;
+                        ((Toot) master.listViewItems.get(pos)).reblogs_count--;
+                    }
+                    reblog = false;
+                    numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) - 1));
+                    reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
+                    reboot.setVisible(true);
+                });
+            }
+        }
+    }
+
+    /**
+     * This method controls the actions done after the bookmark image is clicked
+     * If the toot is not bookmarked, it will add it to the bookmarks
+     * If the toot is already bookmarked, it will not do anything
+     */
+    @FXML
+    void bookmarkModified(){
+        bookmarks.setVisible(false);
+        if(!bm){
+            if(APIAccessManager.bookmarkToot(Id, master.token)==200){
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
+                    }
+                    return j;
+                }, pos -> {
+                    if(pos != -1) ((Toot) master.listViewItems.get(pos)).bookmarked=true;
+                    bm = true;
+                    bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-bookmark.png")));
+                    bookmarks.setVisible(true);
+                });
+            }
+        }
+        else{
+            if(APIAccessManager.unbookmarkToot(Id, master.token)==200){
+                AsyncUtils.asyncTask(() -> {
+                    int j=-1;
+                    for (int i=0; i<master.listViewItems.size(); i++){
+                        if(master.listViewItems.get(i) instanceof Toot && ((Toot) master.listViewItems.get(i)).id.equals(Id)){
+                            j=i;
+                            break;
+                        }
+                    }
+                    return j;
+                }, pos -> {
+                    if(pos!=-1) ((Toot) master.listViewItems.get(pos)).bookmarked=false;
+                    bm = false;
+                    bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-bookmark.png")));
+                    bookmarks.setVisible(true);
                 });
             }
         }

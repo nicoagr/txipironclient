@@ -454,4 +454,96 @@ public class APIAccessManager {
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
     }
 
+    /**
+     * Method to add a bookmarked toot to the list of bookmarks
+     *
+     * @param tootId (String) - The id of the toot
+     * @param token (String) - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static int bookmarkToot(String tootId, String token) {
+        URL url = null;
+        int responseCode = 0;
+        try{
+            url = new URL("https://mastodon.social/api/v1/statuses/"+tootId+"/bookmark");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return responseCode;
+    }
+
+    /**
+     * Method to delete a bookamrked toot from the list of bookmarks
+     *
+     * @param tootId (String) - The id of the toot
+     * @param token (String) - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static int unbookmarkToot(String tootId, String token) {
+        URL url = null;
+        int responseCode = 0;
+        try{
+            url = new URL("https://mastodon.social/api/v1/statuses/"+tootId+"/unbookmark");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return responseCode;
+    }
+
+    /**
+     * Method to add a rebooted toot to the list of reboots
+     *
+     * @param tootId (String) - The id of the toot
+     * @param token (String) - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static int reblogToot(String tootId, String token) {
+        URL url = null;
+        int responseCode = 0;
+        try{
+            url = new URL("https://mastodon.social/api/v1/statuses/"+tootId+"/reblog");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return responseCode;
+    }
+
+    /**
+     * Method to delete a rebooted toot from the list of reboots
+     *
+     * @param tootId (String) - The id of the toot
+     * @param token (String) - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static int unreblogToot(String tootId, String token) {
+        URL url = null;
+        int responseCode = 0;
+        try{
+            url = new URL("https://mastodon.social/api/v1/statuses/"+tootId+"/unreblog");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return responseCode;
+    }
+
 }
