@@ -1,7 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.data_access.*;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
@@ -12,9 +12,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,12 +34,15 @@ import java.util.regex.Matcher;
  */
 public class PostTootController {
     private MainWindowController master;
+    private List<File> paths;
     @FXML
     private Label charLabel;
     @FXML
     private ResourceBundle resources;
     @FXML
     private URL location;
+    @FXML
+    private Label selectTxt;
     @FXML
     private Label taggedAcctTxt;
     @FXML
@@ -62,12 +68,21 @@ public class PostTootController {
             master.listViewItems.add("Error - Toots must not be empty and contain maximum 500 characters.");
             return;
         }
+        if (paths != null)
+            master.listViewItems.add("Uploading media...");
         master.listViewItems.add("Posting toot...");
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) {
                 return null;
             }
-            TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected());
+            List<String> mediaIds = null;
+            if (paths != null) {
+                mediaIds = new ArrayList<>();
+                for (File path : paths) {
+                    mediaIds.add(APIAccessManager.uploadMedia(master.token, path));
+                }
+            }
+            TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected(), mediaIds);
             return APIAccessManager.postToot(master.token, toot);
         }, res -> {
             if (res != null)
@@ -115,6 +130,53 @@ public class PostTootController {
      */
     public void setReference(MainWindowController master) {
         this.master = master;
+    }
+
+    /**
+     * This method will handle the click action on
+     * the "pick file" button.
+     */
+    @FXML
+    void pickFileAction() {
+        int MAX_IMAGES = 4;
+        // Create a file chooser dialog
+        FileChooser fileChooser = new FileChooser();
+
+        // Set the title of the dialog
+        fileChooser.setTitle("Choose Files");
+
+        // Set the file extension filters
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images/Videos", "*.png", "*.jpg", "*.jpeg", "*.mp4", "*.mov", "*.webm", "*.m4v")
+        );
+
+        // Allow the user to select multiple files
+        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(master.TxipironClient().stage);
+
+        if (selectedFiles != null && selectedFiles.size() > 0) {
+            if (paths == null) {
+                paths = new ArrayList<>();
+            }
+            paths.clear();
+            if (HTMLParser.getFileExtension(selectedFiles.get(0)).matches("mp4|mov|webm|m4v")) {
+                File f = selectedFiles.get(0);
+                if (f.length() < 41943040) { // 40 MB
+                    paths.add(f);
+                    selectTxt.setText("Video:" + f.getName());
+                } else {
+                    selectTxt.setText("Video too large. Max size: 40 MB");
+                }
+            } else {
+                for (File f : selectedFiles) {
+                    if (HTMLParser.getFileExtension(f).matches("png|jpg|jpeg") && paths.size() < MAX_IMAGES && f.length() < 8388608) {
+                        selectTxt.setText((paths.size() == 0) ? "Image: " + f.getName() : "Image: " + selectTxt.getText() + "\n" + f.getName());
+                        paths.add(f);
+                    }
+                }
+                if (paths.size() == 0)
+                    selectTxt.setText("No matching files selected");
+            }
+        }
     }
 
     /**

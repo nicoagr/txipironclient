@@ -1,6 +1,5 @@
 package eus.ehu.txipironesmastodonfx.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TootToBePosted {
@@ -17,7 +16,6 @@ public class TootToBePosted {
      * @param status The text of the toot.
      */
     public TootToBePosted(String status) {
-        media_ids = new ArrayList<>();
         this.status = status;
     }
 
@@ -33,12 +31,13 @@ public class TootToBePosted {
 
     /**
      * Constructor for a toot with media and a reply.
-     * @param status The text of the toot.
+     *
+     * @param status    The text of the toot.
      * @param sensitive Whether the toot is sensitive or not.
-     * @param in_reply_to_id The id of the toot to which this toot is a reply.
+     * @param media_ids The media ids to attach to the toot.
      */
-    public TootToBePosted(String status, boolean sensitive, String in_reply_to_id) {
+    public TootToBePosted(String status, boolean sensitive, List<String> media_ids) {
         this(status, sensitive);
-        this.in_reply_to_id = in_reply_to_id;
+        this.media_ids = media_ids;
     }
 }
