@@ -23,6 +23,7 @@ public class Toot {
     public int reblogs_count;
     public int favourites_count;
     public boolean favourited;
+    public boolean bookmarked;
     public boolean reblogged;
     public String content;
     public Account account;

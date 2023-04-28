@@ -79,6 +79,8 @@ public class TootCellController {
     @FXML
     private Label numReboots;
     @FXML
+    private ImageView bookmarks;
+    @FXML
     private TextFlow textFlow;
     @FXML
     private Label username;
@@ -87,6 +89,7 @@ public class TootCellController {
     private MainWindowController master;
     private boolean fav;
     private boolean reblog;
+    private boolean bm;
 
     /**
      * Constructor for the controller.
@@ -138,6 +141,7 @@ public class TootCellController {
         // set the values for the toot cell
         Id = toot.id;
         username.setText("@" + toot.account.acct);
+        bm = toot.bookmarked;
         fav = toot.favourited;
         reblog = toot.reblogged;
         imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
@@ -169,6 +173,10 @@ public class TootCellController {
             reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
 
         numReboots.setText(Integer.toString(finalToot.reblogs_count));
+        if(toot.bookmarked)
+            bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-bookmark.png")));
+        else
+            bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-bookmark.png")));
         mentions = toot.mentions;
         numComments.setText(Integer.toString(finalToot.replies_count));
         uri = toot.uri;

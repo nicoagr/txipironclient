@@ -21,7 +21,7 @@
     <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="649.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../mainassets/dark-comment-512.png" />
     </ImageView>
-    <ImageView fx:id="shareImg" fitHeight="25.0" fitWidth="25.0" layoutX="732.0" layoutY="118.0" onMouseClicked="#shareBtnClick" pickOnBounds="true" preserveRatio="true">
+    <ImageView fx:id="shareImg" fitHeight="25.0" fitWidth="25.0" layoutX="738.0" layoutY="118.0" onMouseClicked="#shareBtnClick" pickOnBounds="true" preserveRatio="true">
         <Image url="@../mainassets/dark-share-900.png" />
     </ImageView>
     <ScrollPane hbarPolicy="NEVER" layoutX="114.0" layoutY="38.0">
@@ -41,4 +41,5 @@
         </cursor>
         <Image url="@../mainassets/sensitive.jpg" />
     </ImageView>
+   <ImageView fx:id="bookmarks" fitHeight="30.0" fitWidth="25.0" layoutX="706.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true" />
 </AnchorPane>

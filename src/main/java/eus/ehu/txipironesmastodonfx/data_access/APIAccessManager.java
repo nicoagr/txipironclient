@@ -461,7 +461,7 @@ public class APIAccessManager {
      * @param token (String) - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    public static int bookamrkToot(String tootId, String token) {
+    public static int bookmarkToot(String tootId, String token) {
         URL url = null;
         int responseCode = 0;
         try{
@@ -484,7 +484,7 @@ public class APIAccessManager {
      * @param token (String) - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    public static int unbookamrkToot(String tootId, String token) {
+    public static int unbookmarkToot(String tootId, String token) {
         URL url = null;
         int responseCode = 0;
         try{
