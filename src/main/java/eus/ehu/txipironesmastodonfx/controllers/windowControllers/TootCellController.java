@@ -75,6 +75,8 @@ public class TootCellController {
     @FXML
     private Label numLikes;
     @FXML
+    private ImageView reboot;
+    @FXML
     private Label numReboots;
     @FXML
     private TextFlow textFlow;
@@ -84,6 +86,7 @@ public class TootCellController {
     private ImageView imagen;
     private MainWindowController master;
     private boolean fav;
+    private boolean reblog;
 
     /**
      * Constructor for the controller.
@@ -136,6 +139,7 @@ public class TootCellController {
         Id = toot.id;
         username.setText("@" + toot.account.acct);
         fav = toot.favourited;
+        reblog = toot.reblogged;
         imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         Toot finalToot = toot;
         AsyncUtils.asyncTask(() ->
@@ -152,14 +156,18 @@ public class TootCellController {
                 }
         );
         AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
-        if (toot.favourited){
+        if (toot.favourited)
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
-        }
         else
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
         numLikes.setText(Integer.toString(finalToot.favourites_count));
         if (finalToot.sensitive)
             sensitiveImg.setVisible(true);
+        if(toot.reblogged)
+            reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-retweet-512.png")));
+        else
+            reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
+
         numReboots.setText(Integer.toString(finalToot.reblogs_count));
         mentions = toot.mentions;
         numComments.setText(Integer.toString(finalToot.replies_count));
@@ -404,4 +412,5 @@ public class TootCellController {
             }
         }
     }
+
 }
