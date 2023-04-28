@@ -45,6 +45,7 @@ public class FollowCellController {
      */
     @FXML
     void onClickFollowButton() {
+        followButton.setDisable(true);
         if (followButton.getText().equals("Follow")) {
             followButton.setText("Loading...");
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, idauxi), param -> {
@@ -52,6 +53,7 @@ public class FollowCellController {
                     followButton.setText("Error!");
                 } else {
                     followButton.setText("Unfollow");
+                    followButton.setDisable(false);
                 }
             });
         } else if (followButton.getText().equals("Unfollow")) {
@@ -61,6 +63,7 @@ public class FollowCellController {
                     followButton.setText("Error!");
                 } else {
                     followButton.setText("Follow");
+                    followButton.setDisable(false);
                 }
             });
         }
@@ -94,6 +97,7 @@ public class FollowCellController {
         followButton.setText("Loading...");
         // set the values for the follow button
         AsyncUtils.asyncTask(() -> {
+            if (follow.id.equals(master.authenticatedId)) return "Self";
             List<Follow> following = APIAccessManager.getFollow(master.authenticatedId, master.token, true);
             if (following == null) return "Error!";
             for (Follow f : following) {
@@ -103,6 +107,7 @@ public class FollowCellController {
             }
             return "Follow";
         }, param -> {
+            if (param.equals("Self")) followButton.setVisible(false);
             if (!param.equals("Error!")) followButton.setDisable(false);
             followButton.setText(param);
         });

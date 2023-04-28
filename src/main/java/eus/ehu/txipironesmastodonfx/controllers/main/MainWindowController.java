@@ -86,7 +86,8 @@ public class MainWindowController implements WindowController {
 
     /**
      * Gets the reference to the main application
-     * @return
+     *
+     * @return (Application) - The main application
      */
     public Application TxipironClient() {
         return mainApp;
@@ -385,13 +386,15 @@ public class MainWindowController implements WindowController {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
                     setGraphic(c.getUI());
-                }else if (item instanceof Account) {
+                } else if (item instanceof Follow) {
                     setText(null);
-                    AsyncUtils.asyncTask(() -> new ProfileCellControllers(thisclass), param -> {
-                                setGraphic(param.getUI());
-                                param.loadAccount((Account) item);
-                            }
-                    );
+                    FollowCellController f = new FollowCellController((Follow) item, thisclass);
+                    setGraphic(f.getUI());
+                } else if (item instanceof Account) {
+                    setText(null);
+                    ProfileCellControllers p = new ProfileCellControllers(thisclass);
+                    setGraphic(p.getUI());
+                    p.loadAccount((Account) item);
                 }
                 // Remove horizontal scrollbar for each item that we load
                 // (Yes! necessary!) for each item, because the list view
