@@ -322,6 +322,9 @@ public class MainWindowController implements WindowController {
         });
     }
 
+    public void loggedUserListView(){
+        userTootListViewFromId(authenticatedId);
+    }
 
     /**
      * Sets the list view to show the toots of the current logged in user

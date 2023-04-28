@@ -381,12 +381,17 @@ public class TootCellController {
                     }
                     return j;
                 }, pos -> {
-                    ((Toot) master.listViewItems.get(pos)).favourited=true;
-                    ((Toot) master.listViewItems.get(pos)).favourites_count++;
-                    fav = true;
-                    numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
-                    likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
-                    likes.setVisible(true);
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).favourited=true;
+                        ((Toot) master.listViewItems.get(pos)).favourites_count++;
+                        fav = true;
+                        numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
+                        likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+                        likes.setVisible(true);
+                    }
+                    else {
+                        System.out.println("Error: Toot not found");
+                    }
                 });
             }
         }
@@ -402,12 +407,17 @@ public class TootCellController {
                     }
                     return j;
                 }, pos -> {
-                    ((Toot) master.listViewItems.get(pos)).favourited=false;
-                    ((Toot) master.listViewItems.get(pos)).favourites_count--;
-                    fav = false;
-                    numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) - 1));
-                    likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
-                    likes.setVisible(true);
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).favourited=false;
+                        ((Toot) master.listViewItems.get(pos)).favourites_count--;
+                        fav = false;
+                        numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) - 1));
+                        likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
+                        likes.setVisible(true);
+                    }
+                    else {
+                        System.out.println("Error: Toot not found");
+                    }
                 });
             }
         }
@@ -433,12 +443,17 @@ public class TootCellController {
                     }
                     return j;
                 }, pos -> {
-                    ((Toot) master.listViewItems.get(pos)).reblogged=true;
-                    ((Toot) master.listViewItems.get(pos)).reblogs_count++;
-                    reblog = true;
-                    numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) + 1));
-                    reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-retweet-512.png")));
-                    reboot.setVisible(true);
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).reblogged=true;
+                        ((Toot) master.listViewItems.get(pos)).reblogs_count++;
+                        reblog = true;
+                        numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) + 1));
+                        reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-retweet-512.png")));
+                        reboot.setVisible(true);
+                    }
+                    else {
+                        System.out.println("Error: Toot not found");
+                    }
                 });
             }
         }
@@ -454,12 +469,17 @@ public class TootCellController {
                     }
                     return j;
                 }, pos -> {
-                    ((Toot) master.listViewItems.get(pos)).reblogged=false;
-                    ((Toot) master.listViewItems.get(pos)).reblogs_count--;
-                    reblog = false;
-                    numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) - 1));
-                    reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
-                    reboot.setVisible(true);
+                    if(pos!=-1){
+                        ((Toot) master.listViewItems.get(pos)).reblogged=false;
+                        ((Toot) master.listViewItems.get(pos)).reblogs_count--;
+                        reblog = false;
+                        numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) - 1));
+                        reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
+                        reboot.setVisible(true);
+                    }
+                    else {
+                        System.out.println("Error: Toot not found");
+                    }
                 });
             }
         }
