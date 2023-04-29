@@ -1,7 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.data_access.*;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
@@ -15,7 +15,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -23,12 +22,9 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -320,6 +316,8 @@ public class TootCellController {
         clipboard.setContents(selection, null);
         // Change image to a checkbox
         shareImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-ok.png")));
+        // Open the default browser with the toot's uri
+        NetworkUtils.openWebPage(uri);
     }
 
     /**
