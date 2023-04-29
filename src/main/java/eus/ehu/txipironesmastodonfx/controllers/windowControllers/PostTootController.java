@@ -1,20 +1,29 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.data_access.*;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
+import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
 import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import jfxtras.scene.control.LocalDateTimeTextField;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,12 +40,18 @@ import java.util.regex.Matcher;
  */
 public class PostTootController {
     private MainWindowController master;
+    private List<File> paths;
+    LocalDateTimeTextField ldtf;
+    @FXML
+    private Button pickFileBtn;
     @FXML
     private Label charLabel;
     @FXML
     private ResourceBundle resources;
     @FXML
     private URL location;
+    @FXML
+    private Label selectTxt;
     @FXML
     private Label taggedAcctTxt;
     @FXML
@@ -45,6 +60,9 @@ public class PostTootController {
     private CheckBox sensitiveId;
     @FXML
     private TextArea content;
+    @FXML
+    private ComboBox<String> comboBox;
+
 
     /**
      * This method controls the actions
@@ -57,17 +75,59 @@ public class PostTootController {
      */
     @FXML
     void PostAction() {
+        LocalDateTime postDate = ldtf.getLocalDateTime();
+        if (postDate != null && postDate.isBefore(LocalDateTime.now().plusMinutes(6))) {
+            // One minute for us to post media, and 5 minutes server requirement
+            master.listViewItems.add("Post date must be 6 minutes or more in the future!");
+            return;
+        }
         master.listViewItems.clear();
         if (content.getText().isEmpty() || content.getText().length() > 500) {
             master.listViewItems.add("Error - Toots must not be empty and contain maximum 500 characters.");
             return;
         }
-        master.listViewItems.add("Posting toot...");
+        master.listViewItems.add("Processing...");
+        master.showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) {
                 return null;
             }
-            TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected());
+            List<String> mediaIds = null;
+            if (paths != null && paths.size() != 0) {
+                // Upload media
+                mediaIds = new ArrayList<>();
+                MediaAttachment res;
+                Platform.runLater(() -> master.listViewItems.add("Uploading media..."));
+                for (File path : paths) {
+                    res = APIAccessManager.uploadMedia(master.token, path);
+                    mediaIds.add(res.id);
+                }
+                boolean processed = false;
+                int time = 0;
+                // Check if media was processed correctly
+                Platform.runLater(() -> master.listViewItems.add("Waiting for server response..."));
+                while (!processed) {
+                    for (String id : mediaIds) {
+                        processed = processed || APIAccessManager.isMediaProcessed(master.token, id);
+                    }
+                    Thread.sleep(1000); // wait for 1 seconds
+                    time++;
+                    // wait 30 seconds before timeout
+                    if (time > 31) {
+                        return null;
+                    }
+                }
+            }
+            // format datetime (add timezone, convert it to utc and then into an ISO string)
+            String isoDate = null;
+            if (postDate != null) {
+                ZonedDateTime zdt = ZonedDateTime.of(postDate, ZoneId.systemDefault());
+                ZonedDateTime utcZdt = zdt.withZoneSameInstant(ZoneOffset.UTC);
+                isoDate = utcZdt.format(DateTimeFormatter.ISO_DATE_TIME);
+            }
+            // Create toot to be posted object and post it
+            TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected(), mediaIds, isoDate);
+            Platform.runLater(() -> master.listViewItems.add("Posting toot..."));
             return APIAccessManager.postToot(master.token, toot);
         }, res -> {
             if (res != null)
@@ -76,6 +136,7 @@ public class PostTootController {
                 master.listViewItems.clear();
                 master.listViewItems.add("Error when posting toot to the servers. Please check connection and try again.");
             }
+            master.hideLoading();
         });
     }
 
@@ -118,6 +179,62 @@ public class PostTootController {
     }
 
     /**
+     * This method will handle the click action on
+     * the "pick file" button.
+     */
+    @FXML
+    void pickFileAction() {
+        if (paths != null && paths.size() > 0) {
+            paths.clear();
+            pickFileBtn.setText("Media Attachment (Optional)");
+            selectTxt.setText("");
+            return;
+        }
+        int MAX_IMAGES = 4;
+        // Create a file chooser dialog
+        FileChooser fileChooser = new FileChooser();
+
+        // Set the title of the dialog
+        fileChooser.setTitle("Choose Files");
+
+        // Set the file extension filters
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images/Videos", "*.png", "*.jpg", "*.jpeg", "*.mp4", "*.mov", "*.webm", "*.m4v")
+        );
+
+        // Allow the user to select multiple files
+        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(master.TxipironClient().stage);
+
+        if (selectedFiles != null && selectedFiles.size() > 0) {
+            if (paths == null) {
+                paths = new ArrayList<>();
+            }
+            paths.clear();
+            if (HTMLParser.getFileExtension(selectedFiles.get(0)).matches("mp4|mov|webm|m4v")) {
+                File f = selectedFiles.get(0);
+                if (f.length() < 41943040) { // 40 MB
+                    paths.add(f);
+                    selectTxt.setText("Video:" + f.getName());
+                } else {
+                    selectTxt.setText("Video too large. Max size: 40 MB");
+                }
+            } else {
+                for (File f : selectedFiles) {
+                    if (HTMLParser.getFileExtension(f).matches("png|jpg|jpeg") && paths.size() < MAX_IMAGES && f.length() < 8388608) {
+                        selectTxt.setText((paths.size() == 0) ? "Image: " + f.getName() : "Image: " + selectTxt.getText() + "\n" + f.getName());
+                        paths.add(f);
+                    }
+                }
+                if (paths.size() == 0)
+                    selectTxt.setText("No matching files selected");
+                else {
+                    pickFileBtn.setText("Clear Selection");
+                }
+            }
+        }
+    }
+
+    /**
      * This method will be called by the FXMLLoader when initialization is complete
      * It will set the listeners for the text area and the character counter
      * It will also set the listener for the list view in order to select the cell
@@ -144,14 +261,39 @@ public class PostTootController {
                 int charcount = 0;
                 Matcher matcher = HTMLParser.USERNAME_PATTERN.matcher(newValue);
                 while (matcher.find()) {
-                        String username = matcher.group().substring(1);
-                        charcount += username.length() + 1;
-                        names.add("@" + username);
-                    }
-                    if (charcount > 60) return List.of("Various [...]");
-                    return names;
-                }, names -> taggedAcctTxt.setText(names.size() == 0 ? "None" : String.join(", ", names)));
-            });
-            content.setWrapText(true);
+                    String username = matcher.group().substring(1);
+                    charcount += username.length() + 1;
+                    names.add("@" + username);
+                }
+                if (charcount > 60) return List.of("Various [...]");
+                return names;
+            }, names -> taggedAcctTxt.setText(names.size() == 0 ? "None" : String.join(", ", names)));
+        });
+        content.setWrapText(true);
+        // add toot schedule to anchor-pane
+        ldtf = new LocalDateTimeTextField();
+        List<LocalDateTime> d = ldtf.disabledLocalDateTimes();
+        LocalDateTime now = LocalDateTime.now();
+        // Set the past 5 years as disabled dates
+        // Done for more user-friendliness. Actual check
+        // will be done in next method
+        for (int i = 1; i <= 365 * 5; i++) {
+            LocalDateTime pastDateTime = now.minusDays(i);
+            d.add(pastDateTime);
         }
+        // actual check and protection
+        ldtf.localDateTimeProperty().addListener((obs, oldVal, newVal) -> {
+            // One minute for us to post media, and 5 minutes server requirement
+            if (newVal != null && newVal.isBefore(LocalDateTime.now().plusMinutes(6))) {
+                ldtf.setLocalDateTime(null);
+                return;
+            }
+        });
+        ldtf.setPrefWidth(226);
+        ldtf.setPrefHeight(26);
+        ldtf.setPromptText("Schedule toot (Optional)");
+        anchor.getChildren().add(ldtf);
+        anchor.setTopAnchor(ldtf, 271.0);
+        anchor.setLeftAnchor(ldtf, 300.0);
     }
+}

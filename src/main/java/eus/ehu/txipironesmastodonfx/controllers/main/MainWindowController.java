@@ -3,7 +3,7 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
-import eus.ehu.txipironesmastodonfx.data_access.*;
+import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
@@ -11,7 +11,6 @@ import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.SearchResult;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -89,7 +88,7 @@ public class MainWindowController implements WindowController {
      *
      * @return (Application) - The main application
      */
-    public Application TxipironClient() {
+    public TxipironClient TxipironClient() {
         return mainApp;
     }
 

@@ -6,6 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -101,6 +102,22 @@ public class HTMLParser {
             }
             return output;
         }
+    }
+
+    /**
+     * Given a file, this method
+     * will return its file extension
+     *
+     * @param file (File) - The file to get the extension from
+     * @return (String) - The extension of the file
+     */
+    public static String getFileExtension(File file) {
+        String name = file.getName();
+        int lastIndexOfDot = name.lastIndexOf(".");
+        if (lastIndexOfDot == -1) {
+            return "";
+        }
+        return name.substring(lastIndexOfDot + 1);
     }
 
 }

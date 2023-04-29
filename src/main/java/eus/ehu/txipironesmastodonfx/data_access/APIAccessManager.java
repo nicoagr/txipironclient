@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import eus.ehu.txipironesmastodonfx.domain.*;
 import okhttp3.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -544,6 +545,68 @@ public class APIAccessManager {
             e.printStackTrace();
         }
         return responseCode;
+    }
+    /**
+     * Method to upload a media to the mastodon servers
+     *
+     * @param token (String) - token of the account
+     * @param file  (File) -  file to upload
+     * @return (String) - id of the uploaded media
+     */
+    public static MediaAttachment uploadMedia(String token, File file) {
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        // Determine the MIME type based on the file extension
+        String mediaType = "image/jpg";
+        String extension = HTMLParser.getFileExtension(file);
+        switch (extension.toLowerCase()) {
+            case "jpg":
+                mediaType = "image/jpg";
+                break;
+            case "jpeg":
+                mediaType = "image/jpeg";
+                break;
+            case "png":
+                mediaType = "image/png";
+                break;
+            case "mov":
+                mediaType = "video/quicktime";
+                break;
+            case "mp4":
+            case "m4v":
+                mediaType = "video/mp4";
+                break;
+            case "webm":
+                mediaType = "video/webm";
+                break;
+        }
+        // Build the multipart form request body
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse(mediaType), file))
+                .build();
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v2/media")
+                .addHeader("Authorization", "Bearer " + token)
+                .post(requestBody)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if ((response.code() == 200 || response.code() == 202) && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gson.fromJson(result, MediaAttachment.class);
+    }
+
+    public static boolean isMediaProcessed(String token, String mediaId) {
+        try {
+            return (request("media/" + mediaId, token) != null);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 }

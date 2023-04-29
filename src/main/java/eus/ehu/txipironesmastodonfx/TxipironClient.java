@@ -53,7 +53,7 @@ public class TxipironClient extends Application {
         return window;
     }
 
-    private Stage stage;
+    public Stage stage;
     private Scene scene;
 
     /**
