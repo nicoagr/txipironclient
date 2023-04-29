@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
 
 import java.io.IOException;
 import java.util.List;
@@ -428,6 +429,12 @@ public class MainWindowController implements WindowController {
         searchQuery.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 searchBtn.fire();
+            }
+        });
+        // force remove horizontal scrolling
+        listView.addEventFilter(ScrollEvent.SCROLL, event -> {
+            if (event.getDeltaX() != 0) {
+                event.consume();
             }
         });
     }
