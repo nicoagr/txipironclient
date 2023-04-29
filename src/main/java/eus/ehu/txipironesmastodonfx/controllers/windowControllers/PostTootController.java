@@ -195,7 +195,7 @@ public class PostTootController {
         FileChooser fileChooser = new FileChooser();
 
         // Set the title of the dialog
-        fileChooser.setTitle("Choose Files");
+        fileChooser.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Multiple File Chooser");
 
         // Set the file extension filters
         fileChooser.getExtensionFilters().addAll(

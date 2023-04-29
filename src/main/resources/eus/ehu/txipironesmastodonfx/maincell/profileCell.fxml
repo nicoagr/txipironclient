@@ -49,6 +49,6 @@
          <Font size="14.0"/>
       </font>
    </Label>
-   <Button fx:id="followButton" disable="true" layoutX="49.0" layoutY="245.0" mnemonicParsing="false"
-           onAction="#onClickFollowButton" prefHeight="45.0" prefWidth="122.0" text="Loading..."/>
+   <Button fx:id="omniButton" disable="true" layoutX="49.0" layoutY="245.0" mnemonicParsing="false"
+           onAction="#onClickOmniButton" prefHeight="45.0" prefWidth="122.0" text="Loading..."/>
 </AnchorPane>

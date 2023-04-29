@@ -601,6 +601,55 @@ public class APIAccessManager {
         return gson.fromJson(result, MediaAttachment.class);
     }
 
+    /**
+     * Method to change the users profile picture
+     * in the mastodon's servers
+     *
+     * @param token (String) - token of the account
+     * @param pic   (File) - file to upload
+     * @return (boolean) - true if the profile picture was changed successfully
+     */
+    public static boolean changeProfilePicture(String token, File pic) {
+        String mediaType = null, result = null;
+        OkHttpClient client = new OkHttpClient();
+        String extension = HTMLParser.getFileExtension(pic);
+        switch (extension.toLowerCase()) {
+            case "jpg":
+                mediaType = "image/jpg";
+                break;
+            case "jpeg":
+                mediaType = "image/jpeg";
+                break;
+            case "png":
+                mediaType = "image/png";
+                break;
+            case "gif":
+                mediaType = "image/gif";
+                break;
+            default:
+                return false;
+        }
+        // Build the multipart form request body
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("avatar", pic.getName(), RequestBody.create(MediaType.parse(mediaType), pic))
+                .build();
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v1/accounts/update_credentials")
+                .addHeader("Authorization", "Bearer " + token)
+                .patch(requestBody)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if ((response.code() == 200 || response.code() == 202) && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return (result != null);
+    }
+
     public static boolean isMediaProcessed(String token, String mediaId) {
         try {
             return (request("media/" + mediaId, token) != null);

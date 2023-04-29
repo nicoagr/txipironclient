@@ -19,9 +19,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ import java.util.ResourceBundle;
 public class ProfileCellControllers {
 
     private MainWindowController master;
-
+    boolean self = false;
     private String id;
 
     @FXML
@@ -55,7 +57,7 @@ public class ProfileCellControllers {
     private AnchorPane anchor;
 
     @FXML
-    private Button followButton;
+    private Button omniButton;
 
     @FXML
     private Label name;
@@ -117,7 +119,6 @@ public class ProfileCellControllers {
             Text text = new Text(string);
             texts.add(text);
             texts.add(new Text(" "));
-
         }
         this.description.getChildren().addAll(texts);
         profilePic.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
@@ -146,7 +147,7 @@ public class ProfileCellControllers {
                 }
         );
         AsyncUtils.asyncTask(() -> {
-            if (account.id.equals(master.authenticatedId)) return "Self";
+            if (account.id.equals(master.authenticatedId)) return "Change Picture";
             List<Follow> following = APIAccessManager.getFollow(master.authenticatedId, master.token, true);
             if (following == null) return "Error!";
             for (Follow f : following) {
@@ -156,32 +157,79 @@ public class ProfileCellControllers {
             }
             return "Follow";
         }, param -> {
-            if (param.equals("Self")) followButton.setVisible(false);
-            else if (!param.equals("Error!")) followButton.setDisable(false);
-            followButton.setText(param);
+            if (param.equals("Change Picture")) self = true;
+            if (!param.equals("Error!")) omniButton.setDisable(false);
+            omniButton.setText(param);
         });
     }
 
     @FXML
-    void onClickFollowButton() {
-        followButton.setDisable(true);
-        followButton.setText("Loading...");
-        if (followButton.getText().equals("Follow")) {
-            AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, this.id), param -> {
-                if (param == null) {
-                    followButton.setText("Error!");
+    void onClickOmniButton() {
+        if (self) {
+            onClickChangeProfilePicButton();
+        } else {
+            onClickFollowButton();
+        }
+    }
+
+    private void onClickChangeProfilePicButton() {
+        omniButton.setText("Loading...");
+        omniButton.setDisable(true);
+        // Create a file chooser dialog
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Txipiron Client [v1.0] - a Mastodon Client - File Chooser");
+        // Set the file extension filters
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        // Allow the user to select a file
+        File selectedFile = fileChooser.showOpenDialog(master.TxipironClient().stage);
+        if (selectedFile == null) {
+            omniButton.setDisable(false);
+            omniButton.setText("Change Picture");
+            return;
+        }
+        if (HTMLParser.getFileExtension(selectedFile).matches("png|jpg|jpeg")) {
+            AsyncUtils.asyncTask(() -> {
+                if (selectedFile.length() > 2097151) {
+                    return "File too big";
+                }
+                if (NetworkUtils.hasInternet()) {
+                    boolean result = APIAccessManager.changeProfilePicture(master.token, selectedFile);
+                    return (result) ? null : "Server error";
+                }
+                return null;
+            }, res -> {
+                if (res == null) {
+                    master.loggedUserListView();
                 } else {
-                    followButton.setText("Unfollow");
-                    followButton.setDisable(false);
+                    omniButton.setDisable(false);
+                    omniButton.setText(res);
                 }
             });
-        } else if (followButton.getText().equals("Unfollow")) {
+        }
+    }
+
+    private void onClickFollowButton() {
+        omniButton.setDisable(true);
+        if (omniButton.getText().equals("Follow")) {
+            omniButton.setText("Loading...");
+            AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, this.id), param -> {
+                if (param == null) {
+                    omniButton.setText("Error!");
+                } else {
+                    omniButton.setText("Unfollow");
+                    omniButton.setDisable(false);
+                }
+            });
+        } else if (omniButton.getText().equals("Unfollow")) {
+            omniButton.setText("Loading...");
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, this.id), param -> {
                 if (param == null) {
-                    followButton.setText("Error!");
+                    omniButton.setText("Error!");
                 } else {
-                    followButton.setText("Follow");
-                    followButton.setDisable(false);
+                    omniButton.setText("Follow");
+                    omniButton.setDisable(false);
                 }
             });
         }
