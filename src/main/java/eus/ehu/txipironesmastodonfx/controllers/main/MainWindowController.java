@@ -21,7 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -123,21 +122,27 @@ public class MainWindowController implements WindowController {
         this.token = (String) result.get(1);
         this.authenticatedId = (String) result.get(2);
         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
-        AsyncUtils.asyncTask(() -> {
-            String avatarUrl;
-            try {
-                avatarUrl = DBAccessManager.getUserAvatar(ref);
-            } catch (SQLException e) {
-                avatarUrl = null;
-            }
-            return (avatarUrl != null) ? new Image(avatarUrl) : new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg"));
-        }, image -> icon.setImage(image));
+        refreshAvatar();
         // Download defaults asynchronously
         AsyncUtils.asyncTask(() -> DBAccessManager.getSetting("autoplaymedia", true), res -> {
             if (res != null) {
                 autoplayMedia = (Boolean) res;
             }
         });
+    }
+
+    /**
+     * This method will refresh
+     * the avatar of the current user
+     * in the top left corner icon
+     */
+    public void refreshAvatar() {
+        icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/loading-gif.gif")));
+        AsyncUtils.asyncTask(() -> {
+            String avatarUrl;
+            avatarUrl = APIAccessManager.getAccount(authenticatedId, token).avatar;
+            return (avatarUrl != null) ? new Image(avatarUrl) : new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg"));
+        }, image -> icon.setImage(image));
     }
 
     /**

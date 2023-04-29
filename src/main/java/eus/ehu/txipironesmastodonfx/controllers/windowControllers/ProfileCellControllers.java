@@ -163,6 +163,11 @@ public class ProfileCellControllers {
         });
     }
 
+    /**
+     * This method will be called
+     * when the user clicks in the omnibutton.
+     * It will decide which action to perform
+     */
     @FXML
     void onClickOmniButton() {
         if (self) {
@@ -172,6 +177,12 @@ public class ProfileCellControllers {
         }
     }
 
+    /**
+     * This method will be executed
+     * when the user clicks on the
+     * omnibutton, and it is in mode
+     * "Change Account"
+     */
     private void onClickChangeProfilePicButton() {
         omniButton.setText("Loading...");
         omniButton.setDisable(true);
@@ -201,6 +212,7 @@ public class ProfileCellControllers {
                 return null;
             }, res -> {
                 if (res == null) {
+                    master.refreshAvatar();
                     master.loggedUserListView();
                 } else {
                     omniButton.setDisable(false);
@@ -210,6 +222,12 @@ public class ProfileCellControllers {
         }
     }
 
+    /**
+     * This method will be executed
+     * when the user clicks on the
+     * omnibutton, and it is in mode
+     * "Follow/Unfollow
+     */
     private void onClickFollowButton() {
         omniButton.setDisable(true);
         if (omniButton.getText().equals("Follow")) {
@@ -235,6 +253,11 @@ public class ProfileCellControllers {
         }
     }
 
+    /**
+     * This method will open the
+     * current profiles picture
+     * in a media viewer popup
+     */
     @FXML
     void openProfilePic() {
         if (imageurl == null) return;
