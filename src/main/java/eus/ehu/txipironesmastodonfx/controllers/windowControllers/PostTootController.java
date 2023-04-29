@@ -15,10 +15,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import jfxtras.scene.control.LocalDateTimeTextField;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +41,7 @@ import java.util.regex.Matcher;
 public class PostTootController {
     private MainWindowController master;
     private List<File> paths;
+    LocalDateTimeTextField ldtf;
     @FXML
     private Button pickFileBtn;
     @FXML
@@ -70,6 +75,12 @@ public class PostTootController {
      */
     @FXML
     void PostAction() {
+        LocalDateTime postDate = ldtf.getLocalDateTime();
+        if (postDate != null && postDate.isBefore(LocalDateTime.now().plusMinutes(6))) {
+            // One minute for us to post media, and 5 minutes server requirement
+            master.listViewItems.add("Post date must be 6 minutes or more in the future!");
+            return;
+        }
         master.listViewItems.clear();
         if (content.getText().isEmpty() || content.getText().length() > 500) {
             master.listViewItems.add("Error - Toots must not be empty and contain maximum 500 characters.");
@@ -107,7 +118,15 @@ public class PostTootController {
                     }
                 }
             }
-            TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected(), mediaIds);
+            // format datetime (add timezone, convert it to utc and then into an ISO string)
+            String isoDate = null;
+            if (postDate != null) {
+                ZonedDateTime zdt = ZonedDateTime.of(postDate, ZoneId.systemDefault());
+                ZonedDateTime utcZdt = zdt.withZoneSameInstant(ZoneOffset.UTC);
+                isoDate = utcZdt.format(DateTimeFormatter.ISO_DATE_TIME);
+            }
+            // Create toot to be posted object and post it
+            TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected(), mediaIds, isoDate);
             Platform.runLater(() -> master.listViewItems.add("Posting toot..."));
             return APIAccessManager.postToot(master.token, toot);
         }, res -> {
@@ -148,24 +167,6 @@ public class PostTootController {
             e.printStackTrace();
         }
         setReference(master);
-
-        // add toot schedule to anchor-pane
-        LocalDateTimeTextField ldtf = new LocalDateTimeTextField();
-        List<LocalDateTime> d = ldtf.disabledLocalDateTimes();
-        LocalDateTime now = LocalDateTime.now();
-        // Set the past 5 years as disabled dates
-        // Done for more user-friendliness. Actual check
-        // will be done later
-        for (int i = 1; i <= 365 * 5; i++) {
-            LocalDateTime pastDateTime = now.minusDays(i);
-            d.add(pastDateTime);
-        }
-        ldtf.setPrefWidth(226);
-        ldtf.setPrefHeight(26);
-        ldtf.setPromptText("Schedule toot (Optional)");
-        anchor.getChildren().add(ldtf);
-        anchor.setTopAnchor(ldtf, 271.0);
-        anchor.setLeftAnchor(ldtf, 300.0);
     }
 
     /**
@@ -260,14 +261,39 @@ public class PostTootController {
                 int charcount = 0;
                 Matcher matcher = HTMLParser.USERNAME_PATTERN.matcher(newValue);
                 while (matcher.find()) {
-                        String username = matcher.group().substring(1);
-                        charcount += username.length() + 1;
-                        names.add("@" + username);
-                    }
-                    if (charcount > 60) return List.of("Various [...]");
-                    return names;
-                }, names -> taggedAcctTxt.setText(names.size() == 0 ? "None" : String.join(", ", names)));
-            });
-            content.setWrapText(true);
+                    String username = matcher.group().substring(1);
+                    charcount += username.length() + 1;
+                    names.add("@" + username);
+                }
+                if (charcount > 60) return List.of("Various [...]");
+                return names;
+            }, names -> taggedAcctTxt.setText(names.size() == 0 ? "None" : String.join(", ", names)));
+        });
+        content.setWrapText(true);
+        // add toot schedule to anchor-pane
+        ldtf = new LocalDateTimeTextField();
+        List<LocalDateTime> d = ldtf.disabledLocalDateTimes();
+        LocalDateTime now = LocalDateTime.now();
+        // Set the past 5 years as disabled dates
+        // Done for more user-friendliness. Actual check
+        // will be done in next method
+        for (int i = 1; i <= 365 * 5; i++) {
+            LocalDateTime pastDateTime = now.minusDays(i);
+            d.add(pastDateTime);
         }
+        // actual check and protection
+        ldtf.localDateTimeProperty().addListener((obs, oldVal, newVal) -> {
+            // One minute for us to post media, and 5 minutes server requirement
+            if (newVal != null && newVal.isBefore(LocalDateTime.now().plusMinutes(6))) {
+                ldtf.setLocalDateTime(null);
+                return;
+            }
+        });
+        ldtf.setPrefWidth(226);
+        ldtf.setPrefHeight(26);
+        ldtf.setPromptText("Schedule toot (Optional)");
+        anchor.getChildren().add(ldtf);
+        anchor.setTopAnchor(ldtf, 271.0);
+        anchor.setLeftAnchor(ldtf, 300.0);
     }
+}
