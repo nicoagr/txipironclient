@@ -25,7 +25,13 @@ import java.util.List;
  */
 public class TxipironClient extends Application {
 
+    /**
+     * Registered Mastodon App Id. Will be used for oauth
+     */
     public static final String MASTODON_APP_ID = "dYnZgMCCGEg4DpYOgQX8LzR2J8GPo_drmuVqaYAVtok";
+    /**
+     * Registered Mastodon App Secret. Will be used for oauth
+     */
     public static final String MASTODON_APP_SECRET = "9FxLwJO760hJZsL1blHQ1KrBJP3Ey5ShMgwl7dVnH7M";
     private Window authWindow;
     private Window mainWindow;
@@ -93,6 +99,11 @@ public class TxipironClient extends Application {
         launch();
     }
 
+    /**
+     * Sets the title of the stage
+     *
+     * @param title (String) - Title to set
+     */
     public void setStageTitle(String title) {
         stage.setTitle(title);
     }

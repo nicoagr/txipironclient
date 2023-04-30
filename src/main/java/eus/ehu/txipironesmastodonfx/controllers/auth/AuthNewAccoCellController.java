@@ -41,7 +41,8 @@ public class AuthNewAccoCellController {
     private Boolean oauth = null;
 
     /**
-     *
+     * This method will call the specific actions
+     * for each authentication form when the button is clicked.
      */
     @FXML
     void addAccBtnClick() {
@@ -50,14 +51,21 @@ public class AuthNewAccoCellController {
         }
         errorTxt.setText("");
         if (oauth) {
-            oauthAuthentication();
+            oauthAuthentication(mstdTokenTxt.getText());
         } else {
             accessTokenAuthentication(mstdTokenTxt.getText());
         }
     }
 
-    private void oauthAuthentication() {
-        String authCode = mstdTokenTxt.getText();
+    /**
+     * OAUTH AUTHENTICATION:
+     * Will check if the authCode is correct,
+     * and will get the access token from the API.
+     * Then it will call the access token authentication process.
+     *
+     * @param authCode (String) - The auth code to be checked.
+     */
+    private void oauthAuthentication(String authCode) {
         mstdTokenTxt.setText("Loading oauth authentication...");
         addAccBtn.setDisable(true);
         AsyncUtils.asyncTask(() -> {
@@ -153,6 +161,11 @@ public class AuthNewAccoCellController {
         }
     }
 
+    /**
+     * Not a very descriptive name,
+     * but the method will handle going back
+     * and switching between auth methods.
+     */
     @FXML
     void accessTokenAuthClick() {
         if (oauth == null) {
@@ -172,6 +185,12 @@ public class AuthNewAccoCellController {
         }
     }
 
+    /**
+     * This method will select
+     * the oauth authentication method.
+     * It will hide and show the appropriate
+     * elements in the UI.
+     */
     @FXML
     void oauthBtnClick() {
         oauth = true;

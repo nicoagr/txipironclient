@@ -197,7 +197,8 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the list view to show the followers of the current logged in user
+     * Sets the list view to show the bookmarked
+     * toots of the current logged in user
      */
     @FXML
     void bookmarkedTootsListView() {
@@ -226,7 +227,8 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the list view to show the toots of the current logged in user
+     * Sets the list view to show the timeline of home
+     * toots of the current logged in user
      */
     @FXML
     public void homeListView() {
@@ -292,7 +294,10 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the list view to show the toots of the current logged in user from an id
+     * Sets the list view to show the toots of
+     * the user with the id passed as a parameter
+     *
+     * @param id (String) The id of the user whose toots are going to be shown
      */
     @FXML
     public void userTootListViewFromId(String id) {
@@ -341,7 +346,10 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the list view to show the toots of the current logged in user
+     * Sets the list view to show the toots of the username
+     * passed as a parameter
+     *
+     * @param username (String) The username of the account whose toots are going to be shown
      */
     @FXML
     public void userTootListView(String username) {

@@ -680,6 +680,14 @@ public class APIAccessManager {
         return (result != null);
     }
 
+    /**
+     * Method to check if a media was processed
+     * in the mastodons' servers
+     *
+     * @param token   (String) - token of the account
+     * @param mediaId (String) - id of the media
+     * @return (boolean) - true if the media was processed
+     */
     public static boolean isMediaProcessed(String token, String mediaId) {
         try {
             return (request("media/" + mediaId, token) != null);
