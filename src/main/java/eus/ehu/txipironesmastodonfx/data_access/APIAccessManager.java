@@ -3,6 +3,7 @@ package eus.ehu.txipironesmastodonfx.data_access;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
+import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.domain.*;
 import okhttp3.*;
 
@@ -58,6 +59,35 @@ public class APIAccessManager {
         }
         idHandler result = gson.fromJson(response, idHandler.class);
         return result.id;
+    }
+
+    private class authCodeResponse {
+        String access_token;
+    }
+
+    /**
+     * Method that will get a mastodon token from an auth code.
+     *
+     * @param authCode (String) - auth code to get the token
+     * @return (String) - token of the account
+     */
+    public static String getTokenFromAuthCode(String authCode) throws IOException {
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        String requestBodyString = "grant_type=authorization_code&code=" + authCode +
+                "&client_id=" + TxipironClient.MASTODON_APP_ID + "&client_secret=" + TxipironClient.MASTODON_APP_SECRET +
+                "&redirect_uri=urn:ietf:wg:oauth:2.0:oob";
+        RequestBody req = RequestBody.create(requestBodyString, MediaType.parse("application/x-www-form-urlencoded"));
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/oauth/token")
+                .post(req)
+                .build();
+        Response response = client.newCall(request).execute();
+        if (response.code() == 200 && response.body() != null) {
+            result = response.body().string();
+            result = gson.fromJson(result, authCodeResponse.class).access_token;
+        }
+        return result;
     }
 
     /**

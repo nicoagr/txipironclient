@@ -25,6 +25,8 @@ import java.util.List;
  */
 public class TxipironClient extends Application {
 
+    public static final String MASTODON_APP_ID = "dYnZgMCCGEg4DpYOgQX8LzR2J8GPo_drmuVqaYAVtok";
+    public static final String MASTODON_APP_SECRET = "9FxLwJO760hJZsL1blHQ1KrBJP3Ey5ShMgwl7dVnH7M";
     private Window authWindow;
     private Window mainWindow;
 
