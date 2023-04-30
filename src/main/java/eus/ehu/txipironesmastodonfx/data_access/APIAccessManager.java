@@ -98,12 +98,16 @@ public class APIAccessManager {
      * @param selectedAccId (String) - id of the account
      * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
-     *
-     * @throws IOException - When the request can't be made
-     */
-    public static List<Toot> getTootId(String selectedAccId, String token) throws IOException {
-        String response = request("accounts/" + selectedAccId + "/statuses", token);
 
+     */
+    public static List<Toot> getTootId(String selectedAccId, String token) {
+        String response = null;
+        try{
+            response = request("accounts/" + selectedAccId + "/statuses", token);
+        }
+        catch (IOException e){
+            return null;
+        }
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
@@ -305,34 +309,12 @@ public class APIAccessManager {
     }
 
     /**
-     * Method to get the toots liked by a user
-     * It will return a list of toots. If the request can't be made,
-     * it will return null.
-     *
-     * @param token         (String) - token of the account
-     * @return (List<Toot>) - the list of liked toots
-     *
-     * @exception IOException - if the request can't be made
-     */
-    public static List<Toot> getLikedToots(String token) throws IOException{
-        String response = request("/favourites", token);
-        if (response == null || response.equals("")) {
-            // token is invalid
-            return null;
-        }
-        Type fTootListType = new TypeToken<ArrayList<Toot>>() {
-        }.getType();
-        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
-    }
-
-    /**
      * Obtains the list of views of  a user wich is introduced as parameter
      *
      * @param username (String)  - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    public static String getIdFromUsername(String username, String token) throws IOException {
-        String aBorrar;
+    public static String getIdFromUsername(String username) {
         String response = null;
         try {
             response = requestNoToken("accounts/lookup?acct=" + username);
@@ -344,6 +326,31 @@ public class APIAccessManager {
             return null;
         }
         return gson.fromJson(response, Account.class).id;
+    }
+
+    /**
+     * Method to get the toots liked by a user
+     * It will return a list of toots. If the request can't be made,
+     * it will return null.
+     *
+     * @param token         (String) - token of the account
+     * @return (List<Toot>) - the list of liked toots
+     */
+    public static List<Toot> getLikedToots(String token){
+        String response = null;
+        try{
+            response = request("/favourites", token);
+        }
+        catch (IOException e){
+            return null;
+        }
+        if (response == null || response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        Type fTootListType = new TypeToken<ArrayList<Toot>>() {
+        }.getType();
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
     }
 
     /**
@@ -395,16 +402,18 @@ public class APIAccessManager {
     /**
      * Obtains the list of views of  a user wich is introduced as parameter
      *
-     * @param selectedAccId (String) - id of the account
      * @param token         (String) - token of the account
      * @return (List < Toot >) - the list of views of a user
-     * @throws IOException - if the request can't be made
      */
-    public static List<Toot> getHomeTootsId(String selectedAccId, String token) throws IOException {
-        String response = request("timelines/home", token);
-
-
-        if (response.equals("")) {
+    public static List<Toot> getHomeTootsId( String token){
+        String response = null;
+        try{
+            response = request("timelines/home", token);
+        }
+        catch (IOException e){
+            return null;
+        }
+        if (response == null || response.equals("")) {
             // token is invalid
             return null;
         }
@@ -471,11 +480,15 @@ public class APIAccessManager {
      *
      * @param token         (String) - token of the account
      * @return (List<Toot>) - the list of bookmarked toots
-     *
-     * @exception IOException - if the request can't be made
      */
-    public static List<Toot> getBookmarkedToots(String token) throws IOException{
-        String response = request("/bookmarks", token);
+    public static List<Toot> getBookmarkedToots(String token){
+        String response = null;
+        try{
+            response = request("/bookmarks", token);
+        }
+        catch (IOException e){
+            return null;
+        }
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
