@@ -19,10 +19,11 @@
     <TextField fx:id="mstdTokenTxt" layoutX="28.0" layoutY="37.0" prefHeight="26.0" prefWidth="326.0"
                promptText="Mastodon API Access Token - 44 characters long" visible="false"/>
     <Label fx:id="errorTxt" layoutX="28.0" layoutY="66.0"/>
-    <Hyperlink fx:id="accessTokenAuthLink" layoutX="165.0" layoutY="63.0" onAction="#accessTokenAuthClick"
+    <Hyperlink fx:id="accessTokenAuthLink" layoutX="175.0" layoutY="63.0" onAction="#accessTokenAuthClick"
                text="(or paste access token instead)"/>
-    <Button fx:id="oauthBtn" layoutX="111.0" layoutY="36.0" mnemonicParsing="false" onAction="#oauthBtnClick"
-            text="Add Account through browser authentication">
+    <Button fx:id="oauthBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="111.0" layoutY="36.0"
+            mnemonicParsing="false" onAction="#oauthBtnClick" text="Add account through browser authentication"
+            textAlignment="CENTER">
         <font>
             <Font size="13.0"/>
         </font>
