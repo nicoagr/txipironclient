@@ -76,11 +76,7 @@ public class AuthNewAccoCellController {
             if (authCode.isEmpty()) {
                 return "Error! Auth code is empty.";
             }
-            try {
-                token = APIAccessManager.getTokenFromAuthCode(authCode);
-            } catch (IOException e) {
-                return "Error! AuthCode invalid";
-            }
+            token = APIAccessManager.getTokenFromAuthCode(authCode);
             return token;
         }, param -> {
             mstdTokenTxt.setText("");

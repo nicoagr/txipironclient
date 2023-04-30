@@ -71,7 +71,7 @@ public class APIAccessManager {
      * @param authCode (String) - auth code to get the token
      * @return (String) - token of the account
      */
-    public static String getTokenFromAuthCode(String authCode) throws IOException {
+    public static String getTokenFromAuthCode(String authCode) {
         String result = null;
         OkHttpClient client = new OkHttpClient();
         String requestBodyString = "grant_type=authorization_code&code=" + authCode +
@@ -82,10 +82,15 @@ public class APIAccessManager {
                 .url("https://mastodon.social/oauth/token")
                 .post(req)
                 .build();
-        Response response = client.newCall(request).execute();
-        if (response.code() == 200 && response.body() != null) {
-            result = response.body().string();
-            result = gson.fromJson(result, authCodeResponse.class).access_token;
+        try{
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+                result = gson.fromJson(result, authCodeResponse.class).access_token;
+            }
+        }
+        catch (IOException e){
+            return null;
         }
         return result;
     }
@@ -296,7 +301,6 @@ public class APIAccessManager {
                 .post(req)
                 .addHeader("Authorization", "Bearer " + aut)
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             if (response.code() == 200 && response.body() != null) {
