@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,6 +26,8 @@ import java.util.List;
  * @version 1.0
  */
 public class TxipironClient extends Application {
+
+    private static final Logger logger = LogManager.getLogger("TxipironClient");
 
     /**
      * Registered Mastodon App Id. Will be used for oauth
@@ -76,16 +80,22 @@ public class TxipironClient extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
-
+        logger.info("--------------------------------------------");
+        logger.info("Txipiron Client [v1.0] - a Mastodon Client");
+        logger.info("--------------------------------------------");
+        logger.info("Starting Client");
         authWindow = load("auth/auth.fxml");
         mainWindow = load("main.fxml");
-
+        logger.debug("Windows (UIs) loaded");
         scene = new Scene(authWindow.ui);
         scene.getStylesheets().add(getClass().getResource("styles/listView.css").toExternalForm());
+        logger.debug("Stylesheet loaded");
         setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
         stage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg"));
+        logger.debug("Icon loaded");
         stage.setScene(scene);
         stage.show();
+        logger.info("Scene shown - Client Started");
     }
 
     /**
@@ -119,11 +129,13 @@ public class TxipironClient extends Application {
         switch (sceneName) {
             case "Auth" -> {
                 setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
+                logger.info("Changed scene to Auth");
                 scene.setRoot(authWindow.ui);
             }
             case "Main" -> {
                 setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
                 scene.setRoot(mainWindow.ui);
+                logger.info("Changed scene to Main");
                 mainWindow.controller.setRefTokenId(result);
                 mainWindow.controller.homeListView();
             }

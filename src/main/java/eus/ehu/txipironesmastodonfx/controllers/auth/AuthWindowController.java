@@ -15,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -37,6 +39,7 @@ import java.util.List;
 public class AuthWindowController implements WindowController {
 
     private TxipironClient mainApp;
+    private static final Logger logger = LogManager.getLogger("AuthWindowController");
 
     /**
      * Sets a reference to the main application
@@ -84,6 +87,7 @@ public class AuthWindowController implements WindowController {
     @FXML
     void loginBtnClick() {
         // hide everything - show loading
+        logger.debug("Attempting login...");
         loginBtn.setVisible(false);
         accountListView.setVisible(false);
         errorLabel.setText("Loading Data...");
@@ -96,8 +100,10 @@ public class AuthWindowController implements WindowController {
             errorLabel.setText("");
             if (result != null) {
                 // change scene to main window
+                logger.debug("RefToken successfully retrieved from database.");
                 mainApp.changeScene("Main", result);
             } else {
+                logger.error("Error when getting ref token from database.");
                 errorLabel.setText("Error when getting account id & token from database.");
             }
         });
@@ -115,6 +121,7 @@ public class AuthWindowController implements WindowController {
         errorLabel.setText(error);
         errorLabel.setVisible(true);
         exitBtn.setVisible(true);
+        logger.error("Critical app stop - " + error);
         // Because it's a vbox, everything re-aligns perfectly
         // when we dynamically remove elements
         vbox.getChildren().remove(accountListView);
@@ -129,6 +136,7 @@ public class AuthWindowController implements WindowController {
      * And finally, it will link the observable list to the listview.
      */
     protected void updateListView() {
+        logger.debug("Attempting to update listview...");
         // set items for accountListView
         accountListView.setItems(listViewItems);
         // execute the updating asyncronously
@@ -137,6 +145,7 @@ public class AuthWindowController implements WindowController {
                     List<Account> accounts;
                     try {
                         accounts = DBAccessManager.getAccounts();
+                        logger.debug("Accounts successfully retrieved from database.");
                     } catch (SQLException e) {
                         accounts = null;
                     }
@@ -149,6 +158,7 @@ public class AuthWindowController implements WindowController {
                         listViewItems.addAll(accounts);
                         // Add "Add Account" cell to ListView
                         listViewItems.add("Add Account");
+                        logger.debug("ListView updated successfully.");
                     } else {
                         errStop("Error! Couldn't get accounts from db.");
                     }
@@ -166,15 +176,18 @@ public class AuthWindowController implements WindowController {
      */
     @FXML
     void initialize() {
+        logger.debug("Starting auth initial tasks...");
         errorLabel.setText("Loading...");
         AsyncUtils.asyncTask(() -> {
                     // Check for internet connection
                     if (!NetworkUtils.hasInternet()) {
+                        logger.warn("No internet connection / Mastodon API Unreachable");
                         Platform.runLater(() -> errorLabel.setText("Error! No internet connection / Mastodon API Unreachable"));
                     }
                     // Check if db file exists
                     if (!DBAccessManager.isDbReachable()) {
                         try {
+                            logger.info("Database file not found - Creating new one...");
                             DBAccessManager.createDbFile();
                         } catch (IOException io) {
                             return "Error! Couldn't create db file. " + io.getMessage();
@@ -182,6 +195,7 @@ public class AuthWindowController implements WindowController {
                     }
                     // Check if db tables are created
                     try {
+                        logger.debug("Checking if db tables exist...");
                         DBAccessManager.checkAndCreateTables();
                     } catch (SQLException e) {
                         return "Error! Couldn't create db tables. " + e.getMessage();
@@ -214,6 +228,7 @@ public class AuthWindowController implements WindowController {
                     a.getUI().setOnMouseClicked(event -> {
                         if (event.getClickCount() == 2) {
                             // perform login action on double-click
+                            logger.debug("Double click on account object detected");
                             loginBtnClick();
                         }
                     });
@@ -234,10 +249,13 @@ public class AuthWindowController implements WindowController {
             // if the selected cell is not an account, disable the login button
             if (selectedIndex >= 0 && selectedIndex < listViewItems.size() && listViewItems.get(selectedIndex) instanceof Account) {
                 loginBtn.setDisable(false);
+                logger.debug("New selected account detected! - id:" + ((Account) listViewItems.get(selectedIndex)).id);
                 selectedAccId = ((Account) listViewItems.get(selectedIndex)).id;
             } else {
                 loginBtn.setDisable(true);
+                logger.debug("A non-account cell was selected! - Disabling login button");
             }
         });
+        logger.info("Authentication initial tasks finished - Client operative");
     }
 }

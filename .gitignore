@@ -40,3 +40,5 @@ build/
 ### Sensitive Information ###
 /TxipironData.db
 /temp.txt
+/logs/*
+/logs

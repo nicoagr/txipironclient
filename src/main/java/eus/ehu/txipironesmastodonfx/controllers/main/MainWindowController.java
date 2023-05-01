@@ -24,6 +24,9 @@ import javafx.scene.input.ScrollEvent;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Controller class for the main window.
  *
@@ -35,7 +38,7 @@ import java.util.List;
 public class MainWindowController implements WindowController {
 
     private TxipironClient mainApp;
-
+    private static final Logger logger = LogManager.getLogger("MainWindowController");
     public String id;
 
     private Integer ref;
@@ -81,6 +84,7 @@ public class MainWindowController implements WindowController {
         listViewItems.add("Post Toot");
         listView.getFocusModel().focus(0);
         listView.getSelectionModel().select(0);
+        logger.info("Loaded post toot screen");
     }
 
     /**
@@ -122,12 +126,13 @@ public class MainWindowController implements WindowController {
         this.ref = (Integer) result.get(0);
         this.token = (String) result.get(1);
         this.authenticatedId = (String) result.get(2);
-        icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
+        logger.debug("Established token and authenticated user id:" + authenticatedId);
         refreshAvatar();
         // Download defaults asynchronously
         AsyncUtils.asyncTask(() -> DBAccessManager.getSetting("autoplaymedia", true), res -> {
             if (res != null) {
                 autoplayMedia = (Boolean) res;
+                logger.debug("Established autoplay media setting: " + autoplayMedia);
             }
         });
     }
@@ -138,12 +143,17 @@ public class MainWindowController implements WindowController {
      * in the top left corner icon
      */
     public void refreshAvatar() {
+        logger.debug("Attempting to refresh avatar...");
         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/loading-gif.gif")));
         AsyncUtils.asyncTask(() -> {
             String avatarUrl;
             avatarUrl = APIAccessManager.getAccount(authenticatedId, token).avatar;
+            logger.debug("Avatar url fetched from servers: " + avatarUrl);
             return (avatarUrl != null) ? new Image(avatarUrl) : new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg"));
-        }, image -> icon.setImage(image));
+        }, image -> {
+            icon.setImage(image);
+            logger.debug("Avatar refreshed");
+        });
     }
 
     /**
@@ -153,6 +163,7 @@ public class MainWindowController implements WindowController {
     void settings() {
         listViewItems.clear();
         listViewItems.add("Settings");
+        logger.info("Loaded settings screen");
     }
 
     /**
@@ -165,9 +176,11 @@ public class MainWindowController implements WindowController {
         listViewItems.clear();
         if (searchQuery.getText().isEmpty()) {
             listViewItems.add("Error - Please enter a search query");
+            logger.error("User tried to type a null search query");
             return;
         }
         listViewItems.add("Loading...");
+        logger.debug("Attempting search with query: " + searchQuery.getText());
         showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -179,8 +192,10 @@ public class MainWindowController implements WindowController {
             hideLoading();
             if (res == null) {
                 listViewItems.add("Error downloading search results. Please check your connection and try again.");
+                logger.error("Error downloading search results. Please check your connection and try again.");
                 return;
             }
+            logger.info("Performed search with query: " + searchQuery.getText() + " and got " + res.accounts.size() + " accounts and " + res.statuses.size() + " statuses");
             if (res.accounts.size() == 0) {
                 listViewItems.add("No users found with that query");
             } else {
@@ -204,6 +219,7 @@ public class MainWindowController implements WindowController {
     void bookmarkedTootsListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        logger.debug("Attempting to download bookmarked toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -214,9 +230,11 @@ public class MainWindowController implements WindowController {
             listViewItems.clear();
             if (toot == null) {
                 listViewItems.add("Error downloading bookmarked toots. Please check your connection and try again.");
+                logger.error("Error downloading bookmarked toots. Please check your connection and try again.");
                 return;
             }
             hideLoading();
+            logger.info("Downloaded " + toot.size() + " bookmarked toots");
             if (toot.size() == 0) {
                 listViewItems.add("No bookmarked toots found");
                 return;
@@ -234,6 +252,7 @@ public class MainWindowController implements WindowController {
     public void homeListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        logger.debug("Attempting to download home toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -249,10 +268,12 @@ public class MainWindowController implements WindowController {
         }, toots -> {
             listViewItems.clear();
             if (toots == null) {
-                listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
+                listViewItems.add("Error downloading home toots. Please check your connection and try again.");
+                logger.error("Error downloading home toots from user id: " + authenticatedId);
                 return;
             }
             hideLoading();
+            logger.info("Downloaded " + toots.size() + " home toots from user id: " + authenticatedId);
             listViewItems.add("Home");
             listViewItems.addAll(toots);
         });
@@ -265,6 +286,7 @@ public class MainWindowController implements WindowController {
     void likedTootsListView() {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        logger.debug("Attempting to download liked toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -280,10 +302,12 @@ public class MainWindowController implements WindowController {
         }, toots -> {
             listViewItems.clear();
             if (toots == null) {
-                listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
+                listViewItems.add("Error downloading liked toots. Please check your connection and try again.");
+                logger.error("Error downloading liked toots from user id: " + authenticatedId);
                 return;
             }
             hideLoading();
+            logger.info("Downloaded " + toots.size() + " liked toots from user id" + authenticatedId);
             if (toots.size() == 0) {
                 listViewItems.add("No liked toots found");
                 return;
@@ -303,6 +327,7 @@ public class MainWindowController implements WindowController {
     public void userTootListViewFromId(String id) {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        logger.debug("Attempting to download profile and toots from id: " + id);
         showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -313,9 +338,11 @@ public class MainWindowController implements WindowController {
             listViewItems.clear();
             if (account == null) {
                 listViewItems.add("Error downloading profile . Please check your connection and try again.");
+                logger.error("Error downloading profile from user id: " + id);
                 return;
             }
             listViewItems.add(account);
+            logger.info("Downloaded profile from id: " + id);
             listViewItems.add("Loading...");
         });
         AsyncUtils.asyncTask(() -> {
@@ -332,11 +359,13 @@ public class MainWindowController implements WindowController {
         }, toots -> {
             if (toots == null) {
                 listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
+                logger.error("Error downloading profile toots from user id" + id);
                 return;
             }
             listViewItems.remove("Loading...");
             listViewItems.add("Toots and replies");
             listViewItems.addAll(toots);
+            logger.info("Downloaded " + toots.size() + " toots from user id: " + id);
             hideLoading();
         });
     }
@@ -355,6 +384,7 @@ public class MainWindowController implements WindowController {
     public void userTootListView(String username) {
         listViewItems.clear();
         listViewItems.add("Loading...");
+        logger.debug("Attempting to mastodon id from username: " + username);
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             String id;
@@ -369,8 +399,10 @@ public class MainWindowController implements WindowController {
         }, id -> {
             if (id == null) {
                 listViewItems.add("Error getting id from account. Please check your connection and try again.");
+                logger.error("Error getting id from account: " + username);
                 return;
             }
+            logger.debug("Downloaded id from username: " + username);
             userTootListViewFromId(id);
         });
     }
