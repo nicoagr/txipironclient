@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import jfxtras.scene.control.LocalDateTimeTextField;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -40,6 +42,7 @@ import java.util.regex.Matcher;
  */
 public class PostTootController {
     private MainWindowController master;
+    private static final Logger logger = LogManager.getLogger("PostTootController");
     private List<File> paths;
     LocalDateTimeTextField ldtf;
     @FXML
@@ -79,17 +82,21 @@ public class PostTootController {
         if (postDate != null && postDate.isBefore(LocalDateTime.now().plusMinutes(6))) {
             // One minute for us to post media, and 5 minutes server requirement
             master.listViewItems.add("Post date must be 6 minutes or more in the future!");
+            logger.warn("Post date must be 6 minutes or more in the future! - Cancelling posting toot.");
             return;
         }
         master.listViewItems.clear();
         if (content.getText().isEmpty() || content.getText().length() > 500) {
             master.listViewItems.add("Error - Toots must not be empty and contain maximum 500 characters.");
+            logger.warn("Toot is empty or has more than 500 characters. - Cancelling posting toot.");
             return;
         }
         master.listViewItems.add("Processing...");
+        logger.info("Attempting to post toot...");
         master.showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) {
+                logger.error("No internet connection. - Cancelling posting toot.");
                 return null;
             }
             List<String> mediaIds = null;
@@ -99,6 +106,7 @@ public class PostTootController {
                 MediaAttachment res;
                 Platform.runLater(() -> master.listViewItems.add("Uploading media..."));
                 for (File path : paths) {
+                    logger.debug("Uploading media: " + path.getAbsolutePath());
                     res = APIAccessManager.uploadMedia(master.token, path);
                     mediaIds.add(res.id);
                 }
@@ -106,6 +114,7 @@ public class PostTootController {
                 int time = 0;
                 // Check if media was processed correctly
                 Platform.runLater(() -> master.listViewItems.add("Waiting for server response..."));
+                logger.debug("Waiting for media processing done by server...");
                 while (!processed) {
                     for (String id : mediaIds) {
                         processed = processed || APIAccessManager.isMediaProcessed(master.token, id);
@@ -124,15 +133,18 @@ public class PostTootController {
                 ZonedDateTime zdt = ZonedDateTime.of(postDate, ZoneId.systemDefault());
                 ZonedDateTime utcZdt = zdt.withZoneSameInstant(ZoneOffset.UTC);
                 isoDate = utcZdt.format(DateTimeFormatter.ISO_DATE_TIME);
+                logger.debug("UTC Scheduled toot post date: " + isoDate);
             }
             // Create toot to be posted object and post it
             TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected(), mediaIds, isoDate);
             Platform.runLater(() -> master.listViewItems.add("Posting toot..."));
+            logger.debug("Sending toot to mastodon's servers...");
             return APIAccessManager.postToot(master.token, toot);
         }, res -> {
-            if (res != null)
+            if (res != null) {
+                logger.info("Toot successfully posted!");
                 master.homeListView();//despues de postear el toot, se resetea y se muestra home
-            else {
+            } else {
                 master.listViewItems.clear();
                 master.listViewItems.add("Error when posting toot to the servers. Please check connection and try again.");
             }
@@ -188,6 +200,7 @@ public class PostTootController {
             paths.clear();
             pickFileBtn.setText("Media Attachment (Optional)");
             selectTxt.setText("");
+            logger.info("Cleared file selection.");
             return;
         }
         int MAX_IMAGES = 4;
@@ -201,7 +214,7 @@ public class PostTootController {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Images/Videos", "*.png", "*.jpg", "*.jpeg", "*.mp4", "*.mov", "*.webm", "*.m4v")
         );
-
+        logger.info("Opening file chooser...");
         // Allow the user to select multiple files
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(master.TxipironClient().stage);
 
@@ -216,18 +229,22 @@ public class PostTootController {
                     paths.add(f);
                     selectTxt.setText("Video:" + f.getName());
                 } else {
-                    selectTxt.setText("Video too large. Max size: 40 MB");
+                    logger.warn("Selected Video too large. Max size: 40 MB");
+                    selectTxt.setText("Selected Video too large. Max size: 40 MB");
                 }
             } else {
                 for (File f : selectedFiles) {
                     if (HTMLParser.getFileExtension(f).matches("png|jpg|jpeg") && paths.size() < MAX_IMAGES && f.length() < 8388608) {
-                        selectTxt.setText((paths.size() == 0) ? "Image: " + f.getName() : "Image: " + selectTxt.getText() + "\n" + f.getName());
+                        selectTxt.setText((paths.size() == 0) ? "Image: " + f.getName() : selectTxt.getText() + "\n" + f.getName());
+                        logger.info("Selected image: " + f.getAbsolutePath());
                         paths.add(f);
-                    }
+                    } else
+                        logger.warn("Selected image too large (>8MB) or image limit reached (4 images)");
                 }
-                if (paths.size() == 0)
+                if (paths.size() == 0) {
                     selectTxt.setText("No matching files selected");
-                else {
+                    logger.warn("No matching files selected");
+                } else {
                     pickFileBtn.setText("Clear Selection");
                 }
             }
@@ -242,6 +259,7 @@ public class PostTootController {
      */
     @FXML
     public void initialize() {
+        logger.debug("Loading post toot cell initial tasks...");
         content.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 501) {
                 content.setText(oldValue);
@@ -295,5 +313,6 @@ public class PostTootController {
         anchor.getChildren().add(ldtf);
         anchor.setTopAnchor(ldtf, 271.0);
         anchor.setLeftAnchor(ldtf, 300.0);
+        logger.debug("Post toot cell initial tasks loaded");
     }
 }

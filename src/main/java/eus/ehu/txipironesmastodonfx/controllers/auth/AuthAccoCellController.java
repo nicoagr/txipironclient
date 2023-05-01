@@ -10,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -32,6 +34,7 @@ public class AuthAccoCellController {
     @FXML
     private Label userNameTxt;
     private AuthWindowController master;
+    private static Logger logger = LogManager.getLogger("AuthAccoCellController");
 
     /**
      * Constructor for the controller.
@@ -48,7 +51,7 @@ public class AuthAccoCellController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        logger.debug("Loading auth account cell for account: " + account.id);
         // set the values for the account cell
         userNameTxt.setText(account.acct);
         accIdTxt.setText(account.id);
@@ -98,11 +101,13 @@ public class AuthAccoCellController {
     void removeAccBtnClick() {
         // Remove account from database
         try {
+            logger.info("Removing account " + accIdTxt.getText() + " from database");
             DBAccessManager.removeAccountFromDbId(accIdTxt.getText());
             // Refresh listview
             master.updateListView();
         } catch (SQLException e) {
             // if an error occurs, do nothing
+            logger.error("Error while removing account from database");
         }
     }
 }

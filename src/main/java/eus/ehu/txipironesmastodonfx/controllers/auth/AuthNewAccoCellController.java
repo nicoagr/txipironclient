@@ -12,6 +12,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,6 +41,7 @@ public class AuthNewAccoCellController {
     private Label errorTxt;
     private AuthWindowController master;
     private Boolean oauth = null;
+    private static final Logger logger = LogManager.getLogger("AuthNewAccoCellController");
 
     /**
      * This method will call the specific actions
@@ -67,18 +70,22 @@ public class AuthNewAccoCellController {
      */
     private void oauthAuthentication(String authCode) {
         mstdTokenTxt.setText("Loading oauth authentication...");
+        logger.info("Starting oauth authentication...");
         addAccBtn.setDisable(true);
         AsyncUtils.asyncTask(() -> {
             String token = null;
             if (!NetworkUtils.hasInternet()) {
+                logger.error("No internet connection / Mastodon API Unreachable");
                 return "Error! No internet connection / Mastodon API Unreachable";
             }
             if (authCode.isEmpty()) {
+                logger.warn("Auth code is empty");
                 return "Error! Auth code is empty.";
             }
             try {
                 token = APIAccessManager.getTokenFromAuthCode(authCode);
             } catch (IOException e) {
+                logger.error("Error when getting token from auth code (AuthCode invalid)");
                 return "Error! AuthCode invalid";
             }
             return token;
@@ -91,6 +98,7 @@ public class AuthNewAccoCellController {
                 errorTxt.setText(param);
                 addAccBtn.setDisable(false);
             } else {
+                logger.info("OAuth authentication successful.");
                 accessTokenAuthentication(param);
             }
         });
@@ -101,6 +109,7 @@ public class AuthNewAccoCellController {
      */
     private void accessTokenAuthentication(String token) {
         mstdTokenTxt.setText("Validating token...");
+        logger.info("Starting access token authentication...");
         errorTxt.setText("");
         addAccBtn.setDisable(true);
         AsyncUtils.asyncTask(() -> {
@@ -137,9 +146,11 @@ public class AuthNewAccoCellController {
             mstdTokenTxt.setText("");
             if (errorMsg != null) {
                 errorTxt.setText(errorMsg);
+                logger.error(errorMsg);
                 addAccBtn.setDisable(false);
             } else {
                 // refresh listview
+                logger.info("Access token authentication successful. Adding account");
                 master.updateListView();
             }
         });
@@ -169,6 +180,7 @@ public class AuthNewAccoCellController {
     @FXML
     void accessTokenAuthClick() {
         if (oauth == null) {
+            logger.info("Switching to access token authentication");
             oauth = false;
             oauthBtn.setVisible(false);
             mstdTokenTxt.setPromptText("Mastodon API Access Token - 44 characters long");
@@ -177,6 +189,7 @@ public class AuthNewAccoCellController {
             mstdTokenTxt.setVisible(true);
         } else {
             oauth = null;
+            logger.info("Cancelling authentication");
             oauthBtn.setVisible(true);
             errorTxt.setText("");
             accessTokenAuthLink.setText("Paste access token instead");
@@ -193,6 +206,7 @@ public class AuthNewAccoCellController {
      */
     @FXML
     void oauthBtnClick() {
+        logger.info("Opening oauth link...");
         oauth = true;
         NetworkUtils.openWebPage("https://mastodon.social/oauth/authorize?response_type=code&client_id=" + TxipironClient.MASTODON_APP_ID + "&scope=read+write+follow+push&redirect_uri=urn:ietf:wg:oauth:2.0:oob&force_login=true");
         oauthBtn.setVisible(false);
