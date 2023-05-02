@@ -2,28 +2,21 @@ package eus.ehu.txipironesmastodonfx.controllers.main;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
-import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
-import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
-import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
-import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
-import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
-import eus.ehu.txipironesmastodonfx.domain.Account;
-import eus.ehu.txipironesmastodonfx.domain.Follow;
-import eus.ehu.txipironesmastodonfx.domain.SearchResult;
-import eus.ehu.txipironesmastodonfx.domain.Toot;
+import eus.ehu.txipironesmastodonfx.data_access.*;
+import eus.ehu.txipironesmastodonfx.domain.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.AccessibleAttribute;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 
 import java.io.IOException;
 import java.util.List;
 
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,8 +47,10 @@ public class MainWindowController implements WindowController {
     @FXML
     private ImageView loading;
     @FXML
-    public ListView<Object> listView;
-    public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
+    public VBox vbox;
+    @FXML
+    public ScrollPane scrollpane;
+    public ObservableList<CellController> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
 
     /**
@@ -81,9 +76,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public void postTootListview() {
         listViewItems.clear();
-        listViewItems.add("Post Toot");
-        listView.getFocusModel().focus(0);
-        listView.getSelectionModel().select(0);
+        listViewItems.add(new Generic(Generic.of.POST_TOOT, "Post Toot"));
         logger.info("Loaded post toot screen");
     }
 
@@ -122,7 +115,6 @@ public class MainWindowController implements WindowController {
      */
     @Override
     public void setRefTokenId(List<Object> result) {
-        listView.setItems(listViewItems);
         this.ref = (Integer) result.get(0);
         this.token = (String) result.get(1);
         this.authenticatedId = (String) result.get(2);
@@ -162,7 +154,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void settings() {
         listViewItems.clear();
-        listViewItems.add("Settings");
+        listViewItems.add(new Generic(Generic.of.SETTINGS, "Settings"));
         logger.info("Loaded settings screen");
     }
 
@@ -175,11 +167,11 @@ public class MainWindowController implements WindowController {
     void performSearch() {
         listViewItems.clear();
         if (searchQuery.getText().isEmpty()) {
-            listViewItems.add("Error - Please enter a search query");
+            listViewItems.add(new Generic(Generic.of.ERROR, "Error - Please enter a search query"));
             logger.error("User tried to type a null search query");
             return;
         }
-        listViewItems.add("Loading...");
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         logger.debug("Attempting search with query: " + searchQuery.getText());
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -191,21 +183,21 @@ public class MainWindowController implements WindowController {
             listViewItems.clear();
             hideLoading();
             if (res == null) {
-                listViewItems.add("Error downloading search results. Please check your connection and try again.");
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading search results. Please check your connection and try again."));
                 logger.error("Error downloading search results. Please check your connection and try again.");
                 return;
             }
             logger.info("Performed search with query: " + searchQuery.getText() + " and got " + res.accounts.size() + " accounts and " + res.statuses.size() + " statuses");
             if (res.accounts.size() == 0) {
-                listViewItems.add("No users found with that query");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "No users found with that query"));
             } else {
-                listViewItems.add("Result accounts");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "Result accounts"));
                 listViewItems.addAll(res.accounts);
             }
             if (res.statuses.size() == 0) {
-                listViewItems.add("No statuses found with that query");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "No statuses found with that query"));
             } else {
-                listViewItems.add("Result statuses");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "Result statuses"));
                 listViewItems.addAll(res.statuses);
             }
         });
@@ -218,7 +210,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void bookmarkedTootsListView() {
         listViewItems.clear();
-        listViewItems.add("Loading...");
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         logger.debug("Attempting to download bookmarked toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -229,17 +221,17 @@ public class MainWindowController implements WindowController {
         }, toot -> {
             listViewItems.clear();
             if (toot == null) {
-                listViewItems.add("Error downloading bookmarked toots. Please check your connection and try again.");
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading bookmarked toots. Please check your connection and try again."));
                 logger.error("Error downloading bookmarked toots. Please check your connection and try again.");
                 return;
             }
             hideLoading();
             logger.info("Downloaded " + toot.size() + " bookmarked toots");
             if (toot.size() == 0) {
-                listViewItems.add("No bookmarked toots found");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "No bookmarked toots found"));
                 return;
             }
-            listViewItems.add("Bookmarks");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Bookmarks"));
             listViewItems.addAll(toot);
         });
     }
@@ -251,7 +243,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public void homeListView() {
         listViewItems.clear();
-        listViewItems.add("Loading...");
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         logger.debug("Attempting to download home toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -268,13 +260,13 @@ public class MainWindowController implements WindowController {
         }, toots -> {
             listViewItems.clear();
             if (toots == null) {
-                listViewItems.add("Error downloading home toots. Please check your connection and try again.");
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading home toots. Please check your connection and try again."));
                 logger.error("Error downloading home toots from user id: " + authenticatedId);
                 return;
             }
             hideLoading();
             logger.info("Downloaded " + toots.size() + " home toots from user id: " + authenticatedId);
-            listViewItems.add("Home");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Home"));
             listViewItems.addAll(toots);
         });
     }
@@ -285,7 +277,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void likedTootsListView() {
         listViewItems.clear();
-        listViewItems.add("Loading...");
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         logger.debug("Attempting to download liked toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -302,17 +294,17 @@ public class MainWindowController implements WindowController {
         }, toots -> {
             listViewItems.clear();
             if (toots == null) {
-                listViewItems.add("Error downloading liked toots. Please check your connection and try again.");
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading liked toots. Please check your connection and try again."));
                 logger.error("Error downloading liked toots from user id: " + authenticatedId);
                 return;
             }
             hideLoading();
             logger.info("Downloaded " + toots.size() + " liked toots from user id" + authenticatedId);
             if (toots.size() == 0) {
-                listViewItems.add("No liked toots found");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "No liked toots found"));
                 return;
             }
-            listViewItems.add("Liked toots");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Liked toots"));
             listViewItems.addAll(toots);
         });
     }
@@ -326,7 +318,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public void userTootListViewFromId(String id) {
         listViewItems.clear();
-        listViewItems.add("Loading...");
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         logger.debug("Attempting to download profile and toots from id: " + id);
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -337,13 +329,13 @@ public class MainWindowController implements WindowController {
         }, account -> {
             listViewItems.clear();
             if (account == null) {
-                listViewItems.add("Error downloading profile . Please check your connection and try again.");
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile . Please check your connection and try again."));
                 logger.error("Error downloading profile from user id: " + id);
                 return;
             }
             listViewItems.add(account);
             logger.info("Downloaded profile from id: " + id);
-            listViewItems.add("Loading...");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         });
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -358,12 +350,12 @@ public class MainWindowController implements WindowController {
             return toots;
         }, toots -> {
             if (toots == null) {
-                listViewItems.add("Error downloading profile toots. Please check your connection and try again.");
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile toots. Please check your connection and try again."));
                 logger.error("Error downloading profile toots from user id" + id);
                 return;
             }
-            listViewItems.remove("Loading...");
-            listViewItems.add("Toots and replies");
+            listViewItems.remove(listViewItems.size() - 1);
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Toots and replies"));
             listViewItems.addAll(toots);
             logger.info("Downloaded " + toots.size() + " toots from user id: " + id);
             hideLoading();
@@ -383,7 +375,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public void userTootListView(String username) {
         listViewItems.clear();
-        listViewItems.add("Loading...");
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         logger.debug("Attempting to mastodon id from username: " + username);
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -398,7 +390,7 @@ public class MainWindowController implements WindowController {
             return id;
         }, id -> {
             if (id == null) {
-                listViewItems.add("Error getting id from account. Please check your connection and try again.");
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error getting id from account. Please check your connection and try again."));
                 logger.error("Error getting id from account: " + username);
                 return;
             }
@@ -413,68 +405,22 @@ public class MainWindowController implements WindowController {
     @FXML
     void initialize() {
         MainWindowController thisclass = this;
-        listView.setCellFactory(param -> new ListCell<>(){
-            @Override
-            protected void updateItem(Object item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else if (item instanceof Toot) {
-                    setText(null);
-                    TootCellController b = new TootCellController(thisclass);
-                    setGraphic(b.getUI());
-                    b.loadToot((Toot) item);
-                } else if (item instanceof String && ((String) item).toLowerCase().contains("error")) {
-                    setText(null);
-                    ErrorCellController d = new ErrorCellController((String) item);
-                    setGraphic(d.getUI());
-                } else if (item instanceof String && item.equals("Post Toot")) {
-                    setText(null);
-                    PostTootController c = new PostTootController(thisclass);
-                    setGraphic(c.getUI());
-                } else if (item instanceof String && item.equals("Settings")) {
-                    setText(null);
-                    SettingsController s = new SettingsController(thisclass);
-                    s.loadDefaultSettings();
-                    setGraphic(s.getUI());
-                } else if (item instanceof String) {
-                    setText(null);
-                    HeaderCellController c = new HeaderCellController((String) item, thisclass);
-                    setGraphic(c.getUI());
-                } else if (item instanceof Follow) {
-                    setText(null);
-                    FollowCellController f = new FollowCellController((Follow) item, thisclass);
-                    setGraphic(f.getUI());
-                } else if (item instanceof Account) {
-                    setText(null);
-                    ProfileCellControllers p = new ProfileCellControllers(thisclass);
-                    setGraphic(p.getUI());
-                    p.loadAccount((Account) item);
-                }
-                // Remove horizontal scrollbar for each item that we load
-                // (Yes! necessary!) for each item, because the list view
-                // will be re-dimensioned and the horizontal scrollbar will
-                // appear again
-                ScrollBar scrollBar = (ScrollBar) listView.queryAccessibleAttribute(AccessibleAttribute.HORIZONTAL_SCROLLBAR);
-                if (scrollBar != null) {
-                    scrollBar.setPrefHeight(0);
-                    scrollBar.setMaxHeight(0);
-                    scrollBar.setOpacity(0);
-                    scrollBar.setDisable(true);
-                    scrollBar.setVisible(false);
-                }
+        if (vbox != null) {
+            // Map the list view items to the vbox.
+            // Each domain entity (a) will contain the logic to display the item
+            // like invoking each appropriate controller and returning its view
+            DisplayUtils.mapByValue(listViewItems, vbox.getChildren(), a -> a.display(thisclass));
+        }
+        // Disable Horizontal Scrolling
+        scrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollpane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            if (event.getDeltaX() != 0) {
+                event.consume();
             }
         });
         searchQuery.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 searchBtn.fire();
-            }
-        });
-        // force remove horizontal scrolling
-        listView.addEventFilter(ScrollEvent.SCROLL, event -> {
-            if (event.getDeltaX() != 0) {
-                event.consume();
             }
         });
     }

@@ -1,5 +1,9 @@
 package eus.ehu.txipironesmastodonfx.domain;
 
+import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.TootCellController;
+import javafx.scene.Node;
+
 import java.util.List;
 
 /**
@@ -12,7 +16,7 @@ import java.util.List;
  * @author Xiomara Cáceces
  * @author Marcos Chouciño
  */
-public class Toot {
+public class Toot implements CellController {
 
     public String id;
     public String created_at;
@@ -34,6 +38,22 @@ public class Toot {
     public List<MediaAttachment> media_attachments;
 
     public List<Mention> mentions;
+
+    /**
+     * This method will initialize the
+     * custom cell controller, and return
+     * the node that will be shown in the
+     * VBox
+     *
+     * @param m (MainWindowController) The main window controller
+     * @return (Node) The node that will be shown in the VBox
+     */
+    @Override
+    public Node display(MainWindowController m) {
+        TootCellController t = new TootCellController(m);
+        t.loadToot(this);
+        return t.getUI();
+    }
 
     public class Mention {
         public String id;

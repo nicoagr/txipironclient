@@ -5,6 +5,7 @@ import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
+import eus.ehu.txipironesmastodonfx.domain.Generic;
 import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
 import eus.ehu.txipironesmastodonfx.domain.TootToBePosted;
 import javafx.application.Platform;
@@ -81,17 +82,17 @@ public class PostTootController {
         LocalDateTime postDate = ldtf.getLocalDateTime();
         if (postDate != null && postDate.isBefore(LocalDateTime.now().plusMinutes(6))) {
             // One minute for us to post media, and 5 minutes server requirement
-            master.listViewItems.add("Post date must be 6 minutes or more in the future!");
+            master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Post date must be 6 minutes or more in the future!"));
             logger.warn("Post date must be 6 minutes or more in the future! - Cancelling posting toot.");
             return;
         }
         master.listViewItems.clear();
         if (content.getText().isEmpty() || content.getText().length() > 500) {
-            master.listViewItems.add("Error - Toots must not be empty and contain maximum 500 characters.");
+            master.listViewItems.add(new Generic(Generic.of.ERROR, "Error - Toots must not be empty and contain maximum 500 characters."));
             logger.warn("Toot is empty or has more than 500 characters. - Cancelling posting toot.");
             return;
         }
-        master.listViewItems.add("Processing...");
+        master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Processing..."));
         logger.info("Attempting to post toot...");
         master.showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -104,7 +105,7 @@ public class PostTootController {
                 // Upload media
                 mediaIds = new ArrayList<>();
                 MediaAttachment res;
-                Platform.runLater(() -> master.listViewItems.add("Uploading media..."));
+                Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Uploading media...")));
                 for (File path : paths) {
                     logger.debug("Uploading media: " + path.getAbsolutePath());
                     res = APIAccessManager.uploadMedia(master.token, path);
@@ -113,7 +114,7 @@ public class PostTootController {
                 boolean processed = false;
                 int time = 0;
                 // Check if media was processed correctly
-                Platform.runLater(() -> master.listViewItems.add("Waiting for server response..."));
+                Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Waiting for server response...")));
                 logger.debug("Waiting for media processing done by server...");
                 while (!processed) {
                     for (String id : mediaIds) {
@@ -137,7 +138,7 @@ public class PostTootController {
             }
             // Create toot to be posted object and post it
             TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected(), mediaIds, isoDate);
-            Platform.runLater(() -> master.listViewItems.add("Posting toot..."));
+            Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Posting toot...")));
             logger.debug("Sending toot to mastodon's servers...");
             return APIAccessManager.postToot(master.token, toot);
         }, res -> {
@@ -146,7 +147,7 @@ public class PostTootController {
                 master.homeListView();//despues de postear el toot, se resetea y se muestra home
             } else {
                 master.listViewItems.clear();
-                master.listViewItems.add("Error when posting toot to the servers. Please check connection and try again.");
+                master.listViewItems.add(new Generic(Generic.of.ERROR, "Error when posting toot to the servers. Please check connection and try again."));
             }
             master.hideLoading();
         });
@@ -266,9 +267,6 @@ public class PostTootController {
                 charLabel.setText("500 Character Limit Reached");
                 return;
             }
-            // Select cell inside list view (in case its not selected)
-            master.listView.getSelectionModel().select(anchor);
-            master.listView.getFocusModel().focus(master.listView.getSelectionModel().getSelectedIndex());
             content.setText(newValue);
             // set character number
             charLabel.setText(newValue.length() + "/500 Characters");

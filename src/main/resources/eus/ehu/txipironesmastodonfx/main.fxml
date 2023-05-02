@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane maxHeight="700" maxWidth="1200" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController">
    <bottom>
       <AnchorPane prefHeight="35.0" prefWidth="900.0" BorderPane.alignment="CENTER">
@@ -36,14 +38,22 @@
        </AnchorPane>
    </top>
    <left>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="185.0" text="Home" />
-            <Button fx:id="bookmarkedToots" layoutY="70.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#bookmarkedTootsListView" prefHeight="70.0" prefWidth="186.0" text="Bookmarked toots" />
-            <Button fx:id="changeAcctBtn" layoutY="555.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#changeAcctBtnClick" prefHeight="70.0" prefWidth="185.0" text="Change account" />
-            <ListView fx:id="listView" layoutX="185.0" prefHeight="627.0" prefWidth="805.0" />
-            <Button fx:id="postToot" layoutY="210.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="186.0" text="Post toot" />
-            <Button layoutY="484.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="185.0" text="Settings" />
-         <Button fx:id="likedToots" layoutY="140.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="185.0" text="Liked toots" />
-        </AnchorPane>
+       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView"
+                   prefHeight="70.0" prefWidth="185.0" text="Home"/>
+           <Button fx:id="bookmarkedToots" layoutY="70.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
+                   onAction="#bookmarkedTootsListView" prefHeight="70.0" prefWidth="186.0" text="Bookmarked toots"/>
+           <Button fx:id="changeAcctBtn" layoutY="555.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
+                   onAction="#changeAcctBtnClick" prefHeight="70.0" prefWidth="185.0" text="Change account"/>
+           <ScrollPane fx:id="scrollpane" layoutX="185.0" prefHeight="627.0" prefWidth="805.0">
+               <VBox fx:id="vbox" prefHeight="627.0" prefWidth="805.0"/>
+           </ScrollPane>
+           <Button fx:id="postToot" layoutY="210.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
+                   onAction="#postTootListview" prefHeight="70.0" prefWidth="186.0" text="Post toot"/>
+           <Button layoutY="484.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings"
+                   prefHeight="70.0" prefWidth="185.0" text="Settings"/>
+           <Button fx:id="likedToots" layoutY="140.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
+                   onAction="#likedTootsListView" prefHeight="70.0" prefWidth="185.0" text="Liked toots"/>
+       </AnchorPane>
    </left>
 </BorderPane>

@@ -1,5 +1,9 @@
 package eus.ehu.txipironesmastodonfx.domain;
 
+import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.FollowCellController;
+import javafx.scene.Node;
+
 /**
  * Represents a Mastodon follower/following.
  * It will contain all attributes needed for our application.
@@ -12,7 +16,7 @@ package eus.ehu.txipironesmastodonfx.domain;
  * @author Xiomara Cáceces
  * @author Marcos Chouciño
  */
-public class Follow {
+public class Follow implements CellController {
     public String id;
     public String acct;
     public String avatar;
@@ -35,5 +39,20 @@ public class Follow {
                 ", display_name='" + display_name + '\'' +
                 ", following=" + following +
                 '}';
+    }
+
+    /**
+     * This method will initialize the
+     * custom cell controller, and return
+     * the node that will be shown in the
+     * VBox
+     *
+     * @param m (MainWindowController) The main window controller
+     * @return (Node) The node that will be shown in the VBox
+     */
+    @Override
+    public Node display(MainWindowController m) {
+        FollowCellController f = new FollowCellController(this, m);
+        return f.getUI();
     }
 }

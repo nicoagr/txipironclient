@@ -1,5 +1,10 @@
 package eus.ehu.txipironesmastodonfx.domain;
 
+import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.ProfileCellControllers;
+import javafx.scene.Node;
+import javafx.scene.control.Cell;
+
 /**
  * Represents a Mastodon account.
  * It will contain all attributes needed for our application.
@@ -10,7 +15,7 @@ package eus.ehu.txipironesmastodonfx.domain;
  * @author Xiomara Cáceces
  * @author Marcos Chouciño
  */
-public class Account {
+public class Account implements CellController {
     public String id;
     public String acct;
     public String avatar;
@@ -83,5 +88,21 @@ public class Account {
                 ", last_status_at='" + last_status_at + '\'' +
                 ", display_name='" + display_name + '\'' +
                 '}';
+    }
+
+    /**
+     * This method will initialize the
+     * custom cell controller, and return
+     * the node that will be shown in the
+     * VBox
+     *
+     * @param m (MainWindowController) The main window controller
+     * @return (Node) The node that will be shown in the VBox
+     */
+    @Override
+    public Node display(MainWindowController m) {
+        ProfileCellControllers p = new ProfileCellControllers(m);
+        p.loadAccount(this);
+        return p.getUI();
     }
 }
