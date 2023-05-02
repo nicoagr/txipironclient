@@ -9,7 +9,7 @@ public class WindowNotificationSystem {
 
 
 
-        public static void trowNotificationWindow(String mainText, String secondaryText) throws IOException, AWTException {
+        public static <Notifications> void trowNotificationWindow(String mainText) throws IOException, AWTException {
 
           //  Image image = ImageIO.read(WindowNotificationSystem.class.getResource("img/logo/light_filled_250.jpg"));
             Image image = Toolkit.getDefaultToolkit().createImage(WindowNotificationSystem.class.getResource("img/logo/light_filled_250.jpg"));
@@ -19,23 +19,15 @@ public class WindowNotificationSystem {
                 ProcessBuilder builder = new ProcessBuilder(
                         "zenity",
                         "--notification",
-                        "--title=" + mainText,
-                        "--text=" + secondaryText);
+                        "--text=" + mainText);
                 builder.inheritIO().start();
             } else if (os.contains("Mac")) {
                 ProcessBuilder builder = new ProcessBuilder(
                         "osascript", "-e",
                         "display notification \"" + mainText + "\""
-                                + " with title \"" + secondaryText + "\"");
+                                + " with title \"" + "title" + "\"");
                 builder.inheritIO().start();
-            } else if (SystemTray.isSupported()) {
-                SystemTray tray = SystemTray.getSystemTray();
-
-                TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
-                trayIcon.setImageAutoSize(true);
-                tray.add(trayIcon);
-
-                trayIcon.displayMessage(mainText,secondaryText, TrayIcon.MessageType.INFO);
+            }else{
             }
         }
 }
