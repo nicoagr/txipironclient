@@ -14,10 +14,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.AccessibleAttribute;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
+import javax.swing.plaf.PanelUI;
+import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -33,10 +37,12 @@ import java.util.List;
 public class MainWindowController implements WindowController {
 
     private TxipironClient mainApp;
+    NotificationSystem notificationSystem;
 
     public String id;
 
     private Integer ref;
+    public String lastNotification;
     public String authenticatedId;
 
     public String token;
@@ -87,7 +93,7 @@ public class MainWindowController implements WindowController {
      * Loads the notification
      */
     @FXML
-    void NotificationListView() throws IOException {
+    void NotificationListView() throws IOException, AWTException {
         listViewItems.clear();
         listViewItems.add("Loading...");
         showLoading();
@@ -104,6 +110,7 @@ public class MainWindowController implements WindowController {
             }
             hideLoading();
             listViewItems.add("Notifications");
+            lastNotification = notifications.get(0).id;
             for (Notification element : notifications) {
                 if (element.type.equals("mention")) {
                     listViewItems.add(element.account.acct + " has mention you :D");
@@ -150,7 +157,7 @@ public class MainWindowController implements WindowController {
     }
 
     /**
-     * Sets the reference of the current logged in user and sets the avatar
+     * Sets the reference of the current logged in user ,sets the avatar and initialices the notification system
      *
      * @param result (List<Object>) - The list of reference and token to be set
      */
@@ -159,6 +166,9 @@ public class MainWindowController implements WindowController {
         listView.setItems(listViewItems);
         this.ref = (Integer) result.get(0);
         this.token = (String) result.get(1);
+        NotificationSystem NotificationSystem = new NotificationSystem();
+        NotificationSystem.activateNotifications(this);
+
         this.authenticatedId = (String) result.get(2);
         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         AsyncUtils.asyncTask(() -> {
@@ -427,6 +437,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void initialize() {
         MainWindowController thisclass = this;
+
         listView.setCellFactory(param -> new ListCell<>(){
             @Override
             protected void updateItem(Object item, boolean empty) {

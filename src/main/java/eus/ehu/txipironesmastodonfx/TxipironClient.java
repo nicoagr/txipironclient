@@ -97,10 +97,10 @@ public class TxipironClient extends Application {
 
     /**
      * Dinamically Change Scenes on-the-fly.
-     * Will change the scene to the one passed as parameter.
+     * Will change the scene to the one passed as parameter, and activate the notifications
      *
      * @param sceneName (String) - Name of the scene to change to
-     * @param result    (List<Object>) - List of reference, token and id to pass to the controller
+     * @param result    (List<Object>) - List of reference.
      */
     public void changeScene(String sceneName, List<Object> result) {
         switch (sceneName) {

@@ -2,6 +2,8 @@ package eus.ehu.txipironesmastodonfx.data_access;
 
 import javafx.application.Platform;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -18,7 +20,7 @@ public final class AsyncUtils {
 
     @FunctionalInterface
     public interface Consumer<T> {
-        void apply(T t);
+        void apply(T t) throws IOException, AWTException;
     }
 
     @FunctionalInterface
@@ -49,7 +51,15 @@ public final class AsyncUtils {
             }
         }).thenAcceptAsync(v -> {
             if (callback != null)
-                Platform.runLater(() -> callback.apply(v));
+                Platform.runLater(() -> {
+                    try {
+                        callback.apply(v);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (AWTException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
         });
     }
 }

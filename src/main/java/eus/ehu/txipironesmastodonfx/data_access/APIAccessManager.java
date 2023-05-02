@@ -415,7 +415,6 @@ public class APIAccessManager {
 
     public static void clearNotification(String token) throws IOException{
         String response = request("notifications/clear", token);
-        System.out.println("asdf");
     }
 
 
@@ -425,7 +424,7 @@ public class APIAccessManager {
         String response = request("notifications", token);
 
 
-        if (response.equals("")) {
+            if (response == null) {
             // token is invalid
             return null;
         }
