@@ -91,6 +91,18 @@ public class Account implements CellController {
     }
 
     /**
+     * Equals method for the Account class.
+     * Two accounts will be the same if their
+     * ids are the same
+     *
+     * @param a (Account) The account to compare
+     * @return (boolean) True if the accounts are the same, false otherwise
+     */
+    public boolean equals(Account a) {
+        return this.id == a.id;
+    }
+
+    /**
      * This method will initialize the
      * custom cell controller, and return
      * the node that will be shown in the

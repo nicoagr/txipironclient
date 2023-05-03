@@ -35,15 +35,13 @@ public class AuthAccoCellController {
     private Label userNameTxt;
     private AuthWindowController master;
     private static Logger logger = LogManager.getLogger("AuthAccoCellController");
+    boolean loaded = false;
 
     /**
      * Constructor for the controller.
      * It will load itself at take consciousness (set itself as controller)
-     * Also it will set the corresponding values for the account cell.
-     *
-     * @param account (Account) - The account to be displayed
-     */
-    public AuthAccoCellController(Account account) {
+     **/
+    public AuthAccoCellController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/auth/authaccocell.fxml"));
         fxmlLoader.setController(this);
         try {
@@ -51,6 +49,19 @@ public class AuthAccoCellController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Loader for the account in the cell
+     * It will set the corresponding values for the account cell.
+     * It will also load the avatar image asynchronously.
+     *
+     * @param account (Account) - The account to be loaded
+     */
+    public void loadAccount(Account account) {
+        if (loaded)
+            return;
+        loaded = true;
         logger.debug("Loading auth account cell for account: " + account.id);
         // set the values for the account cell
         userNameTxt.setText(account.acct);

@@ -215,15 +215,16 @@ public class AuthWindowController implements WindowController {
         // modify the ListView's cell factory to use our custom cells and styles
         AuthWindowController thisclass = this;
         accountListView.setCellFactory(param -> new ListCell<>() {
+            AuthAccoCellController a = new AuthAccoCellController();
+            AuthNewAccoCellController b = new AuthNewAccoCellController();
+
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);
+                setText(null);
                 if (empty || item == null) {
-                    setText(null);
                     setGraphic(null);
                 } else if (item instanceof Account) {
-                    setText(null);
-                    AuthAccoCellController a = new AuthAccoCellController((Account) item);
                     a.setReference(thisclass);
                     a.getUI().setOnMouseClicked(event -> {
                         if (event.getClickCount() == 2) {
@@ -233,9 +234,8 @@ public class AuthWindowController implements WindowController {
                         }
                     });
                     setGraphic(a.getUI());
+                    a.loadAccount((Account) item);
                 } else if (item instanceof String && item.equals("Add Account")) {
-                    setText(null);
-                    AuthNewAccoCellController b = new AuthNewAccoCellController();
                     b.setReference(thisclass);
                     setGraphic(b.getUI());
                 }
