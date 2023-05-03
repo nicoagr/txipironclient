@@ -26,11 +26,11 @@ public class WindowNotificationSystem {
     }
 
         public  void trowNotificationWindow(String mainText) throws IOException, AWTException {
-            System.out.println("cualquier dia");
+
 
             if (trayIcon != null) {
                 System.out.println("sdf");
-                trayIcon.displayMessage("title", "message", TrayIcon.MessageType.NONE);
+                trayIcon.displayMessage(mainText, "PlaceHolder", TrayIcon.MessageType.NONE);
             }
 
         }

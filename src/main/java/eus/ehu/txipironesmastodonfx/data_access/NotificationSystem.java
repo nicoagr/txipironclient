@@ -23,7 +23,7 @@ public class NotificationSystem {
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
-    public void     activateNotifications(MainWindowController master) {
+    public void  activateNotifications(MainWindowController master) {
 
         this.master = master;
         AsyncUtils.asyncTask(() -> {//first I get the first notification to save the id
@@ -41,11 +41,13 @@ public class NotificationSystem {
                 AsyncUtils.asyncTask(() -> {//first I get the notifications
                     List<Notification> notifications;
                     System.out.println("wowoow");
-                    notifications = APIAccessManager.getNewNotification(master.token);
+                    notifications = APIAccessManager.getNotificationSinceip(master.token,master.lastNotification);
                     return notifications;
                 }, notifications -> {
                     int cont = 0;
-                    if(!master.lastNotification.equals(notifications.get(0).id)){
+                    if(!notifications.isEmpty()){
+
+                    if(!notifications.isEmpty() && !master.lastNotification.equals(notifications.get(0).id)){
                         switch (notifications.get(0).type) {
                             case "mention":
                                 WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has mentioned you");
@@ -71,7 +73,7 @@ public class NotificationSystem {
                         master.lastNotification = notifications.get(0).id;
                     }
 
-
+                    }
 
                 });
 

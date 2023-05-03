@@ -433,6 +433,37 @@ public class APIAccessManager {
         // get json array and then convert it to a list of Notifications
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
     }
+
+    public static List<Notification> getNotificationSinceip(String token,String id) throws IOException {
+
+
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v1/" + "notifications/?since_id=" + id)
+                .get()
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        String response = result;
+
+        Type NotificationListType = new TypeToken<ArrayList<Notification>>() {
+        }.getType();
+        // get json array and then convert it to a list of Notifications
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
+    }
+
+
 }
 
 
