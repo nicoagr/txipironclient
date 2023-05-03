@@ -3,31 +3,40 @@ package eus.ehu.txipironesmastodonfx.data_access;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class WindowNotificationSystem {
+    private TrayIcon trayIcon;
 
 
 
-        public static <Notifications> void trowNotificationWindow(String mainText) throws IOException, AWTException {
+    public WindowNotificationSystem() {
 
-          //  Image image = ImageIO.read(WindowNotificationSystem.class.getResource("img/logo/light_filled_250.jpg"));
-            Image image = Toolkit.getDefaultToolkit().createImage(WindowNotificationSystem.class.getResource("img/logo/light_filled_250.jpg"));
+    }
 
-            String os = System.getProperty("os.name");
-            if (os.contains("Linux")) {
-                ProcessBuilder builder = new ProcessBuilder(
-                        "zenity",
-                        "--notification",
-                        "--text=" + mainText);
-                builder.inheritIO().start();
-            } else if (os.contains("Mac")) {
-                ProcessBuilder builder = new ProcessBuilder(
-                        "osascript", "-e",
-                        "display notification \"" + mainText + "\""
-                                + " with title \"" + "title" + "\"");
-                builder.inheritIO().start();
-            }else{
+    public void initialice() throws IOException, AWTException {
+        SystemTray tray = SystemTray.getSystemTray();
+        BufferedImage trayIconImage = ImageIO.read(getClass().getResource(("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg")));
+        int trayIconWidth = new TrayIcon(trayIconImage).getSize().width;
+            this.trayIcon = new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1, Image.SCALE_SMOOTH), "TwitterC");
+
+        // add the tray image
+        tray.add(trayIcon);
+
+    }
+
+        public  void trowNotificationWindow(String mainText) throws IOException, AWTException {
+            System.out.println("cualquier dia");
+
+            if (trayIcon != null) {
+                System.out.println("sdf");
+                trayIcon.displayMessage("title", "message", TrayIcon.MessageType.NONE);
             }
+
         }
 }
+
+
+
+

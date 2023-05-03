@@ -36,6 +36,9 @@ import java.util.List;
  */
 public class MainWindowController implements WindowController {
 
+
+    private WindowNotificationSystem windowNotificationSystem;
+
     private TxipironClient mainApp;
     NotificationSystem notificationSystem;
 
@@ -94,6 +97,7 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void NotificationListView() throws IOException, AWTException {
+        windowNotificationSystem.trowNotificationWindow("A");
         listViewItems.clear();
         listViewItems.add("Loading...");
         showLoading();
@@ -437,6 +441,8 @@ public class MainWindowController implements WindowController {
     @FXML
     void initialize() {
         MainWindowController thisclass = this;
+        WindowNotificationSystem windowNotificationSystem = new WindowNotificationSystem();
+        System.out.println("inicializando cosas");
 
         listView.setCellFactory(param -> new ListCell<>(){
             @Override

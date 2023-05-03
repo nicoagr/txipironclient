@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class NotificationSystem {
+    WindowNotificationSystem WindowNotificationSystem;
     MainWindowController master;
 
         /*
@@ -35,9 +36,11 @@ public class NotificationSystem {
 
 
         final Runnable toBeEjecuterperiodically = new Runnable() {
+
             public void run(){
                 AsyncUtils.asyncTask(() -> {//first I get the notifications
                     List<Notification> notifications;
+                    System.out.println("wowoow");
                     notifications = APIAccessManager.getNewNotification(master.token);
                     return notifications;
                 }, notifications -> {
