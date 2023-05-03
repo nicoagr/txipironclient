@@ -20,7 +20,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
-import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -37,10 +36,11 @@ import java.util.List;
 public class MainWindowController implements WindowController {
 
 
-    private WindowNotificationSystem windowNotificationSystem;
+    public WindowNotificationSystem windowNotificationSystem = new WindowNotificationSystem();
+    public NotificationSystem notificationSystem = new NotificationSystem();
 
     private TxipironClient mainApp;
-    NotificationSystem notificationSystem;
+
 
     public String id;
 
@@ -61,6 +61,8 @@ public class MainWindowController implements WindowController {
     public ListView<Object> listView;
     public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
+
+
 
     /**
      * Changes title and Shows loading gif
@@ -155,7 +157,7 @@ public class MainWindowController implements WindowController {
      * when the change account button is clicked
      */
     @FXML
-    void changeAcctBtnClick() {
+    void changeAcctBtnClick() throws IOException, AWTException {
         listViewItems.clear();
         mainApp.changeScene("Auth", null);
     }
@@ -166,13 +168,13 @@ public class MainWindowController implements WindowController {
      * @param result (List<Object>) - The list of reference and token to be set
      */
     @Override
-    public void setRefTokenId(List<Object> result) {
+    public void setRefTokenId(List<Object> result) throws IOException, AWTException {
         listView.setItems(listViewItems);
         this.ref = (Integer) result.get(0);
         this.token = (String) result.get(1);
         NotificationSystem NotificationSystem = new NotificationSystem();
         NotificationSystem.activateNotifications(this);
-
+        windowNotificationSystem.initialice();
         this.authenticatedId = (String) result.get(2);
         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         AsyncUtils.asyncTask(() -> {
@@ -441,8 +443,8 @@ public class MainWindowController implements WindowController {
     @FXML
     void initialize() {
         MainWindowController thisclass = this;
-        WindowNotificationSystem windowNotificationSystem = new WindowNotificationSystem();
-        System.out.println("inicializando cosas");
+
+
 
         listView.setCellFactory(param -> new ListCell<>(){
             @Override

@@ -23,7 +23,7 @@ public class NotificationSystem {
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
-    public void activateNotifications(MainWindowController master) {
+    public void     activateNotifications(MainWindowController master) {
 
         this.master = master;
         AsyncUtils.asyncTask(() -> {//first I get the first notification to save the id

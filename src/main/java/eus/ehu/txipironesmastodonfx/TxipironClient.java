@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class TxipironClient extends Application {
      * @param sceneName (String) - Name of the scene to change to
      * @param result    (List<Object>) - List of reference.
      */
-    public void changeScene(String sceneName, List<Object> result) {
+    public void changeScene(String sceneName, List<Object> result) throws IOException, AWTException {
         switch (sceneName) {
             case "Auth" -> {
                 setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");

@@ -10,7 +10,6 @@ public class WindowNotificationSystem {
     private TrayIcon trayIcon;
 
 
-
     public WindowNotificationSystem() {
 
     }
@@ -20,7 +19,7 @@ public class WindowNotificationSystem {
         BufferedImage trayIconImage = ImageIO.read(getClass().getResource(("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg")));
         int trayIconWidth = new TrayIcon(trayIconImage).getSize().width;
             this.trayIcon = new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1, Image.SCALE_SMOOTH), "TwitterC");
-
+        System.out.println("caca culo");
         // add the tray image
         tray.add(trayIcon);
 
