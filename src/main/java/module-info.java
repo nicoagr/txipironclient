@@ -14,6 +14,7 @@ module eus.ehu.txipironesmastodonfx {
     requires javafx.media;
     requires jfxtras.controls;
     requires org.apache.logging.log4j;
+    requires prettytime;
 
     opens eus.ehu.txipironesmastodonfx to javafx.fxml;
     exports eus.ehu.txipironesmastodonfx.controllers;

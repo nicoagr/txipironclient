@@ -1,11 +1,18 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
+import eus.ehu.txipironesmastodonfx.TxipironClient;
 import javafx.beans.InvalidationListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.WeakListChangeListener;
+import org.ocpsoft.prettytime.PrettyTime;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -80,4 +87,17 @@ public class DisplayUtils {
         });
     }
 
+    /**
+     * Formats a date to a more user friendly format
+     *
+     * @param date (String) - The date to format, in the format "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+     * @return (String) - The formatted date
+     */
+    public static String formatDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        LocalDateTime localDateTime = LocalDateTime.parse(date, formatter);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("UTC"));
+        Locale locale = new Locale(TxipironClient.lang.getLanguage().substring(0, 2));
+        return new PrettyTime(locale).format(zonedDateTime);
+    }
 }

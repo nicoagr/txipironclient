@@ -4,6 +4,7 @@ import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
+import eus.ehu.txipironesmastodonfx.data_access.DisplayUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
@@ -155,7 +156,7 @@ public class TootCellController {
 
                 }
         );
-        AsyncUtils.asyncTask(() -> formatDate(finalToot.created_at), param -> date.setText(param));
+        AsyncUtils.asyncTask(() -> DisplayUtils.formatDate(finalToot.created_at), param -> date.setText(param));
         if (toot.favourited)
             likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
         else
@@ -245,43 +246,6 @@ public class TootCellController {
                 lista.add(new Text(" "));
         }
         return lista;
-    }
-
-
-    /**
-     * Method to format a given date into our preferred format
-     * We will transform yyyy-MM-dd'T'HH:mm:ss.SSS'Z' into dd/MM/yyyy HH:mm
-     *
-     * @param createdAt (String) - The date to be formatted
-     * @return (String) - The formatted date
-     */
-    private String formatDate(String createdAt) {
-        // Set input formatter
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                .withZone(ZoneId.of("UTC"));
-        // Get the current date in UTC+2 (Spain)
-        ZoneId spainZone = ZoneId.of("UTC+2");
-        LocalDate currentDate = LocalDate.now(spainZone);
-        // Set output formatter
-        DateTimeFormatter hourOutputFormatter = DateTimeFormatter.ofPattern("HH:mm")
-                .withZone(spainZone);
-        DateTimeFormatter dateOutputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                .withZone(spainZone);
-        // Parse the input date with the input formatter
-        ZonedDateTime zdt = ZonedDateTime.parse(createdAt, inputFormatter);
-        // Convert the input date to UTC+2
-        ZonedDateTime zdtSpain = zdt.withZoneSameInstant(spainZone);
-        // Check if the date is today
-        LocalDate date = zdtSpain.toLocalDate();
-        String outputDate;
-        // if date is today, set today instead of dd/MM/yyyy
-        if (date.equals(currentDate)) {
-            outputDate = "Today";
-        } else {
-            outputDate = date.format(dateOutputFormatter);
-        }
-        // return the formatted the output date
-        return outputDate + " " + zdtSpain.format(hourOutputFormatter);
     }
 
     /**

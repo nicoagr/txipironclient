@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Main class of the application. This will be the starting point.
@@ -37,6 +38,10 @@ public class TxipironClient extends Application {
      * Registered Mastodon App Secret. Will be used for oauth
      */
     public static final String MASTODON_APP_SECRET = "9FxLwJO760hJZsL1blHQ1KrBJP3Ey5ShMgwl7dVnH7M";
+    /*
+     * This attribute will hold the locale of the application
+     */
+    public static Locale lang = new Locale("en-US");
     private Window authWindow;
     private Window mainWindow;
 
