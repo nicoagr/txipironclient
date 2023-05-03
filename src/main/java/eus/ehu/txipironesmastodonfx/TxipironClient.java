@@ -91,7 +91,7 @@ public class TxipironClient extends Application {
         scene.getStylesheets().add(getClass().getResource("styles/listView.css").toExternalForm());
         logger.debug("Stylesheet loaded");
         setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
-        stage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg"));
+        stage.getIcons().add(new Image(getClass().getResource("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg").toExternalForm()));
         logger.debug("Icon loaded");
         stage.setScene(scene);
         stage.show();
