@@ -26,11 +26,37 @@ public class WindowNotificationSystem {
     }
 
         public  void trowNotificationWindow(String mainText) throws IOException, AWTException {
+            String os = System.getProperty("os.name");
+
+            if (os.contains("Linux")) {
+                ProcessBuilder builder = new ProcessBuilder(
+                        "zenity",
+                        "--notification",
+                        "--text=" + mainText);
+                builder.inheritIO().start();
+            } else if (os.contains("Mac")) {
+                ProcessBuilder builder = new ProcessBuilder(
+                        "osascript", "-e",
+                        "display notification \"" + "REPLAZAMEEEEEEEE" + "\""
+                                + " with title \"" + "REPLAZAMEEEEEE" + "\"");
+                builder.inheritIO().start();
+            } else if (SystemTray.isSupported()) {
 
 
-            if (trayIcon != null) {
-                System.out.println("sdf");
-                trayIcon.displayMessage(mainText, "PlaceHolder", TrayIcon.MessageType.NONE);
+                if (trayIcon != null) {
+                    trayIcon.displayMessage(mainText, "PlaceHolder", TrayIcon.MessageType.NONE);
+                }
+            /*
+                SystemTray tray = SystemTray.getSystemTray();
+
+                TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+                trayIcon.setImageAutoSize(true);
+                tray.add(trayIcon);
+
+                trayIcon.displayMessage(title, message, TrayIcon.MessageType.INFO);
+            }
+            */
+
             }
 
         }
