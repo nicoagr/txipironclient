@@ -88,7 +88,8 @@ public class TxipironClient extends Application {
         mainWindow = load("main.fxml");
         logger.debug("Windows (UIs) loaded");
         scene = new Scene(authWindow.ui);
-        scene.getStylesheets().add(getClass().getResource("styles/listView.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource("styles/listView.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource("styles/DarkTheme.css").toExternalForm());
         logger.debug("Stylesheet loaded");
         setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
         stage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg"));

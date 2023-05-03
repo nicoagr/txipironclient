@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class MainWindowController implements WindowController {
 
+    @FXML
+    public BorderPane mainBorderpane;
     private TxipironClient mainApp;
     private static final Logger logger = LogManager.getLogger("MainWindowController");
     public String id;
@@ -52,6 +55,8 @@ public class MainWindowController implements WindowController {
     public ScrollPane scrollpane;
     public ObservableList<CellController> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
+
+
 
     /**
      * Changes title and Shows loading gif
