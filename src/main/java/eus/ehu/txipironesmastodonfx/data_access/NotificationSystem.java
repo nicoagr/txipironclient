@@ -3,6 +3,8 @@ import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.domain.Notification;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -10,6 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class NotificationSystem {
@@ -26,6 +29,7 @@ public class NotificationSystem {
     public void  activateNotifications(MainWindowController master) {
 
         this.master = master;
+        WindowNotificationSystem = new WindowNotificationSystem(master);
         AsyncUtils.asyncTask(() -> {//first I get the first notification to save the id
             List<Notification> notifications;
             notifications = APIAccessManager.getNewNotification(master.token);
@@ -37,10 +41,12 @@ public class NotificationSystem {
 
         final Runnable toBeEjecuterperiodically = new Runnable() {
 
+
+
             public void run(){
                 AsyncUtils.asyncTask(() -> {//first I get the notifications
+                    System.out.println("Borrame Marcos");
                     List<Notification> notifications;
-                    System.out.println("wowoow");
                     notifications = APIAccessManager.getNotificationSinceip(master.token,master.lastNotification);
                     return notifications;
                 }, notifications -> {
@@ -68,7 +74,6 @@ public class NotificationSystem {
                                 break;
                             default:
                                 WindowNotificationSystem.trowNotificationWindow("Something cool has hapened");
-                                System.out.println(notifications.get(0).type);
                         }
                         master.lastNotification = notifications.get(0).id;
                     }
@@ -89,6 +94,12 @@ public class NotificationSystem {
         }, 60 * 60, SECONDS);
 
 
-    }
 
+
+    }
+    public void deactivateNotification(){
+        System.out.println("hasta aquí hemos llegado yeeey");
+        scheduler.shutdownNow();
+        scheduler.shutdown();
+    }
 }

@@ -1,5 +1,7 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
+import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
@@ -9,8 +11,9 @@ import java.io.IOException;
 public class WindowNotificationSystem {
     private TrayIcon trayIcon;
 
-
-    public WindowNotificationSystem() {
+private MainWindowController master;
+    public WindowNotificationSystem(MainWindowController master) {
+        this.master = master;
 
     }
 
@@ -19,7 +22,6 @@ public class WindowNotificationSystem {
         BufferedImage trayIconImage = ImageIO.read(getClass().getResource(("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg")));
         int trayIconWidth = new TrayIcon(trayIconImage).getSize().width;
             this.trayIcon = new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1, Image.SCALE_SMOOTH), "TwitterC");
-        System.out.println("caca culo");
         // add the tray image
         tray.add(trayIcon);
 
@@ -27,7 +29,6 @@ public class WindowNotificationSystem {
 
         public  void trowNotificationWindow(String mainText) throws IOException, AWTException {
             String os = System.getProperty("os.name");
-
             if (os.contains("Linux")) {
                 ProcessBuilder builder = new ProcessBuilder(
                         "zenity",

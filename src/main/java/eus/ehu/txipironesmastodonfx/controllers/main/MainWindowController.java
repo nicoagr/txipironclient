@@ -21,9 +21,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import static java.awt.SystemColor.window;
 
 /**
  * Controller class for the main window.
@@ -36,7 +41,7 @@ import java.util.List;
 public class MainWindowController implements WindowController {
 
 
-    public WindowNotificationSystem windowNotificationSystem = new WindowNotificationSystem();
+
     public NotificationSystem notificationSystem = new NotificationSystem();
 
     private TxipironClient mainApp;
@@ -159,6 +164,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void changeAcctBtnClick() throws IOException, AWTException {
         listViewItems.clear();
+        notificationSystem.deactivateNotification();
         mainApp.changeScene("Auth", null);
     }
 
@@ -174,7 +180,7 @@ public class MainWindowController implements WindowController {
         this.token = (String) result.get(1);
         NotificationSystem NotificationSystem = new NotificationSystem();
         NotificationSystem.activateNotifications(this);
-        windowNotificationSystem.initialice();
+
         this.authenticatedId = (String) result.get(2);
         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         AsyncUtils.asyncTask(() -> {
@@ -325,6 +331,7 @@ public class MainWindowController implements WindowController {
         });
     }
 
+
     /**
      * Sets the list view to show the toots liked by the current logged in user
      */
@@ -444,6 +451,12 @@ public class MainWindowController implements WindowController {
     void initialize() {
         MainWindowController thisclass = this;
 
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                notificationSystem.deactivateNotification();
+            }
+        });
 
 
         listView.setCellFactory(param -> new ListCell<>(){
