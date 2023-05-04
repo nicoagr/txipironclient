@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,7 +23,7 @@ public class SettingsController {
     private CheckBox autoplaycheck;
     @FXML
     private Label infoLabel;
-
+    private static final Logger logger = LogManager.getLogger("SettingsController");
     @FXML
     private Button applyBtn;
 
@@ -34,20 +36,24 @@ public class SettingsController {
         applyBtn.setDisable(true);
         applyBtn.setText("Loading...");
         autoplaycheck.setDisable(true);
+        logger.info("Applying selected settings...");
         AsyncUtils.asyncTask(() -> {
             try {
                 DBAccessManager.updateSettings(autoplaycheck.isSelected());
             } catch (SQLException e) {
                 return e.getMessage();
             }
+            logger.debug("autoplayMedia: " + autoplaycheck.isSelected() + " updated");
             master.autoplayMedia = autoplaycheck.isSelected();
             return null;
         }, res -> {
             applyBtn.setVisible(false);
             autoplaycheck.setVisible(false);
             if (res != null) {
+                logger.error("Error applying settings: " + res);
                 infoLabel.setText("Error: " + res + ". Please try again.");
             } else {
+                logger.info("Settings applied successfully.");
                 infoLabel.setText("Settings applied successfully.");
             }
         });

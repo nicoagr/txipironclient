@@ -22,6 +22,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -37,6 +39,7 @@ import java.util.List;
  */
 public class MediaViewController {
     List<MediaAttachment> media;
+    private static final Logger logger = LogManager.getLogger("MediaViewController");
     private int i;
     @FXML
     private ImageView imageView;
@@ -85,11 +88,14 @@ public class MediaViewController {
         imageView.setVisible(false);
         mediaBar.setVisible(false);
         mediaCounterTxt.setText("Viewing media " + (i + 1) + " of " + media.size() + ".");
+        logger.info("Loading media " + (i + 1) + " of " + media.size() + ".");
         AsyncUtils.asyncTask(() -> {
             MediaAttachment m = media.get(i);
             if (m.type.equals("image") || m.type.equals("gifv")) {
+                logger.debug("Loaded IMAGE with url" + m.url);
                 return List.of("img", new Image(m.url));
             } else {
+                logger.debug("Loaded VIDEO with url" + m.url);
                 return List.of("media", new MediaPlayer(new Media(m.url)));
             }
         }, list -> {
