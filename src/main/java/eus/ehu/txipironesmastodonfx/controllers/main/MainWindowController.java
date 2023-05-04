@@ -99,7 +99,7 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void NotificationListView() throws IOException, AWTException {
-        windowNotificationSystem.trowNotificationWindow("A");
+
         listViewItems.clear();
         listViewItems.add("Loading...");
         showLoading();

@@ -34,17 +34,11 @@ public class WindowNotificationSystem {
                         "--notification",
                         "--text=" + mainText);
                 builder.inheritIO().start();
-            } else if (os.contains("Mac")) {
-                ProcessBuilder builder = new ProcessBuilder(
-                        "osascript", "-e",
-                        "display notification \"" + "REPLAZAMEEEEEEEE" + "\""
-                                + " with title \"" + "REPLAZAMEEEEEE" + "\"");
-                builder.inheritIO().start();
-            } else if (SystemTray.isSupported()) {
+            }else if(SystemTray.isSupported()) {
 
 
                 if (trayIcon != null) {
-                    trayIcon.displayMessage(mainText, "PlaceHolder", TrayIcon.MessageType.NONE);
+                    trayIcon.displayMessage(mainText, "", TrayIcon.MessageType.NONE);
                 }
             /*
                 SystemTray tray = SystemTray.getSystemTray();
