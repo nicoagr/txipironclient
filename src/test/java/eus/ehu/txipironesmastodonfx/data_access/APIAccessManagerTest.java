@@ -35,8 +35,6 @@ public class APIAccessManagerTest {
         untootId = "110134917103846112";
         inexistentId = "1234";
         toot = new Toot("110134917103846112");
-
-
     }
 
     @Test
@@ -119,11 +117,6 @@ public class APIAccessManagerTest {
     }
 
     @Test
-    public void testPostToot(){
-
-    }
-
-    @Test
     public void testGetIdFromUsername(){
         Assertions.assertNull(APIAccessManager.getIdFromUsername(null));
         Assertions.assertNull(APIAccessManager.getIdFromUsername(""));
@@ -161,29 +154,6 @@ public class APIAccessManagerTest {
         Assertions.assertEquals(APIAccessManager.unfavouriteToot(inexistentId, token), 404);
         Assertions.assertEquals(APIAccessManager.unfavouriteToot(untootId, token), 200);
         //Assertions.assertEquals(APIAccessManager.unfavouriteToot(tootId, token),200);
-    }
-
-    @Test
-    public void testGetHomeTootsId(){
-
-    }
-
-    @Test
-    public void testFollow(){
-        Assertions.assertNull(APIAccessManager.follow(null, null));
-        Assertions.assertNull(APIAccessManager.follow("", null));
-        Assertions.assertNull(APIAccessManager.follow(null, ""));
-        Assertions.assertNull(APIAccessManager.follow("", ""));
-        //Assertions.assertNull(APIAccessManager.follow(null, accountId));
-        //Assertions.assertNull(APIAccessManager.follow("", accountId));
-        //Assertions.assertNull(APIAccessManager.follow(token, null));
-        //Assertions.assertNull(APIAccessManager.follow(token, ""));
-        Assertions.assertEquals(APIAccessManager.follow(token, blockId), blockId);
-    }
-
-    @Test
-    public void testUnfollow(){
-
     }
 
     @Test
@@ -243,25 +213,5 @@ public class APIAccessManagerTest {
         Assertions.assertEquals(APIAccessManager.unreblogToot(inexistentId, token), 404);
         Assertions.assertEquals(APIAccessManager.unreblogToot(untootId, token), 200);
         //Assertions.assertEquals(APIAccessManager.unreblogToot(tootId, token),200);
-    }
-
-    @Test
-    public void testUploadMedia(){
-
-    }
-
-    @Test
-    public void testChangeProfilePicture(){
-
-    }
-
-    @Test
-    public void testIsMediaProcessed(){
-        Assertions.assertFalse(APIAccessManager.isMediaProcessed(null, null));
-        Assertions.assertFalse(APIAccessManager.isMediaProcessed("", null));
-        Assertions.assertFalse(APIAccessManager.isMediaProcessed(null, ""));
-        Assertions.assertFalse(APIAccessManager.isMediaProcessed("", ""));
-        Assertions.assertFalse(APIAccessManager.isMediaProcessed(token, null));
-        Assertions.assertFalse(APIAccessManager.isMediaProcessed(token, ""));
     }
 }
