@@ -14,4 +14,9 @@ import java.util.List;
 public class SearchResult {
     public List<Follow> accounts;
     public List<Toot> statuses;
+
+    public SearchResult(List<Follow> accounts, List<Toot> statuses) {
+        this.accounts = accounts;
+        this.statuses = statuses;
+    }
 }

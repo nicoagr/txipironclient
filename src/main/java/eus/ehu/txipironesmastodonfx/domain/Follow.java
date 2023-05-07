@@ -19,6 +19,10 @@ public class Follow {
     public String display_name;
     public Boolean following;
 
+    public Follow(String id) {
+    	this.id = id;
+    }
+
     /**
      * For quick testing and debugging,
      * a toString method is provided,
@@ -35,5 +39,9 @@ public class Follow {
                 ", display_name='" + display_name + '\'' +
                 ", following=" + following +
                 '}';
+    }
+
+    public boolean equals(Follow f) {
+    	return this.id.equals(f.id);
     }
 }

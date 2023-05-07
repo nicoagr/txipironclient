@@ -57,6 +57,10 @@ public class Account {
     public Account() {
     }
 
+    public Account(String id) {
+    	this.id = id;
+    }
+
     public Account(String id, String acct, String avatar) {
         this.id = id;
         this.acct = acct;
@@ -83,5 +87,9 @@ public class Account {
                 ", last_status_at='" + last_status_at + '\'' +
                 ", display_name='" + display_name + '\'' +
                 '}';
+    }
+
+    public boolean equals (Account a) {
+    	return this.id.equals(a.id);
     }
 }

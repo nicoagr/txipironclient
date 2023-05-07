@@ -101,6 +101,7 @@ public class APIAccessManager {
 
      */
     public static List<Toot> getTootId(String selectedAccId, String token) {
+        if (token == null || token.equals("")) return null;
         String response = request("accounts/" + selectedAccId + "/statuses", token);
         if (response == null || response.equals("")) {
             // token is invalid
@@ -123,6 +124,8 @@ public class APIAccessManager {
      * @return (List < Follow >) - list of follows
      */
     public static List<Follow> getFollow(String selectedAccId, String token, boolean following) {
+        if(token == null || token == "") return null;
+
         String endtarget = following ? "following" : "followers";
         String response = request("accounts/" + selectedAccId + "/" + endtarget, token);
         if (response == null || response.equals("")) {
@@ -144,6 +147,8 @@ public class APIAccessManager {
      * @return (Account) - the account
      */
     public static Account getAccount(String id, String token) {
+        if (token == null || token == "") return null;
+
         String response = request("accounts/" + id, token);
         if (response == null || response.equals("")) {
             // token is invalid
@@ -162,6 +167,7 @@ public class APIAccessManager {
      * @return (SearchResult) - object with the results
      */
     public static SearchResult performSearch(String query, String token, int limit) {
+        if (token == null || token.equals("") || query == null) return null;
         HashMap<Object, Object> params = new HashMap<>();
         params.put("q", query);
         params.put("limit", limit);
@@ -297,6 +303,8 @@ public class APIAccessManager {
      * @return (String) - The response of the request - Usually formatted as json
      */
     public static String getIdFromUsername(String username) {
+        if(username == null || username.equals("")) return null;
+
         String response = requestNoToken("accounts/lookup?acct=" + username);
         if (response == null || response.equals("")) {
             // token is invalid
@@ -612,6 +620,7 @@ public class APIAccessManager {
      * @return (boolean) - true if the profile picture was changed successfully
      */
     public static boolean changeProfilePicture(String token, File pic) {
+        if (token == null || pic == null) return false;
         String mediaType = null, result = null;
         OkHttpClient client = new OkHttpClient();
         String extension = HTMLParser.getFileExtension(pic);
@@ -661,6 +670,7 @@ public class APIAccessManager {
      * @return (boolean) - true if the media was processed
      */
     public static boolean isMediaProcessed(String token, String mediaId) {
+        if (token == null || mediaId == null) return false;
         return (request("media/" + mediaId, token) != null);
     }
 
