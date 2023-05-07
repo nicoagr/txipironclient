@@ -5,6 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+/**
+ * Test class for the HTMLParser class.
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Xiomara Cáceces
+ * @author Marcos Chouciño
+ */
 public class HTMLParserTest {
 
     @Test
