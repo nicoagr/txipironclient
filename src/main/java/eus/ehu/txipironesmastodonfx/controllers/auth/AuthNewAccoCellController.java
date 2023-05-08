@@ -82,9 +82,9 @@ public class AuthNewAccoCellController {
                 logger.warn("Auth code is empty");
                 return "Error! Auth code is empty.";
             }
-            try {
-                token = APIAccessManager.getTokenFromAuthCode(authCode);
-            } catch (IOException e) {
+
+            token = APIAccessManager.getTokenFromAuthCode(authCode);
+            if (token == null) {
                 logger.error("Error when getting token from auth code (AuthCode invalid)");
                 return "Error! AuthCode invalid";
             }

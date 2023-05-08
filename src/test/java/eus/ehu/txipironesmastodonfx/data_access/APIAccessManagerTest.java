@@ -12,8 +12,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 /**
- * Test class for the DBAccessManager class.
- * Some methods are not tested because they are ambiguous.
+ * Test class for the APIAccessManager class.
+ * Some methods are not tested because they are ambiguous
+ * or too generic
  *
  * @author Nicolás Aguado
  * @author Haizea Bermejo

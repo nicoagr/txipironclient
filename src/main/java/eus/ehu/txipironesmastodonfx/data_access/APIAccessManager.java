@@ -98,11 +98,14 @@ public class APIAccessManager {
      * @param selectedAccId (String) - id of the account
      * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
-
      */
-    public static List<Toot> getTootId(String selectedAccId, String token) {
+    public static List<Toot> getTootId(String selectedAccId, String token, String min_id) {
         if (token == null || token.equals("")) return null;
-        String response = request("accounts/" + selectedAccId + "/statuses", token);
+        String endpoint = "accounts/" + selectedAccId + "/statuses";
+        if (min_id != null && !min_id.equals("")) {
+            endpoint += "?min_id=" + min_id;
+        }
+        String response = request(endpoint, token);
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
@@ -381,11 +384,16 @@ public class APIAccessManager {
     /**
      * Obtains the list of views of  a user wich is introduced as parameter
      *
-     * @param token         (String) - token of the account
+     * @param token  (String) - token of the account
+     * @param min_id
      * @return (List < Toot >) - the list of views of a user
      */
-    public static List<Toot> getHomeTootsId(String token){
-        String response = request("timelines/home", token);
+    public static List<Toot> getHomeTootsId(String token, String min_id) {
+        String endpoint = "timelines/home";
+        if (min_id != null && !min_id.equals("")) {
+            endpoint += "?min_id=" + min_id;
+        }
+        String response = request(endpoint, token);
         if (response == null || response.equals("")) {
             // token is invalid
             return null;

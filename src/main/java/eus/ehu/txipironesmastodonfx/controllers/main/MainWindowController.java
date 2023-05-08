@@ -12,7 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
-import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import javafx.scene.input.ScrollEvent;
@@ -33,7 +34,7 @@ public class MainWindowController implements WindowController {
     private TxipironClient mainApp;
     private static final Logger logger = LogManager.getLogger("MainWindowController");
     public String id;
-
+    private HashMap<view, String> status = new HashMap<>();
     private Integer ref;
     public String authenticatedId;
 
@@ -53,12 +54,18 @@ public class MainWindowController implements WindowController {
     public ObservableList<CellController> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
 
+    private enum view {
+        HOME, PROFILETOOT, PROFILEFOLLOWING, PROFILEFOLLOWERS, SEARCH, POST_TOOT, NOTIFICATION, FAVOURITES, BOOKMARKS, SETTINGS, LOADING
+    }
+
     /**
      * Changes title and Shows loading gif
      */
     public void showLoading() {
         mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Loading...");
         loading.setVisible(true);
+        status.clear();
+        status.put(view.LOADING, null);
     }
 
     /**
@@ -68,6 +75,7 @@ public class MainWindowController implements WindowController {
     public void hideLoading() {
         mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
         loading.setVisible(false);
+        status.remove(view.LOADING);
     }
 
     /**
@@ -75,9 +83,13 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     public void postTootListview() {
+        showLoading();
         listViewItems.clear();
         listViewItems.add(new Generic(Generic.of.POST_TOOT, "Post Toot"));
         logger.info("Loaded post toot screen");
+        hideLoading();
+        status.clear();
+        status.put(view.POST_TOOT, null);
     }
 
     /**
@@ -105,6 +117,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void changeAcctBtnClick() {
         listViewItems.clear();
+        status.clear();
         mainApp.changeScene("Auth", null);
     }
 
@@ -188,6 +201,8 @@ public class MainWindowController implements WindowController {
                 return;
             }
             logger.info("Performed search with query: " + searchQuery.getText() + " and got " + res.accounts.size() + " accounts and " + res.statuses.size() + " statuses");
+            status.clear();
+            status.put(view.SEARCH, null);
             if (res.accounts.size() == 0) {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "No users found with that query"));
             } else {
@@ -233,15 +248,26 @@ public class MainWindowController implements WindowController {
             }
             listViewItems.add(new Generic(Generic.of.MESSAGE, "Bookmarks"));
             listViewItems.addAll(toot);
+            status.clear();
+            status.put(view.BOOKMARKS, authenticatedId);
         });
+    }
+
+    /**
+     * Action when clicking on the home button
+     */
+    public void homeListView() {
+        homeListView(null);
     }
 
     /**
      * Sets the list view to show the timeline of home
      * toots of the current logged in user
+     *
+     * @param min_id The id of the toot from which to start downloading
      */
     @FXML
-    public void homeListView() {
+    public void homeListView(String min_id) {
         listViewItems.clear();
         listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         logger.debug("Attempting to download home toots");
@@ -251,7 +277,7 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            toots = APIAccessManager.getHomeTootsId(token);
+            toots = APIAccessManager.getHomeTootsId(token, min_id);
             return toots;
         }, toots -> {
             listViewItems.clear();
@@ -262,8 +288,11 @@ public class MainWindowController implements WindowController {
             }
             hideLoading();
             logger.info("Downloaded " + toots.size() + " home toots from user id: " + authenticatedId);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Home"));
+            if (min_id == null)
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "Home"));
             listViewItems.addAll(toots);
+            status.clear();
+            status.put(view.HOME, null);
         });
     }
 
@@ -298,6 +327,8 @@ public class MainWindowController implements WindowController {
             }
             listViewItems.add(new Generic(Generic.of.MESSAGE, "Liked toots"));
             listViewItems.addAll(toots);
+            status.clear();
+            status.put(view.FAVOURITES, authenticatedId);
         });
     }
 
@@ -307,8 +338,19 @@ public class MainWindowController implements WindowController {
      *
      * @param id (String) The id of the user whose toots are going to be shown
      */
-    @FXML
     public void userTootListViewFromId(String id) {
+        userTootListViewFromId(id, null);
+    }
+
+    /**
+     * Sets the list view to show the toots of
+     * the user with the id passed as a parameter
+     *
+     * @param id     (String) The id of the user whose toots are going to be shown
+     * @param min_id (String) The id of the toot from which to start downloading
+     */
+    @FXML
+    public void userTootListViewFromId(String id, String min_id) {
         listViewItems.clear();
         listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
         logger.debug("Attempting to download profile and toots from id: " + id);
@@ -334,7 +376,7 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            toots = APIAccessManager.getTootId(id, token);
+            toots = APIAccessManager.getTootId(id, token, min_id);
             return toots;
         }, toots -> {
             if (toots == null) {
@@ -342,16 +384,20 @@ public class MainWindowController implements WindowController {
                 logger.error("Error downloading profile toots from user id" + id);
                 return;
             }
-            listViewItems.remove(listViewItems.size() - 1);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Toots and replies"));
+            if (min_id == null) {
+                listViewItems.remove(listViewItems.size() - 1);
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "Toots and replies"));
+            }
             listViewItems.addAll(toots);
             logger.info("Downloaded " + toots.size() + " toots from user id: " + id);
             hideLoading();
+            status.clear();
+            status.put(view.PROFILETOOT, id);
         });
     }
 
-    public void loggedUserListView(){
-        userTootListViewFromId(authenticatedId);
+    public void loggedUserListView() {
+        userTootListViewFromId(authenticatedId, null);
     }
 
     /**
@@ -364,6 +410,7 @@ public class MainWindowController implements WindowController {
     public void userTootListView(String username) {
         listViewItems.clear();
         listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        showLoading();
         logger.debug("Attempting to mastodon id from username: " + username);
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -379,7 +426,7 @@ public class MainWindowController implements WindowController {
                 return;
             }
             logger.debug("Downloaded id from username: " + username);
-            userTootListViewFromId(id);
+            userTootListViewFromId(id, null);
         });
     }
 
@@ -402,10 +449,23 @@ public class MainWindowController implements WindowController {
                 event.consume();
             }
         });
+        // Enter button in search query
         searchQuery.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 searchBtn.fire();
             }
         });
+        // Infinite scroll
+        scrollpane.vvalueProperty().addListener((observable, oldValue, newValue) -> {
+            // check if the new value is close to 1.0 (the bottom of the VBox)
+            if (newValue.doubleValue() > oldValue.doubleValue() && newValue.doubleValue() >= 0.95) {
+                // check if the VBox has overflowed and created a scrollbar
+                if (!status.containsKey(view.LOADING) && scrollpane.getViewportBounds().getHeight() < vbox.getBoundsInParent().getHeight()) {
+                    // user has scrolled to the bottom of the VBox
+                    System.out.println(LocalDateTime.now() + "--BOTTOM-----------------------------------");
+                }
+            }
+        });
+
     }
 }
