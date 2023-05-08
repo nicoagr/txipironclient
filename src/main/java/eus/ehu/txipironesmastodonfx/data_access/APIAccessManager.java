@@ -460,7 +460,13 @@ public class APIAccessManager {
         Type NotificationListType = new TypeToken<ArrayList<Notification>>() {
         }.getType();
         // get json array and then convert it to a list of Notifications
-        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
+        if (result != null) {
+            return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
+        }
+        else {
+            List<Notification> a = new ArrayList<>();
+            return a;
+        }
     }
 
 

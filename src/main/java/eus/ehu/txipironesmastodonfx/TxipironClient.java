@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import okhttp3.internal.http.RetryAndFollowUpInterceptor;
 
 import java.awt.*;
 import java.io.IOException;
@@ -25,6 +26,9 @@ import java.util.List;
  * @version 1.0
  */
 public class TxipironClient extends Application {
+    public Scene getScene(){
+        return this.scene;
+    }
 
     private Window authWindow;
     private Window mainWindow;
@@ -54,8 +58,8 @@ public class TxipironClient extends Application {
         return window;
     }
 
-    private Stage stage;
-    private Scene scene;
+    public Stage stage;
+    public Scene scene;
 
     /**
      * Loading point of the application.

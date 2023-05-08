@@ -19,10 +19,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.stage.WindowEvent;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -175,6 +175,8 @@ public class MainWindowController implements WindowController {
      */
     @Override
     public void setRefTokenId(List<Object> result) throws IOException, AWTException {
+        mainApp.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
+
         listView.setItems(listViewItems);
         this.ref = (Integer) result.get(0);
         this.token = (String) result.get(1);
@@ -280,6 +282,7 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void followingListView() {
+        notificationSystem.deactivateNotification();
         listViewItems.clear();
         listViewItems.add("Loading...");
         showLoading();
@@ -444,6 +447,13 @@ public class MainWindowController implements WindowController {
         });
     }
 
+
+    void closeWindowEvent(WindowEvent windowEvent){
+
+    notificationSystem.deactivateNotification();
+
+    }
+
     /**
      * Initializes the list view
      */
@@ -452,9 +462,12 @@ public class MainWindowController implements WindowController {
         MainWindowController thisclass = this;
 
 
+
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 notificationSystem.deactivateNotification();
+                System.out.println("se cerro");
             }
         });
 
