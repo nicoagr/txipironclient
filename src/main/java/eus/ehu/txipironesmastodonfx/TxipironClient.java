@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Main class of the application. This will be the starting point.
@@ -41,7 +42,7 @@ public class TxipironClient extends Application {
     /*
      * This attribute will hold the locale of the application
      */
-    public static Locale lang = new Locale("en-US");
+    public static Locale lang = Locale.getDefault();
     private Window authWindow;
     private Window mainWindow;
 
@@ -63,7 +64,8 @@ public class TxipironClient extends Application {
      */
     private Window load(String fxmlFile) throws IOException {
         Window window = new Window();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile),
+                ResourceBundle.getBundle("strings", lang));
         window.ui = fxmlLoader.load();
         window.controller = fxmlLoader.getController();
         window.controller.setMain(this);

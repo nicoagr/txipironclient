@@ -18,7 +18,7 @@
          <Font name="System Bold" size="36.0" />
       </font>
    </Label>
-   <Label text="v1.0 by Nicolás, Haizea, Xiomara and Marcos">
+   <Label text="%v1">
       <font>
          <Font size="14.0" />
       </font>
@@ -35,9 +35,9 @@
          <Font size="15.0" />
       </font>
    </Label>
-   <Button fx:id="loginBtn" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#loginBtnClick" text="Login with Selected Account">
+   <Button fx:id="loginBtn" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#loginBtnClick" text="%login">
       <font>
-         <Font size="16.0"/>
+         <Font size="16.0" />
       </font>
       <VBox.margin>
          <Insets top="20.0" />
