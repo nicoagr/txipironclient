@@ -1,7 +1,7 @@
 package eus.ehu.txipironesmastodonfx.domain;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.controllers.windowControllers.FollowCellController;
+import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
 import javafx.scene.Node;
 
 /**
@@ -23,6 +23,10 @@ public class Follow implements CellController {
     public String display_name;
     public Boolean following;
 
+    public Follow(String id) {
+    	this.id = id;
+    }
+
     /**
      * For quick testing and debugging,
      * a toString method is provided,
@@ -39,6 +43,10 @@ public class Follow implements CellController {
                 ", display_name='" + display_name + '\'' +
                 ", following=" + following +
                 '}';
+    }
+
+    public boolean equals(Follow f) {
+    	return this.id.equals(f.id);
     }
 
     /**
