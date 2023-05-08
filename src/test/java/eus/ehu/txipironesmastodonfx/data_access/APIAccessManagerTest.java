@@ -49,15 +49,15 @@ public class APIAccessManagerTest {
 
     @Test
     public void testGetTootId(){
-        Assertions.assertNull(APIAccessManager.getTootId(null, null));
-        Assertions.assertNull(APIAccessManager.getTootId("", null));
-        Assertions.assertNull(APIAccessManager.getTootId(null, ""));
-        Assertions.assertNull(APIAccessManager.getTootId("", ""));
-        Assertions.assertNull(APIAccessManager.getTootId(null, token));
-        Assertions.assertNull(APIAccessManager.getTootId("", token));
-        Assertions.assertNull(APIAccessManager.getTootId(idresult, null));
-        Assertions.assertNull(APIAccessManager.getTootId(idresult, ""));
-        Assertions.assertTrue(APIAccessManager.getTootId(idresult, token).get(0).equals(new Toot("110312493653364514")));
+        Assertions.assertNull(APIAccessManager.getTootId(null, null, null));
+        Assertions.assertNull(APIAccessManager.getTootId("", null, null));
+        Assertions.assertNull(APIAccessManager.getTootId(null, "", null));
+        Assertions.assertNull(APIAccessManager.getTootId("", "", null));
+        Assertions.assertNull(APIAccessManager.getTootId(null, token, null));
+        Assertions.assertNull(APIAccessManager.getTootId("", token, null));
+        Assertions.assertNull(APIAccessManager.getTootId(idresult, null, null));
+        Assertions.assertNull(APIAccessManager.getTootId(idresult, "", null));
+        Assertions.assertTrue(APIAccessManager.getTootId(idresult, token, null).get(0).equals(new Toot("110312493653364514")));
     }
 
     @Test

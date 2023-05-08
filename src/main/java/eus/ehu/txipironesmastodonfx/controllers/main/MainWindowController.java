@@ -11,11 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +32,7 @@ public class MainWindowController implements WindowController {
     private static final Logger logger = LogManager.getLogger("MainWindowController");
     public String id;
     private HashMap<view, String> status = new HashMap<>();
+    private boolean infinityBlock = false;
     private Integer ref;
     public String authenticatedId;
 
@@ -169,6 +167,8 @@ public class MainWindowController implements WindowController {
         listViewItems.clear();
         listViewItems.add(new Generic(Generic.of.SETTINGS, "Settings"));
         logger.info("Loaded settings screen");
+        status.clear();
+        status.put(view.SETTINGS, null);
     }
 
     /**
@@ -193,7 +193,6 @@ public class MainWindowController implements WindowController {
             srslt = APIAccessManager.performSearch(searchQuery.getText(), token, 5);
             return srslt;
         }, res -> {
-            listViewItems.clear();
             hideLoading();
             if (res == null) {
                 listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading search results. Please check your connection and try again."));
@@ -203,6 +202,7 @@ public class MainWindowController implements WindowController {
             logger.info("Performed search with query: " + searchQuery.getText() + " and got " + res.accounts.size() + " accounts and " + res.statuses.size() + " statuses");
             status.clear();
             status.put(view.SEARCH, null);
+            listViewItems.remove(0);
             if (res.accounts.size() == 0) {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "No users found with that query"));
             } else {
@@ -234,7 +234,6 @@ public class MainWindowController implements WindowController {
             toot = APIAccessManager.getBookmarkedToots(token);
             return toot;
         }, toot -> {
-            listViewItems.clear();
             if (toot == null) {
                 listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading bookmarked toots. Please check your connection and try again."));
                 logger.error("Error downloading bookmarked toots. Please check your connection and try again.");
@@ -246,6 +245,7 @@ public class MainWindowController implements WindowController {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "No bookmarked toots found"));
                 return;
             }
+            listViewItems.remove(0);
             listViewItems.add(new Generic(Generic.of.MESSAGE, "Bookmarks"));
             listViewItems.addAll(toot);
             status.clear();
@@ -256,6 +256,7 @@ public class MainWindowController implements WindowController {
     /**
      * Action when clicking on the home button
      */
+    @FXML
     public void homeListView() {
         homeListView(null);
     }
@@ -264,12 +265,13 @@ public class MainWindowController implements WindowController {
      * Sets the list view to show the timeline of home
      * toots of the current logged in user
      *
-     * @param min_id The id of the toot from which to start downloading
+     * @param max_id The id of the toot from which to start downloading
      */
-    @FXML
-    public void homeListView(String min_id) {
-        listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+    public void homeListView(String max_id) {
+        if (max_id == null) {
+            listViewItems.clear();
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        }
         logger.debug("Attempting to download home toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -277,10 +279,9 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            toots = APIAccessManager.getHomeTootsId(token, min_id);
+            toots = APIAccessManager.getHomeTootsId(token, max_id);
             return toots;
         }, toots -> {
-            listViewItems.clear();
             if (toots == null) {
                 listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading home toots. Please check your connection and try again."));
                 logger.error("Error downloading home toots from user id: " + authenticatedId);
@@ -288,8 +289,10 @@ public class MainWindowController implements WindowController {
             }
             hideLoading();
             logger.info("Downloaded " + toots.size() + " home toots from user id: " + authenticatedId);
-            if (min_id == null)
+            if (max_id == null) {
+                listViewItems.remove(0);
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "Home"));
+            }
             listViewItems.addAll(toots);
             status.clear();
             status.put(view.HOME, null);
@@ -313,7 +316,6 @@ public class MainWindowController implements WindowController {
             toots = APIAccessManager.getLikedToots(token);
             return toots;
         }, toots -> {
-            listViewItems.clear();
             if (toots == null) {
                 listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading liked toots. Please check your connection and try again."));
                 logger.error("Error downloading liked toots from user id: " + authenticatedId);
@@ -325,6 +327,7 @@ public class MainWindowController implements WindowController {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "No liked toots found"));
                 return;
             }
+            listViewItems.remove(0);
             listViewItems.add(new Generic(Generic.of.MESSAGE, "Liked toots"));
             listViewItems.addAll(toots);
             status.clear();
@@ -347,36 +350,40 @@ public class MainWindowController implements WindowController {
      * the user with the id passed as a parameter
      *
      * @param id     (String) The id of the user whose toots are going to be shown
-     * @param min_id (String) The id of the toot from which to start downloading
+     * @param max_id (String) The id of the toot from which to start downloading
      */
     @FXML
-    public void userTootListViewFromId(String id, String min_id) {
-        listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+    public void userTootListViewFromId(String id, String max_id) {
+        if (max_id == null) {
+            listViewItems.clear();
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        }
         logger.debug("Attempting to download profile and toots from id: " + id);
         showLoading();
-        AsyncUtils.asyncTask(() -> {
-            if (!NetworkUtils.hasInternet()) return null;
-            Account account;
-            account = APIAccessManager.getAccount(id, token);
-            return account;
-        }, account -> {
-            listViewItems.clear();
-            if (account == null) {
-                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile . Please check your connection and try again."));
-                logger.error("Error downloading profile from user id: " + id);
-                return;
-            }
-            listViewItems.add(account);
-            logger.info("Downloaded profile from id: " + id);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
-        });
+        if (max_id == null)
+            AsyncUtils.asyncTask(() -> {
+                if (!NetworkUtils.hasInternet()) return null;
+                Account account;
+                account = APIAccessManager.getAccount(id, token);
+                return account;
+            }, account -> {
+                if (account == null) {
+                    listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile . Please check your connection and try again."));
+                    logger.error("Error downloading profile from user id: " + id);
+                    return;
+                }
+                if (max_id == null)
+                    listViewItems.remove(0);
+                listViewItems.add(account);
+                logger.info("Downloaded profile from id: " + id);
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+            });
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            toots = APIAccessManager.getTootId(id, token, min_id);
+            toots = APIAccessManager.getTootId(id, token, max_id);
             return toots;
         }, toots -> {
             if (toots == null) {
@@ -384,7 +391,7 @@ public class MainWindowController implements WindowController {
                 logger.error("Error downloading profile toots from user id" + id);
                 return;
             }
-            if (min_id == null) {
+            if (max_id == null) {
                 listViewItems.remove(listViewItems.size() - 1);
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "Toots and replies"));
             }
@@ -460,9 +467,18 @@ public class MainWindowController implements WindowController {
             // check if the new value is close to 1.0 (the bottom of the VBox)
             if (newValue.doubleValue() > oldValue.doubleValue() && newValue.doubleValue() >= 0.95) {
                 // check if the VBox has overflowed and created a scrollbar
-                if (!status.containsKey(view.LOADING) && scrollpane.getViewportBounds().getHeight() < vbox.getBoundsInParent().getHeight()) {
+                if (!status.containsKey(view.LOADING) && listViewItems.size() > 5 && scrollpane.getViewportBounds().getHeight() < vbox.getBoundsInParent().getHeight() && !infinityBlock) {
                     // user has scrolled to the bottom of the VBox
-                    System.out.println(LocalDateTime.now() + "--BOTTOM-----------------------------------");
+                    infinityBlock = true;
+                    for (view v : status.keySet()) {
+                        if (v == view.LOADING) continue;
+                        switch (v) {
+                            case HOME -> homeListView(((Toot) listViewItems.get(listViewItems.size() - 1)).id);
+                            case PROFILETOOT ->
+                                    userTootListViewFromId(status.get(view.PROFILETOOT), ((Toot) listViewItems.get(listViewItems.size() - 1)).id);
+                        }
+                    }
+                    infinityBlock = false;
                 }
             }
         });

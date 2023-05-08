@@ -99,11 +99,11 @@ public class APIAccessManager {
      * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
      */
-    public static List<Toot> getTootId(String selectedAccId, String token, String min_id) {
+    public static List<Toot> getTootId(String selectedAccId, String token, String max_id) {
         if (token == null || token.equals("")) return null;
         String endpoint = "accounts/" + selectedAccId + "/statuses";
-        if (min_id != null && !min_id.equals("")) {
-            endpoint += "?min_id=" + min_id;
+        if (max_id != null && !max_id.equals("")) {
+            endpoint += "?max_id=" + max_id;
         }
         String response = request(endpoint, token);
         if (response == null || response.equals("")) {
@@ -325,7 +325,7 @@ public class APIAccessManager {
      * @return (List<Toot>) - the list of liked toots
      */
     public static List<Toot> getLikedToots(String token){
-        String response = request("/favourites", token);
+        String response = request("favourites", token);
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
@@ -385,13 +385,13 @@ public class APIAccessManager {
      * Obtains the list of views of  a user wich is introduced as parameter
      *
      * @param token  (String) - token of the account
-     * @param min_id
+     * @param max_id
      * @return (List < Toot >) - the list of views of a user
      */
-    public static List<Toot> getHomeTootsId(String token, String min_id) {
+    public static List<Toot> getHomeTootsId(String token, String max_id) {
         String endpoint = "timelines/home";
-        if (min_id != null && !min_id.equals("")) {
-            endpoint += "?min_id=" + min_id;
+        if (max_id != null && !max_id.equals("")) {
+            endpoint += "?max_id=" + max_id;
         }
         String response = request(endpoint, token);
         if (response == null || response.equals("")) {
@@ -463,7 +463,7 @@ public class APIAccessManager {
      * @return (List<Toot>) - the list of bookmarked toots
      */
     public static List<Toot> getBookmarkedToots(String token){
-        String response = request("/bookmarks", token);
+        String response = request("bookmarks", token);
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
