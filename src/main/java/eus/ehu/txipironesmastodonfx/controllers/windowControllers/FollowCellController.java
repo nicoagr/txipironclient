@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.List;
  */
 public class FollowCellController {
     private MainWindowController master;
-
+    private static final Logger logger = LogManager.getLogger("FollowCellController");
     @FXML
     private AnchorPane anchor;
     String idauxi;//porsi luego modificamos la otra, necesitamos esto para ir a su perfil
@@ -51,7 +53,9 @@ public class FollowCellController {
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, idauxi), param -> {
                 if (param == null) {
                     followButton.setText("Error!");
+                    logger.error("Error when following userid: " + idauxi);
                 } else {
+                    logger.info("Followed user with id: " + idauxi + " successfully");
                     followButton.setText("Unfollow");
                     followButton.setDisable(false);
                 }
@@ -61,7 +65,9 @@ public class FollowCellController {
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, idauxi), param -> {
                 if (param == null) {
                     followButton.setText("Error!");
+                    logger.error("Error when unfollowing userid: " + idauxi);
                 } else {
+                    logger.info("Unfollowed user with id: " + idauxi + " successfully");
                     followButton.setText("Follow");
                     followButton.setDisable(false);
                 }
@@ -110,6 +116,7 @@ public class FollowCellController {
             if (param.equals("Self")) followButton.setVisible(false);
             if (!param.equals("Error!")) followButton.setDisable(false);
             followButton.setText(param);
+            logger.debug("Loaded follow cell for user: " + follow.id);
         });
         username.setText("@" + follow.acct);
         idauxi = follow.id;

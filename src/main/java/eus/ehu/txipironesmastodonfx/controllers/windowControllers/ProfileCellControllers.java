@@ -22,6 +22,8 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +45,7 @@ public class ProfileCellControllers {
     private MainWindowController master;
     boolean self = false;
     private String id;
-
+    private static final Logger logger = LogManager.getLogger("ProfileCellController");
     @FXML
     private ResourceBundle resources;
 
@@ -160,6 +162,7 @@ public class ProfileCellControllers {
             if (param.equals("Change Picture")) self = true;
             if (!param.equals("Error!")) omniButton.setDisable(false);
             omniButton.setText(param);
+            logger.debug("Loaded profile account for userid " + account.id);
         });
     }
 
@@ -194,6 +197,7 @@ public class ProfileCellControllers {
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
         // Allow the user to select a file
+        logger.debug("Opening file chooser dialog for profile picture change...");
         File selectedFile = fileChooser.showOpenDialog(master.TxipironClient().stage);
         if (selectedFile == null) {
             omniButton.setDisable(false);
@@ -203,6 +207,7 @@ public class ProfileCellControllers {
         if (HTMLParser.getFileExtension(selectedFile).matches("png|jpg|jpeg")) {
             AsyncUtils.asyncTask(() -> {
                 if (selectedFile.length() > 2097151) {
+                    logger.error("Profile picture selected file too big");
                     return "File too big";
                 }
                 if (NetworkUtils.hasInternet()) {
@@ -212,6 +217,7 @@ public class ProfileCellControllers {
                 return null;
             }, res -> {
                 if (res == null) {
+                    logger.info("Changed profile picture successfully");
                     master.refreshAvatar();
                     master.loggedUserListView();
                 } else {
@@ -235,7 +241,9 @@ public class ProfileCellControllers {
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, this.id), param -> {
                 if (param == null) {
                     omniButton.setText("Error!");
+                    logger.error("Error when following user with id " + this.id);
                 } else {
+                    logger.info("Followed user with id " + this.id + " successfully");
                     omniButton.setText("Unfollow");
                     omniButton.setDisable(false);
                 }
@@ -245,7 +253,9 @@ public class ProfileCellControllers {
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, this.id), param -> {
                 if (param == null) {
                     omniButton.setText("Error!");
+                    logger.error("Error when unfollowing user with id " + this.id);
                 } else {
+                    logger.info("Unfollowed user with id " + this.id + " successfully");
                     omniButton.setText("Follow");
                     omniButton.setDisable(false);
                 }
@@ -278,6 +288,7 @@ public class ProfileCellControllers {
             popupStage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Media Viewer");
             popupStage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/mainassets/dark-media-512.png"));
             ((MediaViewController) list.get(1)).setPopupStage(popupStage);
+            logger.info("Showing profile photo for userid: " + id);
             popupStage.showAndWait();
         });
     }
