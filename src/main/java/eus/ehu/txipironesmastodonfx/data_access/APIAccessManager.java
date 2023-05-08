@@ -47,12 +47,7 @@ public class APIAccessManager {
      * @return (String) - id of the account if the token is valid, null if it is not
      */
     public static String verifyAndGetId(String token) {
-        String response;
-        try {
-            response = request("accounts/verify_credentials", token);
-        } catch (IOException e) {
-            return null;
-        }
+        String response = request("accounts/verify_credentials", token);
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
@@ -71,7 +66,7 @@ public class APIAccessManager {
      * @param authCode (String) - auth code to get the token
      * @return (String) - token of the account
      */
-    public static String getTokenFromAuthCode(String authCode) throws IOException {
+    public static String getTokenFromAuthCode(String authCode) {
         String result = null;
         OkHttpClient client = new OkHttpClient();
         String requestBodyString = "grant_type=authorization_code&code=" + authCode +
@@ -82,10 +77,15 @@ public class APIAccessManager {
                 .url("https://mastodon.social/oauth/token")
                 .post(req)
                 .build();
-        Response response = client.newCall(request).execute();
-        if (response.code() == 200 && response.body() != null) {
-            result = response.body().string();
-            result = gson.fromJson(result, authCodeResponse.class).access_token;
+        try{
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+                result = gson.fromJson(result, authCodeResponse.class).access_token;
+            }
+        }
+        catch (IOException e){
+            return null;
         }
         return result;
     }
@@ -98,12 +98,11 @@ public class APIAccessManager {
      * @param selectedAccId (String) - id of the account
      * @param token         (String) - system variable of the account
      * @return (List < Toot >) - list of toots
-     *
-     * @throws IOException - When the request can't be made
-     */
-    public static List<Toot> getTootId(String selectedAccId, String token) throws IOException {
-        String response = request("accounts/" + selectedAccId + "/statuses", token);
 
+     */
+    public static List<Toot> getTootId(String selectedAccId, String token) {
+        if (token == null || token.equals("")) return null;
+        String response = request("accounts/" + selectedAccId + "/statuses", token);
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
@@ -125,13 +124,10 @@ public class APIAccessManager {
      * @return (List < Follow >) - list of follows
      */
     public static List<Follow> getFollow(String selectedAccId, String token, boolean following) {
+        if(token == null || token == "") return null;
+
         String endtarget = following ? "following" : "followers";
-        String response;
-        try {
-            response = request("accounts/" + selectedAccId + "/" + endtarget, token);
-        } catch (IOException e) {
-            return null;
-        }
+        String response = request("accounts/" + selectedAccId + "/" + endtarget, token);
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
@@ -151,12 +147,9 @@ public class APIAccessManager {
      * @return (Account) - the account
      */
     public static Account getAccount(String id, String token) {
-        String response = null;
-        try {
-            response = request("accounts/" + id, token);
-        } catch (IOException e) {
-            return null;
-        }
+        if (token == null || token == "") return null;
+
+        String response = request("accounts/" + id, token);
         if (response == null || response.equals("")) {
             // token is invalid
             return null;
@@ -174,6 +167,7 @@ public class APIAccessManager {
      * @return (SearchResult) - object with the results
      */
     public static SearchResult performSearch(String query, String token, int limit) {
+        if (token == null || token.equals("") || query == null) return null;
         HashMap<Object, Object> params = new HashMap<>();
         params.put("q", query);
         params.put("limit", limit);
@@ -230,7 +224,7 @@ public class APIAccessManager {
      * @param token    - Mastodon account token
      * @return (String) - The response of the request - Usually formatted as json
      */
-    private static String request(String endpoint, String token) throws IOException {
+    private static String request(String endpoint, String token){
         String result = null;
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -244,7 +238,7 @@ public class APIAccessManager {
                 result = response.body().string();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
         return result;
     }
@@ -257,10 +251,9 @@ public class APIAccessManager {
      * @param endpoint (String) - The endpoint to request
      * @return (String) - The response of the request - Usually formatted as json
      */
-    private static String requestNoToken(String endpoint) throws IOException {
+    private static String requestNoToken(String endpoint) {
         String result = null;
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url("https://mastodon.social/api/v1/" + endpoint)
                 .get()
@@ -280,7 +273,7 @@ public class APIAccessManager {
      * Method to post a toot, NOT FINISHED
      *
      * @param aut (String) - Mastodon account token
-     * @param toot (TootToBePosted) - The toot already insanced that will
+     * @param toot (TootToBePosted) - The toot already instanced that will
      * @return (String) - The response of the request - Usually formatted as json
      */
     public static String postToot(String aut, TootToBePosted toot) {
@@ -292,7 +285,6 @@ public class APIAccessManager {
                 .post(req)
                 .addHeader("Authorization", "Bearer " + aut)
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             if (response.code() == 200 && response.body() != null) {
@@ -305,16 +297,31 @@ public class APIAccessManager {
     }
 
     /**
+     * Obtains the list of views of  a user wich is introduced as parameter
+     *
+     * @param username (String)  - Mastodon account token
+     * @return (String) - The response of the request - Usually formatted as json
+     */
+    public static String getIdFromUsername(String username) {
+        if(username == null || username.equals("")) return null;
+
+        String response = requestNoToken("accounts/lookup?acct=" + username);
+        if (response == null || response.equals("")) {
+            // token is invalid
+            return null;
+        }
+        return gson.fromJson(response, Account.class).id;
+    }
+
+    /**
      * Method to get the toots liked by a user
      * It will return a list of toots. If the request can't be made,
      * it will return null.
      *
      * @param token         (String) - token of the account
      * @return (List<Toot>) - the list of liked toots
-     *
-     * @exception IOException - if the request can't be made
      */
-    public static List<Toot> getLikedToots(String token) throws IOException{
+    public static List<Toot> getLikedToots(String token){
         String response = request("/favourites", token);
         if (response == null || response.equals("")) {
             // token is invalid
@@ -323,27 +330,6 @@ public class APIAccessManager {
         Type fTootListType = new TypeToken<ArrayList<Toot>>() {
         }.getType();
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), fTootListType);
-    }
-
-    /**
-     * Obtains the list of views of  a user wich is introduced as parameter
-     *
-     * @param username (String)  - Mastodon account token
-     * @return (String) - The response of the request - Usually formatted as json
-     */
-    public static String getIdFromUsername(String username, String token) throws IOException {
-        String aBorrar;
-        String response = null;
-        try {
-            response = requestNoToken("accounts/lookup?acct=" + username);
-        } catch (IOException e) {
-            return null;
-        }
-        if (response == null || response.equals("")) {
-            // token is invalid
-            return null;
-        }
-        return gson.fromJson(response, Account.class).id;
     }
 
     /**
@@ -395,16 +381,12 @@ public class APIAccessManager {
     /**
      * Obtains the list of views of  a user wich is introduced as parameter
      *
-     * @param selectedAccId (String) - id of the account
      * @param token         (String) - token of the account
      * @return (List < Toot >) - the list of views of a user
-     * @throws IOException - if the request can't be made
      */
-    public static List<Toot> getHomeTootsId(String selectedAccId, String token) throws IOException {
+    public static List<Toot> getHomeTootsId(String token){
         String response = request("timelines/home", token);
-
-
-        if (response.equals("")) {
+        if (response == null || response.equals("")) {
             // token is invalid
             return null;
         }
@@ -471,10 +453,8 @@ public class APIAccessManager {
      *
      * @param token         (String) - token of the account
      * @return (List<Toot>) - the list of bookmarked toots
-     *
-     * @exception IOException - if the request can't be made
      */
-    public static List<Toot> getBookmarkedToots(String token) throws IOException{
+    public static List<Toot> getBookmarkedToots(String token){
         String response = request("/bookmarks", token);
         if (response == null || response.equals("")) {
             // token is invalid
@@ -640,6 +620,7 @@ public class APIAccessManager {
      * @return (boolean) - true if the profile picture was changed successfully
      */
     public static boolean changeProfilePicture(String token, File pic) {
+        if (token == null || pic == null) return false;
         String mediaType = null, result = null;
         OkHttpClient client = new OkHttpClient();
         String extension = HTMLParser.getFileExtension(pic);
@@ -689,11 +670,8 @@ public class APIAccessManager {
      * @return (boolean) - true if the media was processed
      */
     public static boolean isMediaProcessed(String token, String mediaId) {
-        try {
-            return (request("media/" + mediaId, token) != null);
-        } catch (IOException e) {
-            return false;
-        }
+        if (token == null || mediaId == null) return false;
+        return (request("media/" + mediaId, token) != null);
     }
 
 }

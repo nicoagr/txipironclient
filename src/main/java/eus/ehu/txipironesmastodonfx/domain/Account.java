@@ -62,6 +62,10 @@ public class Account implements CellController {
     public Account() {
     }
 
+    public Account(String id) {
+    	this.id = id;
+    }
+
     public Account(String id, String acct, String avatar) {
         this.id = id;
         this.acct = acct;

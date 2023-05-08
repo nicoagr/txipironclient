@@ -251,11 +251,7 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            try {
-                toots = APIAccessManager.getHomeTootsId(authenticatedId, token);
-            } catch (IOException e) {
-                toots = null;
-            }
+            toots = APIAccessManager.getHomeTootsId(token);
             return toots;
         }, toots -> {
             listViewItems.clear();
@@ -285,11 +281,7 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            try {
-                toots = APIAccessManager.getLikedToots(token);
-            } catch (IOException e) {
-                toots = null;
-            }
+            toots = APIAccessManager.getLikedToots(token);
             return toots;
         }, toots -> {
             listViewItems.clear();
@@ -342,11 +334,7 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            try {
-                toots = APIAccessManager.getTootId(id, token);
-            } catch (IOException e) {
-                toots = null;
-            }
+            toots = APIAccessManager.getTootId(id, token);
             return toots;
         }, toots -> {
             if (toots == null) {
@@ -382,11 +370,7 @@ public class MainWindowController implements WindowController {
             String id;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            try {
-                id = APIAccessManager.getIdFromUsername(username, token);
-            } catch (IOException e) {
-                id = null;
-            }
+            id = APIAccessManager.getIdFromUsername(username);
             return id;
         }, id -> {
             if (id == null) {

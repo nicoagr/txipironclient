@@ -87,6 +87,7 @@ public class TootCellController {
     private boolean fav;
     private boolean reblog;
     private boolean bm;
+    private String id;
 
     /**
      * Constructor for the controller.
@@ -120,6 +121,8 @@ public class TootCellController {
     @FXML
     void profilePictureClicked() {
         master.userTootListView(username.getText());
+        System.out.println(id);
+
     }
 
     /**
@@ -141,6 +144,7 @@ public class TootCellController {
         bm = toot.bookmarked;
         fav = toot.favourited;
         reblog = toot.reblogged;
+        id = toot.id;
         imagen.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
         Toot finalToot = toot;
         AsyncUtils.asyncTask(() ->
