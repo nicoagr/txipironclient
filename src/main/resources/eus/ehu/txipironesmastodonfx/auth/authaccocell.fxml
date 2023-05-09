@@ -10,15 +10,15 @@
             xmlns:fx="http://javafx.com/fxml/1">
     <ImageView fx:id="avatarImg" fitHeight="75.0" fitWidth="75.0" layoutX="58.0" layoutY="13.0" pickOnBounds="true"
                preserveRatio="true"/>
-    <Label fx:id="userNameTxt" layoutX="171.0" layoutY="32.0" text="\@username">
+    <Label styleClass="fill" fx:id="userNameTxt" layoutX="171.0" layoutY="32.0" text="\@username">
         <font>
             <Font size="24.0"/>
         </font>
     </Label>
-    <Label fx:id="accIdTxt" layoutX="176.0" layoutY="67.0" text="Account id">
+    <Label styleClass="fill" fx:id="accIdTxt" layoutX="176.0" layoutY="67.0" text="Account id">
         <font>
             <Font size="10.0"/>
         </font>
     </Label>
-    <Button layoutX="461.0" layoutY="13.0" mnemonicParsing="false" onAction="#removeAccBtnClick" text="X"/>
+    <Button styleClass="button_auth" layoutX="461.0" layoutY="13.0" mnemonicParsing="false" onAction="#removeAccBtnClick" text="X"/>
 </AnchorPane>

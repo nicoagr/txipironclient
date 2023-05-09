@@ -127,6 +127,7 @@ public class FollowCellController {
                         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-notfound.jpg")));
                 }
         );
+
     }
 
     /**

@@ -10,15 +10,14 @@
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="vbox" alignment="CENTER" maxHeight="7500.0" maxWidth="990.0" minHeight="440.0" minWidth="750.0" prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.controllers.auth.AuthWindowController">
-   <ImageView fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../logos/light_transparent_125.png" />
+   <ImageView styleClass="logo" fitHeight="125.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
    </ImageView>
-   <Label text="Txipiron Client">
-      <font>
+   <Label  styleClass="fill" text="Txipiron Client">
+      <font >
          <Font name="System Bold" size="36.0" />
       </font>
    </Label>
-   <Label text="v1.0 by Nicolás, Haizea, Xiomara and Marcos">
+   <Label styleClass="fill" text="v1.0 by Nicolás, Haizea, Xiomara and Marcos">
       <font>
          <Font size="14.0" />
       </font>
@@ -35,7 +34,7 @@
          <Font size="15.0" />
       </font>
    </Label>
-   <Button fx:id="loginBtn" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#loginBtnClick" text="Login with Selected Account">
+   <Button styleClass="button_auth" fx:id="loginBtn" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#loginBtnClick" text="Login with Selected Account">
       <font>
          <Font size="16.0"/>
       </font>
@@ -43,7 +42,7 @@
          <Insets top="20.0" />
       </VBox.margin>
    </Button>
-   <Button fx:id="exitBtn" mnemonicParsing="false" onAction="#exitBtnClick" text="Exit Application" visible="false">
+   <Button styleClass="button_auth" fx:id="exitBtn" mnemonicParsing="false" onAction="#exitBtnClick" text="Exit Application" visible="false">
       <VBox.margin>
          <Insets top="10.0" />
       </VBox.margin>

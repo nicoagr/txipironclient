@@ -52,7 +52,7 @@ public class AuthWindowController implements WindowController {
 
     private String selectedAccId;
     @FXML
-    private VBox vbox;
+    public VBox vbox;
     @FXML
     private ListView<Object> accountListView;
     private ObservableList<Object> listViewItems = FXCollections.observableArrayList();

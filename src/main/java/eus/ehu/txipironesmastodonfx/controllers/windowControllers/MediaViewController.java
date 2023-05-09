@@ -13,10 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -50,6 +47,10 @@ public class MediaViewController {
     @FXML
     private Button prevBtn;
     private MainWindowController master;
+
+
+    @FXML
+    public AnchorPane anchor;
 
     /**
      * First method called when the view is loaded.

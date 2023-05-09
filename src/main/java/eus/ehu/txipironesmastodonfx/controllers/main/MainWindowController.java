@@ -367,9 +367,168 @@ public class MainWindowController implements WindowController {
         });
     }
 
+    /**
+     * click on the profile pic to see my profile
+     */
     public void loggedUserListView(){
         userTootListViewFromId(authenticatedId);
     }
+
+    /**
+     * Sets the list view to show the followers of
+     * the user with the id passed as a parameter
+     *
+     * @param id (String) The id of the user whose toots are going to be shown
+     */
+    @FXML
+    public void userTootListViewFromIdFollowers(String id) {
+        listViewItems.clear();
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        logger.debug("Attempting to download profile and followers from id: " + id);
+        showLoading();
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            Account account;
+            account = APIAccessManager.getAccount(id, token);
+            return account;
+        }, account -> {
+            listViewItems.clear();
+            if (account == null) {
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile . Please check your connection and try again."));
+                logger.error("Error downloading profile from user id: " + id);
+                return;
+            }
+            listViewItems.add(account);
+            logger.info("Downloaded profile from id: " + id);
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        });
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Toot> toots;
+            // Here, the id parameter is going to control which toots
+            // from which are going to be downloaded
+            try {
+                toots = APIAccessManager.getTootId(id, token);
+            } catch (IOException e) {
+                toots = null;
+            }
+            return toots;
+        }, toots -> {
+            if (toots == null) {
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile followers. Please check your connection and try again."));
+                logger.error("Error downloading profile followers from user id" + id);
+                return;
+            }
+            listViewItems.remove(listViewItems.size() - 1);
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "followers"));
+            listViewItems.addAll(toots);
+            logger.info("Downloaded " + toots.size() + " followers from user id: " + id);
+            hideLoading();
+        });
+    }
+
+    /**
+     * Sets the list view to show the Following of
+     * the user with the id passed as a parameter
+     *
+     * @param id (String) The id of the user whose toots are going to be shown
+     */
+    @FXML
+    public void userTootListViewFromIdFollowings(String id) {
+        listViewItems.clear();
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        logger.debug("Attempting to download profile and followings from id: " + id);
+        showLoading();
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            Account account;
+            account = APIAccessManager.getAccount(id, token);
+            return account;
+        }, account -> {
+            listViewItems.clear();
+            if (account == null) {
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile . Please check your connection and try again."));
+                logger.error("Error downloading profile from user id: " + id);
+                return;
+            }
+            listViewItems.add(account);
+            logger.info("Downloaded profile from id: " + id);
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        });
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Toot> toots;
+            // Here, the id parameter is going to control which toots
+            // from which are going to be downloaded
+            try {
+                toots = APIAccessManager.getTootId(id, token);
+            } catch (IOException e) {
+                toots = null;
+            }
+            return toots;
+        }, toots -> {
+            if (toots == null) {
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile followings. Please check your connection and try again."));
+                logger.error("Error downloading profile followings from user id" + id);
+                return;
+            }
+            listViewItems.remove(listViewItems.size() - 1);
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "following"));
+            listViewItems.addAll(toots);
+            logger.info("Downloaded " + toots.size() + " followings from user id: " + id);
+            hideLoading();
+        });
+    }
+
+    /**
+     * Sets the list view to show the followers of the current logged in user
+     */
+    @FXML
+    void followerListView() {
+        listViewItems.clear();
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        showLoading();
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Follow> follower;
+            follower = APIAccessManager.getFollow(authenticatedId, token, false);
+            return follower;
+        }, follower -> {
+            listViewItems.clear();
+            if (follower == null) {
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "Error downloading followers. Please check your connection and try again."));
+                return;
+            }
+            hideLoading();
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Followers"));
+            listViewItems.addAll(follower);
+        });
+    }
+    /**
+     * Sets the list view to show the users that the current logged in user is following
+     */
+    @FXML
+    void followingListView() {
+        listViewItems.clear();
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        showLoading();
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Follow> follower;
+            follower = APIAccessManager.getFollow(authenticatedId, token, true);
+            return follower;
+        }, follower -> {
+            listViewItems.clear();
+            if (follower == null) {
+                listViewItems.add(new Generic(Generic.of.MESSAGE, "Error downloading following. Please check your connection and try again."));
+                return;
+            }
+            hideLoading();
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Followers"));
+            listViewItems.addAll(follower);
+        });
+    }
+
 
     /**
      * Sets the list view to show the toots of the username
@@ -403,6 +562,7 @@ public class MainWindowController implements WindowController {
             userTootListViewFromId(id);
         });
     }
+
 
     /**
      * Initializes the list view

@@ -1,5 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
+import eus.ehu.txipironesmastodonfx.controllers.auth.AuthWindowController;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
@@ -20,6 +21,10 @@ import java.sql.SQLException;
 
 public class SettingsController {
     private MainWindowController master;
+
+    private AuthWindowController authMaster;
+
+    private MediaViewController mediaMaster;
     @FXML
     private VBox anchor;
     @FXML
@@ -136,5 +141,6 @@ public class SettingsController {
     void initialize() {
         comboStyles.getItems().addAll("Dark", "Light");
     }
+
 
 }

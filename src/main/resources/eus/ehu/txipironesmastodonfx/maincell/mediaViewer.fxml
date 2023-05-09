@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="eus.ehu.txipironesmastodonfx.controllers.windowControllers.MediaViewController">
-   <ImageView fx:id="imageView" fitHeight="400.0" fitWidth="600.0" layoutX="50.0" layoutY="30.0" pickOnBounds="true"
-              preserveRatio="true" visible="false"/>
-   <MediaView fx:id="mediaView" fitHeight="400.0" fitWidth="600.0" layoutX="50.0" layoutY="30.0" visible="false"/>
-   <Button layoutX="566.0" layoutY="449.0" mnemonicParsing="false" onAction="#closePopup" text="Close Popup"/>
-   <Button fx:id="prevBtn" layoutX="50.0" layoutY="449.0" mnemonicParsing="false" onAction="#prevAction"
-           text="Previous"/>
-   <Button fx:id="nextBtn" layoutX="126.0" layoutY="449.0" mnemonicParsing="false" onAction="#nextAction" text="Next"/>
-   <Label fx:id="loadingTxt" layoutX="299.0" layoutY="212.0" text="Loading...">
+
+<AnchorPane fx:id="anchor" prefHeight="500.0" prefWidth="700.0" styleClass="anchor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.controllers.windowControllers.MediaViewController">
+   <ImageView fx:id="imageView" fitHeight="400.0" fitWidth="600.0" layoutX="50.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+   <MediaView fx:id="mediaView" fitHeight="400.0" fitWidth="600.0" layoutX="50.0" layoutY="30.0" visible="false" />
+   <Button layoutX="566.0" layoutY="449.0" mnemonicParsing="false" onAction="#closePopup" styleClass="button_gen" text="Close Popup" />
+   <Button fx:id="prevBtn" layoutX="50.0" layoutY="449.0" mnemonicParsing="false" onAction="#prevAction" styleClass="button_gen" text="Previous" />
+   <Button fx:id="nextBtn" layoutX="126.0" layoutY="449.0" mnemonicParsing="false" onAction="#nextAction" styleClass="button_gen" text="Next" />
+   <Label fx:id="loadingTxt" layoutX="299.0" layoutY="212.0" styleClass="fill" text="Loading...">
       <font>
-         <Font size="24.0"/>
+         <Font size="24.0" />
       </font>
    </Label>
-   <Label fx:id="mediaCounterTxt" layoutX="184.0" layoutY="453.0" text="Viewing media 0 of 0"/>
-   <HBox fx:id="mediaBar" layoutX="51.0" layoutY="404.0" prefHeight="25.0" prefWidth="600.0"/>
-   <Button layoutX="412.0" layoutY="449.0" mnemonicParsing="false" onAction="#openInBrowser"
-           text="Open Media in Browser"/>
+   <Label fx:id="mediaCounterTxt" layoutX="184.0" layoutY="453.0" styleClass="fill" text="Viewing media 0 of 0" />
+   <HBox fx:id="mediaBar" layoutX="51.0" layoutY="404.0" prefHeight="25.0" prefWidth="600.0" />
+   <Button layoutX="412.0" layoutY="449.0" mnemonicParsing="false" onAction="#openInBrowser" styleClass="button_gen" text="Open Media in Browser" />
 </AnchorPane>

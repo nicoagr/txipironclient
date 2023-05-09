@@ -5,7 +5,7 @@
 /*    #89D2DC non-photo blue     */
 /*    #6564DB slate blue         */
 /*    #232ED1 palatine blue      */
-/*    #101D42 oxford blue        */
+/*    #262731 oxford blue        */
 /*    #0D1317 rich black         */
 /*                               */
 /*********************************/
@@ -13,6 +13,24 @@
 /*General*/
 .root {
     -fx-background-color: #0D1317;
+}
+
+.fill{
+    -fx-text-fill: white;
+}
+
+.button_gen{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: white;
+}
+
+.button_gen:pressed{
+    -fx-background-color: #232ED1;
+    -fx-text-fill: white;
+}
+#content{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
 }
 
 /*Left bar buttons*/
@@ -26,16 +44,22 @@
 .left_button:hover{
     -fx-background-color: #101D42;
     -fx-text-fill: white;
-    -fx-font-size: 22px;
+   /* -fx-font-size: 22px;*/
 }
 
 .left_button:pressed {
     -fx-background-color: #101D42;
     -fx-text-fill: #FFFFFF;
-    -fx-font-weight: bold;
+   /* -fx-font-weight: bold;*/
 }
 
 /*Search*/
+
+#searchQuery {
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
 
 #searchBtn{
     -fx-background-color: #6564DB;
@@ -48,8 +72,105 @@
 
 }
 
+/*anchor*/
+
 #anchor{
-    -fx-background-color: #101D42;
+    -fx-background-color: #262731;
+
+}
+
+.anchor{
+    -fx-background-color: #262731;
+}
+
+/*Post toot*/
+
+#sensitiveId{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+/*botton*/
+
+#copyright{
+    -fx-text-fill: white;
+}
+
+/*scrollbane*/
+
+#scrollpane{
+    -fx-background-color: #0D1317;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: #0D1317;
+
+}
+.scroll-bar:vertical .thumb{
+    -fx-background-color: #262731;
+}
+
+.scroll-bar:horizontal{
+    -fx-background-color: #0D1317;
+}
+
+#vbox{
+    -fx-background-color: #0D1317;
+}
+
+/*cells*/
+
+#info{
+    -fx-text-fill: white;
+}
+
+/*logos*/
+
+.logo{
+    -fx-image: url(../logos/dark_transparent_1000.png);
+}
+/*Auth*/
+
+.list-view{
+    -fx-background-color: #262731;
+}
+.list-cell{
+    -fx-background-color: #262731;
+}
+#errorLabel{
+    -fx-text-fill: #6564DB;
+}
+
+.button_auth{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: white;
+}
+
+.button_auth:pressed{
+    -fx-background-color: #232ED1;
+    -fx-text-fill: white;
+}
+
+
+/*settings*/
+
+.combo-box{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
+#comboStyles{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
+#comboStyles-popup{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
 }
 
 /*
