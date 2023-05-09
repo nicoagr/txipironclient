@@ -180,8 +180,8 @@ public class MainWindowController implements WindowController {
         listView.setItems(listViewItems);
         this.ref = (Integer) result.get(0);
         this.token = (String) result.get(1);
-        NotificationSystem NotificationSystem = new NotificationSystem();
-        NotificationSystem.activateNotifications(this);
+        this.notificationSystem = new NotificationSystem();
+        notificationSystem.activateNotifications(this);
 
         this.authenticatedId = (String) result.get(2);
         icon.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-accounticon.png")));
