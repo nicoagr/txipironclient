@@ -28,9 +28,19 @@
     -fx-background-color: #232ED1;
     -fx-text-fill: white;
 }
+.button_gen:hover{
+    -fx-cursor: hand;
+}
+
 #content{
     -fx-background-color: #262731;
     -fx-text-fill: white;
+}
+#icon{
+    -fx-cursor: hand;
+}
+.image_click{
+    -fx-cursor: hand;
 }
 
 /*Left bar buttons*/
@@ -44,6 +54,7 @@
 .left_button:hover{
     -fx-background-color: #101D42;
     -fx-text-fill: white;
+    -fx-cursor: hand;
    /* -fx-font-size: 22px;*/
 }
 
@@ -70,6 +81,10 @@
     -fx-background-color: #232ED1;
     -fx-text-fill: #FFFFFF;
 
+}
+
+#searchBtn:hover{
+    -fx-cursor: hand;
 }
 
 /*anchor*/
@@ -154,24 +169,30 @@
 /*settings*/
 
 .combo-box{
-    -fx-background-color: #262731;
+    -fx-background-color: #0D1317;
     -fx-text-fill: white;
 }
 
 .combo-box-popup{
-    -fx-background-color: #262731;
+    -fx-background-color: #0D1317;
     -fx-text-fill: white;
 }
 
-#comboStyles{
-    -fx-background-color: #262731;
+.combo-box-popup {
+    -fx-background-color: #0D1317;
+    -fx-progress-color: #0D1317;
+    -fx-progress-color: #0D1317;
+    -fx-prompt-text-fill: white;
+    -fx-tick-label-fill: white;
     -fx-text-fill: white;
 }
 
-#comboStyles-popup{
-    -fx-background-color: #262731;
+.check-box{
+    -fx-tick-label-fill: #0D1317;
     -fx-text-fill: white;
 }
+
+
 
 /*
 .button{
