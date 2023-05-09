@@ -28,7 +28,7 @@ public interface WindowController {
      *
      * @param result (List<Object>) - The list of reference, token and id to be set
      */
-    default void setRefTokenId(List<Object> result) throws IOException, AWTException {
+    default void setRefTokenId(List<Object> result) throws IOException, AWTException, InterruptedException {
         // Do nothing
     }
 

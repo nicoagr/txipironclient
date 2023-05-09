@@ -101,13 +101,13 @@ public class TxipironClient extends Application {
     }
 
     /**
-     * Dinamically Change Scenes on-the-fly.
+     * Dinamically Change Sce   nes on-the-fly.
      * Will change the scene to the one passed as parameter, and activate the notifications
      *
      * @param sceneName (String) - Name of the scene to change to
      * @param result    (List<Object>) - List of reference.
      */
-    public void changeScene(String sceneName, List<Object> result) throws IOException, AWTException {
+    public void changeScene(String sceneName, List<Object> result) throws IOException, AWTException, InterruptedException {
         switch (sceneName) {
             case "Auth" -> {
                 setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");

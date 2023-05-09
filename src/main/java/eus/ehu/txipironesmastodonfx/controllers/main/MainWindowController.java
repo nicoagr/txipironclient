@@ -162,7 +162,7 @@ public class MainWindowController implements WindowController {
      * when the change account button is clicked
      */
     @FXML
-    void changeAcctBtnClick() throws IOException, AWTException {
+    void changeAcctBtnClick() throws IOException, AWTException, InterruptedException {
         listViewItems.clear();
         notificationSystem.deactivateNotification();
         mainApp.changeScene("Auth", null);
@@ -174,7 +174,7 @@ public class MainWindowController implements WindowController {
      * @param result (List<Object>) - The list of reference and token to be set
      */
     @Override
-    public void setRefTokenId(List<Object> result) throws IOException, AWTException {
+    public void setRefTokenId(List<Object> result) throws IOException, AWTException, InterruptedException {
         mainApp.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
 
         listView.setItems(listViewItems);

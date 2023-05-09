@@ -20,7 +20,7 @@ public final class AsyncUtils {
 
     @FunctionalInterface
     public interface Consumer<T> {
-        void apply(T t) throws IOException, AWTException;
+        void apply(T t) throws IOException, AWTException, InterruptedException;
     }
 
     @FunctionalInterface
@@ -57,6 +57,8 @@ public final class AsyncUtils {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     } catch (AWTException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 });

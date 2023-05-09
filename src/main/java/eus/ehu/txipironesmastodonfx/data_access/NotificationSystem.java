@@ -13,10 +13,13 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import static java.lang.Thread.getDefaultUncaughtExceptionHandler;
+import static java.lang.Thread.sleep;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class NotificationSystem {
-    private volatile boolean shutdown = false;
+    public volatile boolean shutdown = false;
+    public Thread mytread;
 
     WindowNotificationSystem WindowNotificationSystem;
     MainWindowController master;
@@ -28,7 +31,9 @@ public class NotificationSystem {
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
-    public void  activateNotifications(MainWindowController master) {
+    public void  activateNotifications(MainWindowController master) throws InterruptedException {
+
+
 
         this.master = master;
         WindowNotificationSystem = new WindowNotificationSystem(master);
@@ -40,21 +45,25 @@ public class NotificationSystem {
             master.lastNotification = notifications.get(0).id;
         });
 
-
         final Runnable toBeEjecuterperiodically = new Runnable() {
 
 
 
             public void run() {
 
+                while (!shutdown) {
 
                     try {
-                        Thread.sleep(1000);
+                        sleep(1000);
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("se interrumpio");
+                        shutdown = true;
+
                     }
                     AsyncUtils.asyncTask(() -> {//first I get the notifications
                         System.out.println("Borrame Marcos");
+                        System.out.println(shutdown);
+
                         List<Notification> notifications;
                         notifications = APIAccessManager.getNotificationSinceip(master.token, master.lastNotification);
                         return notifications;
@@ -96,27 +105,22 @@ public class NotificationSystem {
                     });
 
 
-
+                }
             }
         };
-        final ScheduledFuture<?> beeperHandle = scheduler.scheduleAtFixedRate(toBeEjecuterperiodically, 3, 3, SECONDS);
-
-        scheduler.schedule(new Runnable() {
-            public void run() {
-                beeperHandle.cancel(true);
-            }
-        }, 20, SECONDS);
 
 
 
+System.out.println("1");
 
+        this.mytread = new Thread(toBeEjecuterperiodically);
+        this.mytread.start();
 
     }
     public void deactivateNotification(){
-        //this.list.stream().forEach(sf-> sf.cancel(false));
-
+        //System.out.println(mytread.isAlive());
+        this.mytread.interrupt();
         System.out.println("We are on the deactivate Method");
-        shutdown = true;
         System.out.println(shutdown);
 
     }
