@@ -12,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -53,6 +52,7 @@ public class MainWindowController implements WindowController {
     public ScrollPane scrollpane;
     public ObservableList<CellController> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
+    public String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
 
     /**
      * Changes title and Shows loading gif
@@ -79,7 +79,8 @@ public class MainWindowController implements WindowController {
     @FXML
     public void postTootListview() {
         listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.POST_TOOT, "Post Toot"));
+        String post = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Post");
+        listViewItems.add(new Generic(Generic.of.POST_TOOT, post));
         logger.info("Loaded post toot screen");
     }
 
@@ -174,7 +175,7 @@ public class MainWindowController implements WindowController {
             logger.error("User tried to type a null search query");
             return;
         }
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         logger.debug("Attempting search with query: " + searchQuery.getText());
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -192,15 +193,19 @@ public class MainWindowController implements WindowController {
             }
             logger.info("Performed search with query: " + searchQuery.getText() + " and got " + res.accounts.size() + " accounts and " + res.statuses.size() + " statuses");
             if (res.accounts.size() == 0) {
-                listViewItems.add(new Generic(Generic.of.MESSAGE, "No users found with that query"));
+                String noAcc = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoAcc");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, noAcc));
             } else {
-                listViewItems.add(new Generic(Generic.of.MESSAGE, "Result accounts"));
+                String acc = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Acc");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, acc));
                 listViewItems.addAll(res.accounts);
             }
             if (res.statuses.size() == 0) {
-                listViewItems.add(new Generic(Generic.of.MESSAGE, "No statuses found with that query"));
+                String noStat = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoStat");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, noStat));
             } else {
-                listViewItems.add(new Generic(Generic.of.MESSAGE, "Result statuses"));
+                String stat = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Stat");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, stat));
                 listViewItems.addAll(res.statuses);
             }
         });
@@ -213,7 +218,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void bookmarkedTootsListView() {
         listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         logger.debug("Attempting to download bookmarked toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -231,10 +236,12 @@ public class MainWindowController implements WindowController {
             hideLoading();
             logger.info("Downloaded " + toot.size() + " bookmarked toots");
             if (toot.size() == 0) {
-                listViewItems.add(new Generic(Generic.of.MESSAGE, "No bookmarked toots found"));
+                String noBook = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoBook");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, noBook));
                 return;
             }
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Bookmarks"));
+            String book = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Bookmark");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, book));
             listViewItems.addAll(toot);
         });
     }
@@ -246,7 +253,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public void homeListView() {
         listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         logger.debug("Attempting to download home toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -265,7 +272,8 @@ public class MainWindowController implements WindowController {
             }
             hideLoading();
             logger.info("Downloaded " + toots.size() + " home toots from user id: " + authenticatedId);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Home"));
+            String home = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Home");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, home));
             listViewItems.addAll(toots);
         });
     }
@@ -276,7 +284,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void likedTootsListView() {
         listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         logger.debug("Attempting to download liked toots");
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -296,10 +304,12 @@ public class MainWindowController implements WindowController {
             hideLoading();
             logger.info("Downloaded " + toots.size() + " liked toots from user id" + authenticatedId);
             if (toots.size() == 0) {
-                listViewItems.add(new Generic(Generic.of.MESSAGE, "No liked toots found"));
+                String noLike = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoLike");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, noLike));
                 return;
             }
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Liked toots"));
+            String like = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Like");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, like));
             listViewItems.addAll(toots);
         });
     }
@@ -313,7 +323,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public void userTootListViewFromId(String id) {
         listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         logger.debug("Attempting to download profile and toots from id: " + id);
         showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -330,7 +340,7 @@ public class MainWindowController implements WindowController {
             }
             listViewItems.add(account);
             logger.info("Downloaded profile from id: " + id);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+            listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         });
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -366,7 +376,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public void userTootListView(String username) {
         listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         logger.debug("Attempting to mastodon id from username: " + username);
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;

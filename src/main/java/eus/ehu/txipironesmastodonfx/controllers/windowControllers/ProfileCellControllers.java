@@ -278,7 +278,8 @@ public class ProfileCellControllers {
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setScene((Scene) list.get(0));
             popupStage.setResizable(false);
-            popupStage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Media Viewer");
+            String popup = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MediaViewer");
+            popupStage.setTitle(popup);
             popupStage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/mainassets/dark-media-512.png"));
             ((MediaViewController) list.get(1)).setPopupStage(popupStage);
             popupStage.showAndWait();
