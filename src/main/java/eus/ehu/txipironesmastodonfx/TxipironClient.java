@@ -97,7 +97,8 @@ public class TxipironClient extends Application {
         scene = new Scene(authWindow.ui);
         scene.getStylesheets().add(getClass().getResource("styles/listView.css").toExternalForm());
         logger.debug("Stylesheet loaded");
-        setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
+        String authTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("AuthTitle");
+        setStageTitle(authTitle);
         stage.getIcons().add(new Image(getClass().getResource("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg").toExternalForm()));
         logger.debug("Icon loaded");
         stage.setScene(scene);

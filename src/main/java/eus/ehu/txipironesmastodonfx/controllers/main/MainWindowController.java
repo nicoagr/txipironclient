@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
@@ -57,7 +58,8 @@ public class MainWindowController implements WindowController {
      * Changes title and Shows loading gif
      */
     public void showLoading() {
-        mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Loading...");
+        String mainTitle1 = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("LoadTitle");
+        mainApp.setStageTitle(mainTitle1);
         loading.setVisible(true);
     }
 
@@ -66,7 +68,8 @@ public class MainWindowController implements WindowController {
      * and hides the loading gif
      */
     public void hideLoading() {
-        mainApp.setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
+        String mainTitle2 = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MainTitle");
+        mainApp.setStageTitle(mainTitle2);
         loading.setVisible(false);
     }
 
