@@ -1,5 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
+import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
@@ -87,7 +88,8 @@ public class ProfileCellControllers {
      * @param master (MainWindowController) - The reference to the main window controller
      */
     public ProfileCellControllers(MainWindowController master) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/profileCell.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/profileCell.fxml"),
+                ResourceBundle.getBundle("strings", TxipironClient.lang));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
@@ -263,7 +265,8 @@ public class ProfileCellControllers {
         if (imageurl == null) return;
         AsyncUtils.asyncTask(() -> {
             // create the popup
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"),
+                    ResourceBundle.getBundle("strings", TxipironClient.lang));
             Parent root = fxmlLoader.load();
             MediaViewController contr = fxmlLoader.getController();
             contr.setMedia(List.of(new MediaAttachment("image", imageurl)));
