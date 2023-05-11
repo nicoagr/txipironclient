@@ -17,6 +17,15 @@ import static java.lang.Thread.getDefaultUncaughtExceptionHandler;
 import static java.lang.Thread.sleep;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * This class creates a thread to call periodically the API to check for new notifications.
+ *
+ * @author Nicolás Aguado
+ * @author Haizea Bermejo
+ * @author Xiomara Cáceces
+ * @author Marcos Chouciño
+ */
+
 public class NotificationSystem {
     public volatile boolean shutdown = false;
     public Thread mytread;
@@ -31,6 +40,11 @@ public class NotificationSystem {
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
+
+    /**
+     * This method checks activate the notifiactions for the user that is logged in the app. It does this by generating a thread which calls the api periodically
+     * @param master -the MainWindowController of the app, we need it to obtain data.
+     */
     public void  activateNotifications(MainWindowController master) throws InterruptedException {
 
 
@@ -113,8 +127,12 @@ public class NotificationSystem {
         this.mytread.start();
 
     }
+
+
+    /**
+     * This method checks close the thread that was created which checks for notifications.
+     */
     public void deactivateNotification(){
-        //System.out.println(mytread.isAlive());
         this.mytread.interrupt();
 
     }
