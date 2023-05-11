@@ -19,15 +19,7 @@ private MainWindowController master;
     /**
      * This method intiializes the tray sistem for notifications to thw winodows and macOS
      */
-    public void initialice() throws IOException, AWTException {
-        SystemTray tray = SystemTray.getSystemTray();
-        BufferedImage trayIconImage = ImageIO.read(getClass().getResource(("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg")));
-        int trayIconWidth = new TrayIcon(trayIconImage).getSize().width;
-            this.trayIcon = new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1, Image.SCALE_SMOOTH), "TwitterC");
-        // add the tray image
-        tray.add(trayIcon);
 
-    }
     /**
      * This method cheks the OS and display a notification Window with the mainText
      */
@@ -42,19 +34,22 @@ private MainWindowController master;
             }else if(SystemTray.isSupported()) {
 
 
-                if (trayIcon != null) {
-                    trayIcon.displayMessage(mainText, "", TrayIcon.MessageType.NONE);
-                }
-            /*
                 SystemTray tray = SystemTray.getSystemTray();
 
+                //If the icon is a file
+                //Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+                //Alternative (if the icon is on the classpath):
+                Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg"));
+
                 TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+                //Let the system resize the image if needed
                 trayIcon.setImageAutoSize(true);
+                //Set tooltip text for the tray icon
+                trayIcon.setToolTip("System tray icon demo");
                 tray.add(trayIcon);
 
-                trayIcon.displayMessage(title, message, TrayIcon.MessageType.INFO);
-            }
-            */
+                trayIcon.displayMessage("Txipiron Client", mainText, MessageType.INFO);
+
 
             }
 
