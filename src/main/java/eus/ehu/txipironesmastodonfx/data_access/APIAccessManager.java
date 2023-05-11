@@ -412,14 +412,22 @@ public class APIAccessManager {
         return result;
     }
 
+    /**
+     * Send a signal to the server to clear the notifications
+     * @param token (String) - token of the account
 
+     */
     public static void clearNotification(String token) throws IOException{
         String response = request("notifications/clear", token);
     }
 
 
 
-
+    /**
+     * Get an array of the type Notifications from the server
+     * @param token (String) - token of the account
+     * @return (List < Notification >) - list of notification
+     */
     public static List<Notification> getNewNotification(String token) throws IOException {
         String response = request("notifications", token);
 
@@ -433,7 +441,12 @@ public class APIAccessManager {
         // get json array and then convert it to a list of Notifications
         return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
     }
-
+    /**
+     * Get an array of the type Notifications from the server since the Notification ip that is passed as a parameter
+     * @param token (String) - token of the account
+     * @param id (String) - id of the Notification
+     * @return (List < Notification >) - list of notification
+     */
     public static List<Notification> getNotificationSinceip(String token,String id) throws IOException {
 
 
