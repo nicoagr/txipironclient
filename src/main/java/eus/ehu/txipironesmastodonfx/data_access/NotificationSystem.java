@@ -56,13 +56,10 @@ public class NotificationSystem {
                     try {
                         sleep(1000);
                     } catch (InterruptedException e) {
-                        System.out.println("se interrumpio");
                         shutdown = true;
 
                     }
                     AsyncUtils.asyncTask(() -> {//first I get the notifications
-                        System.out.println("Borrame Marcos");
-                        System.out.println(shutdown);
 
                         List<Notification> notifications;
                         notifications = APIAccessManager.getNotificationSinceip(master.token, master.lastNotification);
@@ -111,7 +108,6 @@ public class NotificationSystem {
 
 
 
-System.out.println("1");
 
         this.mytread = new Thread(toBeEjecuterperiodically);
         this.mytread.start();
@@ -120,8 +116,6 @@ System.out.println("1");
     public void deactivateNotification(){
         //System.out.println(mytread.isAlive());
         this.mytread.interrupt();
-        System.out.println("We are on the deactivate Method");
-        System.out.println(shutdown);
 
     }
 }
