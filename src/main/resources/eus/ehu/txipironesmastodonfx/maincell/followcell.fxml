@@ -6,21 +6,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" prefHeight="90.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1">
-   <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" onMouseClicked="#pickClick"
-              pickOnBounds="true" preserveRatio="true"/>
-   <Label fx:id="username" layoutX="111.0" layoutY="53.0" onMouseClicked="#pickClick" text="Loading..."
-          textFill="#0645ad" underline="true">
+<AnchorPane fx:id="anchor" prefHeight="90.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" onMouseClicked="#pickClick" pickOnBounds="true" preserveRatio="true" />
+   <Label fx:id="username" layoutX="111.0" layoutY="53.0" onMouseClicked="#pickClick" text="Loading..." textFill="#0645ad" underline="true">
       <font>
-         <Font size="13.0"/>
+         <Font size="13.0" />
       </font>
    </Label>
-   <Button fx:id="followButton" disable="true" layoutX="629.0" layoutY="22.0" mnemonicParsing="false"
-           onAction="#onClickFollowButton" prefHeight="45.0" prefWidth="122.0" text="Loading..."/>
+   <Button fx:id="followButton" disable="true" layoutX="629.0" layoutY="22.0" mnemonicParsing="false" onAction="#onClickFollowButton" prefHeight="45.0" prefWidth="122.0" text="%Load" />
    <Label fx:id="displayNameTxt" layoutX="111.0" layoutY="22.0" onMouseClicked="#pickClick" text="Loading...">
       <font>
-         <Font size="18.0"/>
+         <Font size="18.0" />
       </font>
    </Label>
 </AnchorPane>

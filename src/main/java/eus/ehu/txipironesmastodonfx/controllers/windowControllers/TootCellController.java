@@ -138,7 +138,8 @@ public class TootCellController {
         if (toot.reblog != null) {
             rebootedBy.setVisible(true);
             rebootedText.setVisible(true);
-            rebootedText.setText("Rebooted by @" + toot.account.acct);
+            String rebooted = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("RebootBy");
+            rebootedText.setText(rebooted + toot.account.acct);
         }
         while (toot.reblog != null) toot = toot.reblog;
         // set the values for the toot cell

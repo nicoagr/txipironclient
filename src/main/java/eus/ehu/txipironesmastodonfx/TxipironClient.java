@@ -136,12 +136,14 @@ public class TxipironClient extends Application {
     public void changeScene(String sceneName, List<Object> result) {
         switch (sceneName) {
             case "Auth" -> {
-                setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
+                String authTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("AuthTitle");
+                setStageTitle(authTitle);
                 logger.info("Changed scene to Auth");
                 scene.setRoot(authWindow.ui);
             }
             case "Main" -> {
-                setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
+                String mainTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MainTitle");
+                setStageTitle(mainTitle);
                 scene.setRoot(mainWindow.ui);
                 logger.info("Changed scene to Main");
                 mainWindow.controller.setRefTokenId(result);

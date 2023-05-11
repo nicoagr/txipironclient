@@ -200,7 +200,8 @@ public class ProfileCellControllers {
         File selectedFile = fileChooser.showOpenDialog(master.TxipironClient().stage);
         if (selectedFile == null) {
             omniButton.setDisable(false);
-            omniButton.setText("Change Picture");
+            String chanPic = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("ChPic");
+            omniButton.setText(chanPic);
             return;
         }
         if (HTMLParser.getFileExtension(selectedFile).matches("png|jpg|jpeg")) {
@@ -239,7 +240,8 @@ public class ProfileCellControllers {
                 if (param == null) {
                     omniButton.setText("Error!");
                 } else {
-                    omniButton.setText("Unfollow");
+                    String unfollow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
+                    omniButton.setText(unfollow);
                     omniButton.setDisable(false);
                 }
             });
@@ -249,7 +251,8 @@ public class ProfileCellControllers {
                 if (param == null) {
                     omniButton.setText("Error!");
                 } else {
-                    omniButton.setText("Follow");
+                    String follow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
+                    omniButton.setText(follow);
                     omniButton.setDisable(false);
                 }
             });
