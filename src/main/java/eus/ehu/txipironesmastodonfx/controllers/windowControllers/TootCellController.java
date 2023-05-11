@@ -263,7 +263,8 @@ public class TootCellController {
      */
     @FXML
     void viewMedia() {
-        viewMediaTxt.setText("Loading...");
+        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        viewMediaTxt.setText(load);
         AsyncUtils.asyncTask(() -> {
             // create the popup
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"),
@@ -283,7 +284,8 @@ public class TootCellController {
             popupStage.setTitle(popup);
             popupStage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/mainassets/dark-media-512.png"));
             ((MediaViewController) list.get(1)).setPopupStage(popupStage);
-            viewMediaTxt.setText("View attached media");
+            String media = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("View");
+            viewMediaTxt.setText(media);
             popupStage.showAndWait();
         });
     }

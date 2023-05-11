@@ -81,6 +81,7 @@ public class ProfileCellControllers {
     @FXML
     private TextFlow description;
     private String imageurl;
+    private String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");;
 
     /**
      * Constructor for the profile cell controller
@@ -186,7 +187,7 @@ public class ProfileCellControllers {
      * "Change Account"
      */
     private void onClickChangeProfilePicButton() {
-        omniButton.setText("Loading...");
+        omniButton.setText(load);
         omniButton.setDisable(true);
         // Create a file chooser dialog
         FileChooser fileChooser = new FileChooser();
@@ -233,7 +234,7 @@ public class ProfileCellControllers {
     private void onClickFollowButton() {
         omniButton.setDisable(true);
         if (omniButton.getText().equals("Follow")) {
-            omniButton.setText("Loading...");
+            omniButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, this.id), param -> {
                 if (param == null) {
                     omniButton.setText("Error!");
@@ -243,7 +244,7 @@ public class ProfileCellControllers {
                 }
             });
         } else if (omniButton.getText().equals("Unfollow")) {
-            omniButton.setText("Loading...");
+            omniButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, this.id), param -> {
                 if (param == null) {
                     omniButton.setText("Error!");

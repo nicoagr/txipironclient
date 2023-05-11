@@ -1,5 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
+import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
@@ -26,6 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * This class is used to represent a media player
@@ -87,7 +89,8 @@ public class MediaViewController {
         mediaView.setVisible(false);
         imageView.setVisible(false);
         mediaBar.setVisible(false);
-        mediaCounterTxt.setText("Viewing media " + (i + 1) + " of " + media.size() + ".");
+        String view = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("ViewMd");
+        mediaCounterTxt.setText(view +" "+ (i + 1) + "/" + media.size() + ".");
         logger.info("Loading media " + (i + 1) + " of " + media.size() + ".");
         AsyncUtils.asyncTask(() -> {
             MediaAttachment m = media.get(i);

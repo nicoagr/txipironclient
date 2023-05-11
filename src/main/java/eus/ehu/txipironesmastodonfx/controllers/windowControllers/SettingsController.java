@@ -36,7 +36,8 @@ public class SettingsController {
     @FXML
     private void applyBtnAction() {
         applyBtn.setDisable(true);
-        applyBtn.setText("Loading...");
+        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        applyBtn.setText(load);
         autoplaycheck.setDisable(true);
         logger.info("Applying selected settings...");
         AsyncUtils.asyncTask(() -> {

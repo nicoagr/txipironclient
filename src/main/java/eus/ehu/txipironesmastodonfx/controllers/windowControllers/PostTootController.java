@@ -271,7 +271,8 @@ public class PostTootController {
             }
             content.setText(newValue);
             // set character number
-            charLabel.setText(newValue.length() + "/500 Characters");
+            String chrc = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Char");
+            charLabel.setText(newValue.length() + chrc);
             // set tagged accounts
             AsyncUtils.asyncTask(() -> {
                 // detect for usernames
@@ -285,7 +286,10 @@ public class PostTootController {
                 }
                 if (charcount > 60) return List.of("Various [...]");
                 return names;
-            }, names -> taggedAcctTxt.setText(names.size() == 0 ? "None" : String.join(", ", names)));
+            }, names -> {
+                String none = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("None");
+                taggedAcctTxt.setText(names.size() == 0 ? none : String.join(", ", names));
+            });
         });
         content.setWrapText(true);
         // add toot schedule to anchor-pane
@@ -309,7 +313,8 @@ public class PostTootController {
         });
         ldtf.setPrefWidth(226);
         ldtf.setPrefHeight(26);
-        ldtf.setPromptText("Schedule toot (Optional)");
+        String schedToot = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("SchedToot");
+        ldtf.setPromptText(schedToot);
         anchor.getChildren().add(ldtf);
         anchor.setTopAnchor(ldtf, 271.0);
         anchor.setLeftAnchor(ldtf, 300.0);
