@@ -16,7 +16,9 @@ private MainWindowController master;
         this.master = master;
 
     }
-
+    /**
+     * This method intiializes the tray sistem for notifications to thw winodows and macOS
+     */
     public void initialice() throws IOException, AWTException {
         SystemTray tray = SystemTray.getSystemTray();
         BufferedImage trayIconImage = ImageIO.read(getClass().getResource(("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg")));
@@ -26,7 +28,9 @@ private MainWindowController master;
         tray.add(trayIcon);
 
     }
-
+    /**
+     * This method cheks the OS and display a notification Window with the mainText
+     */
         public  void trowNotificationWindow(String mainText) throws IOException, AWTException {
             String os = System.getProperty("os.name");
             if (os.contains("Linux")) {
