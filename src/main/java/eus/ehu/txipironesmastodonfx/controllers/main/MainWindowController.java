@@ -41,7 +41,7 @@ public class MainWindowController implements WindowController {
     @FXML
     public BorderPane mainBorderpane;
     public NotificationSystem notificationSystem = new NotificationSystem();
-    private TxipironClient mainApp;
+    public TxipironClient mainApp;
     private static final Logger logger = LogManager.getLogger("MainWindowController");
     public String id;
     private HashMap<view, String> status = new HashMap<>();

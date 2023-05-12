@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class SettingsController {
@@ -38,7 +39,7 @@ public class SettingsController {
     private Button applyBtn;
 
     @FXML
-    private ComboBox<?> comboLanguages;
+    private ComboBox<String> comboLanguages;
 
     @FXML
     private ComboBox<String> comboStyles;
@@ -50,6 +51,10 @@ public class SettingsController {
     public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
 
     public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
+    private String spanish;
+    private String english;
+    private String basque;
+    private String french;
 
 
     /**
@@ -87,22 +92,52 @@ public class SettingsController {
                 infoLabel.setText(success);
             }
         });
-        switch (comboStyles.getValue()) {
-            case "Dark" -> {
-                master.mainBorderpane.getStylesheets().remove(light);
-                master.mainBorderpane.getStylesheets().add(dark);
-                txipi.color = "dark";
-                break;
-            }
-            case "Light" -> {
-                master.mainBorderpane.getStylesheets().remove(dark);
-                master.mainBorderpane.getStylesheets().add(light);
-                txipi.color = "light";
-                break;
-            }
-
-
+//        String val = comboStyles.getValue();
+//        switch (val) {
+//            case "Dark" -> {
+//                master.mainBorderpane.getStylesheets().remove(light);
+//                master.mainBorderpane.getStylesheets().add(dark);
+//                txipi.color = "dark";
+//                break;
+//            }
+//            case "Light" -> {
+//                master.mainBorderpane.getStylesheets().remove(dark);
+//                master.mainBorderpane.getStylesheets().add(light);
+//                txipi.color = "light";
+//                break;
+//            }
+//        }
+        if (comboLanguages.getValue() == null) {
+            return;
         }
+
+        if(comboLanguages.getValue().equals(spanish)){
+            Locale.setDefault(new Locale("es-ES"));
+            TxipironClient.lang = Locale.getDefault();
+            ResourceBundle.clearCache();
+        }
+        else if (comboLanguages.getValue().equals(english)){
+            Locale.setDefault(new Locale("en-US"));
+            TxipironClient.lang = Locale.getDefault();
+            ResourceBundle.clearCache();
+        }
+        else if (comboLanguages.getValue().equals(basque)){
+            Locale.setDefault(new Locale("eus-ES"));
+            TxipironClient.lang = Locale.getDefault();
+            ResourceBundle.clearCache();
+        }
+        else if (comboLanguages.getValue().equals(french)){
+            Locale.setDefault(new Locale("fr-FR"));
+            TxipironClient.lang = Locale.getDefault();
+            ResourceBundle.clearCache();
+        }
+        try {
+            master.mainApp.refresh();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     /**
@@ -155,6 +190,11 @@ public class SettingsController {
     @FXML
     void initialize() {
         comboStyles.getItems().addAll("Dark", "Light");
+        spanish = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Spanish");
+        english = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("English");
+        basque = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Basque");
+        french = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("French");
+        comboLanguages.getItems().addAll(spanish, english, basque, french);
     }
 
 

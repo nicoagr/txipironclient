@@ -99,6 +99,19 @@ public class TxipironClient extends Application {
     }
 
     /**
+     * Refreshes the stage and the scene
+     */
+    public void refresh() throws IOException {
+        authWindow = load("auth/auth.fxml");
+        mainWindow = load("main.fxml");
+        scene = new Scene(authWindow.ui);
+        if (color.equals("dark"))
+            scene.getStylesheets().add(dark);
+        else scene.getStylesheets().add(light);
+        stage.setScene(scene);
+    }
+
+    /**
      * Loading point of the application.
      * Starts by loading all windows and setting the "acccount manager" to be shown.
      * Will set the title for the application and also the icon.
