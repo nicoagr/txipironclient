@@ -1,0 +1,282 @@
+/*********************************/
+/**********COLOR PALETTE**********/
+/*********************************/
+/*                               */
+/*    #89D2DC non-photo blue     */
+/*    #6564DB slate blue         */
+/*    #232ED1 palatine blue      */
+/*    #EEEEEE light grey         */
+/*    #F7F7F7 white              */
+/*                               */
+/*********************************/
+
+/*General*/
+.root {
+    -fx-background-color: #F7F7F7;
+    -fx-tootText-fill: black;
+}
+
+.fill{
+    -fx-text-fill: black;
+}
+
+.button_gen{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: black;
+}
+
+.button_gen:pressed{
+    -fx-background-color: #232ED1;
+    -fx-text-fill: black;
+}
+.button_gen:hover{
+    -fx-cursor: hand;
+}
+
+#content{
+    -fx-background-color: #EEEEEE;
+    -fx-text-fill: black;
+}
+#icon{
+    -fx-cursor: hand;
+}
+.image_click{
+    -fx-cursor: hand;
+}
+
+/*Left bar buttons*/
+
+.left_button {
+    -fx-background-color: #F7F7F7;
+    -fx-text-fill: black;
+    -fx-text-size: 30px;
+}
+
+.left_button:hover{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+    /* -fx-font-size: 22px;*/
+}
+
+.left_button:pressed {
+    -fx-background-color: #6564DB;
+    -fx-text-fill: #F7F7F7;
+    /* -fx-font-weight: bold;*/
+}
+
+/*Search*/
+
+#searchQuery {
+    -fx-background-color: #EEEEEE;
+    -fx-text-fill: black;
+}
+
+
+#searchBtn{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: black;
+}
+
+
+#searchBtn:pressed{
+    -fx-background-color: #232ED1;
+    -fx-text-fill: #F7F7F7;
+
+}
+
+#searchBtn:hover{
+    -fx-cursor: hand;
+}
+
+/*anchor*/
+
+#anchor{
+    -fx-background-color: #EEEEEE;
+
+}
+
+.anchor{
+    -fx-background-color: #EEEEEE;
+}
+
+/*Post toot*/
+
+#sensitiveId{
+    -fx-background-color: #EEEEEE;
+    -fx-text-fill: black;
+}
+/*botton*/
+
+#copyright{
+    -fx-text-fill: black;
+}
+
+/*scrollbane*/
+
+#scrollpane{
+    -fx-background-color: #F7F7F7;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: #F7F7F7;
+
+}
+.scroll-bar:vertical .thumb{
+    -fx-background-color: #EEEEEE;
+}
+
+.scroll-bar:horizontal{
+    -fx-background-color: #F7F7F7;
+}
+
+#vbox{
+    -fx-background-color: #F7F7F7;
+}
+
+/*cells*/
+
+#info{
+    -fx-text-fill: black;
+}
+
+
+/*Auth*/
+
+.list-view{
+    -fx-background-color: #EEEEEE;
+}
+.list-cell{
+    -fx-background-color: #EEEEEE;
+}
+.account:hover{
+    -fx-background-color: #6564DB;
+    -fx-cursor: hand;
+}
+
+.account:pressed{
+    -fx-background-color: #6564DB;
+    -fx-cursor: hand;
+}
+
+#errorLabel{
+    -fx-text-fill: #6564DB;
+}
+
+.button_auth{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: black;
+}
+
+
+.button_auth:pressed{
+    -fx-background-color: #232ED1;
+    -fx-text-fill: black;
+}
+
+
+/*settings*/
+
+.combo-box{
+    -fx-background-color: #F7F7F7;
+    -fx-text-fill: black;
+}
+
+.combo-box-popup{
+    -fx-background-color: #F7F7F7;
+    -fx-text-fill: black;
+}
+.combo-box > .list-cell{
+    -fx-background-color: #F7F7F7;
+    -fx-text-fill: black;
+}
+
+.combo-box-popup > .list-cell{
+    -fx-background-color: #F7F7F7;
+    -fx-text-fill: black;
+}
+
+.combo-box-popup {
+    -fx-background-color: #F7F7F7;
+    -fx-progress-color: #F7F7F7;
+    -fx-progress-color: #F7F7F7;
+    -fx-prompt-text-fill: black;
+    -fx-tick-label-fill: black;
+    -fx-text-fill: black;
+}
+
+.check-box{
+    -fx-tick-label-fill: #F7F7F7;
+    -fx-text-fill: black;
+}
+
+#textFlow{
+    -fx-background-color: #EEEEEE;
+    -fx-text-fill: black;
+    -fx-border-color: #EEEEEE;
+    -fx-prompt-text-fill: black;
+}
+
+.tootText{
+
+    -fx-text-fill: black;
+
+}
+
+/*profile*/
+
+.rectangle:hover{
+    -fx-cursor: hand;
+    -fx-border-color: #6564DB;
+}
+
+.rectangle:pressed{
+    -fx-cursor: hand;
+    -fx-border-color: #6564DB;
+}
+
+/*images*/
+
+.logo{
+    -fx-image: url(../logos/light_transparent_1000.png);
+}
+
+#home > #homeIcon{
+    -fx-image: url(../icons/home_light.png);
+}
+
+#bookmarkedToots > #bookmarkedIcon{
+    -fx-image: url(../icons/book_light.png);
+}
+
+#likedToots > #likeIcon{
+    -fx-image: url(../icons/like_light.png);
+}
+
+#postToot > #postIcon{
+    -fx-image: url(../icons/plus_light.png);
+}
+
+#settings > #settingIcon{
+    -fx-image: url(../icons/settings_light.png);
+}
+
+#searchBtn > #searchIcon{
+    -fx-image: url(../icons/search_light.png);
+}
+
+#errorIcon{
+    -fx-image: url(../mainassets/error_light.png);
+}
+
+/*postToot*/
+
+#content{
+    -fx-background-color: #EEEEEE;
+    -fx-text-fill: white;
+}
+
+#sensitiveId{
+    -fx-background-color: #EEEEEE;
+    -fx-text-fill: white;
+}

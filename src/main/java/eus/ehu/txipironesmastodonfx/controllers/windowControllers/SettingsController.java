@@ -47,7 +47,7 @@ public class SettingsController {
 
     public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
 
-    public String tootText= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/tootText.css").toExternalForm();
+
     /**
      * This method will be used to
      * apply the selected user settings.
@@ -86,16 +86,12 @@ public class SettingsController {
                 case "Dark":
                     master.mainBorderpane.getStylesheets().remove(light);
                     master.mainBorderpane.getStylesheets().add(dark);
-                    authMaster.vbox.getStylesheets().remove(light);
-                    authMaster.vbox.getStylesheets().add(dark);
-                    master.mainBorderpane.getStylesheets().add(tootText);
                     break;
                 case "Light":
                     master.mainBorderpane.getStylesheets().remove(dark);
                     master.mainBorderpane.getStylesheets().add(light);
-                    authMaster.vbox.getStylesheets().remove(dark);
-                    authMaster.vbox.getStylesheets().add(light);
                     break;
+
             }
         });
     }
