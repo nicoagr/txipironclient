@@ -90,7 +90,7 @@ call "%JAVA_HOME%\bin\jpackage" ^
   --main-jar %MAIN_JAR% ^
   --java-options -Xmx2048m ^
   --runtime-image target/java-runtime ^
-  --icon img/logo/dark.ico ^
+  --icon img/logo/darkImg/dark.ico ^
   --app-version %APP_VERSION% ^
   --vendor "Txipirones SE Group (DIF-FISS), UPV/EHU" ^
   --copyright "Copyright © 2023 Txipirones UPV/EHU." ^
