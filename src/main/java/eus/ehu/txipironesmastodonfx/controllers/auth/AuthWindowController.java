@@ -186,7 +186,8 @@ public class AuthWindowController implements WindowController {
                     // Check for internet connection
                     if (!NetworkUtils.hasInternet()) {
                         logger.warn("No internet connection / Mastodon API Unreachable");
-                        Platform.runLater(() -> errorLabel.setText("Error! No internet connection / Mastodon API Unreachable"));
+                        String noCon = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error10");
+                        Platform.runLater(() -> errorLabel.setText(noCon));
                     }
                     // Check if db file exists
                     if (!DBAccessManager.isDbReachable()) {
@@ -194,7 +195,8 @@ public class AuthWindowController implements WindowController {
                             logger.info("Database file not found - Creating new one...");
                             DBAccessManager.createDbFile();
                         } catch (IOException io) {
-                            return "Error! Couldn't create db file. " + io.getMessage();
+                            String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error20");
+                            return error + io.getMessage();
                         }
                     }
                     // Check if db tables are created
@@ -202,7 +204,8 @@ public class AuthWindowController implements WindowController {
                         logger.debug("Checking if db tables exist...");
                         DBAccessManager.checkAndCreateTables();
                     } catch (SQLException e) {
-                        return "Error! Couldn't create db tables. " + e.getMessage();
+                        String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error21");
+                        return error + e.getMessage();
                     }
                     return null;
                 }, param -> {

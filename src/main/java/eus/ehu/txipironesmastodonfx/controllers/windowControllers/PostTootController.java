@@ -237,7 +237,8 @@ public class PostTootController {
                 File f = selectedFiles.get(0);
                 if (f.length() < 41943040) { // 40 MB
                     paths.add(f);
-                    selectTxt.setText("Video:" + f.getName());
+                    String video = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Vid");
+                    selectTxt.setText(video + f.getName());
                 } else {
                     logger.warn("Selected Video too large. Max size: 40 MB");
                     String video = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Video");
