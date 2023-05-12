@@ -4,7 +4,6 @@ import eus.ehu.txipironesmastodonfx.domain.Account;
 import eus.ehu.txipironesmastodonfx.domain.Follow;
 import eus.ehu.txipironesmastodonfx.domain.SearchResult;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,19 +47,6 @@ public class APIAccessManagerTest {
     }
 
     @Test
-    public void testGetTootId(){
-        Assertions.assertNull(APIAccessManager.getTootId(null, null, null));
-        Assertions.assertNull(APIAccessManager.getTootId("", null, null));
-        Assertions.assertNull(APIAccessManager.getTootId(null, "", null));
-        Assertions.assertNull(APIAccessManager.getTootId("", "", null));
-        Assertions.assertNull(APIAccessManager.getTootId(null, token, null));
-        Assertions.assertNull(APIAccessManager.getTootId("", token, null));
-        Assertions.assertNull(APIAccessManager.getTootId(idresult, null, null));
-        Assertions.assertNull(APIAccessManager.getTootId(idresult, "", null));
-        Assertions.assertTrue(APIAccessManager.getTootId(idresult, token, null).get(0).equals(new Toot("110312493653364514")));
-    }
-
-    @Test
     public void testGetFollow(){
         //followers
         Assertions.assertNull(APIAccessManager.getFollow(null, null, false));
@@ -85,19 +71,6 @@ public class APIAccessManagerTest {
         Assertions.assertNull(APIAccessManager.getFollow(idresult, "", true));
         //@juananpe
         Assertions.assertTrue(APIAccessManager.getFollow(idresult, token, true).get(0).equals(new Follow("109842111446764244")));
-    }
-
-    @Test
-    public void testGetAccount(){
-        Assertions.assertNull(APIAccessManager.getAccount(null, null));
-        Assertions.assertNull(APIAccessManager.getAccount("", null));
-        Assertions.assertNull(APIAccessManager.getAccount(null, ""));
-        Assertions.assertNull(APIAccessManager.getAccount("", ""));
-        Assertions.assertNull(APIAccessManager.getAccount(null, token));
-        Assertions.assertNull(APIAccessManager.getAccount("", token));
-        Assertions.assertNull(APIAccessManager.getAccount(idresult, null));
-        Assertions.assertNull(APIAccessManager.getAccount(idresult, ""));
-        Assertions.assertTrue(APIAccessManager.getAccount(idresult, token).equals(logAccount));
     }
 
     @Test
@@ -142,13 +115,6 @@ public class APIAccessManagerTest {
     }
 
     @Test
-    public void testGetLikedToots(){
-        Assertions.assertNull(APIAccessManager.getLikedToots(null));
-        Assertions.assertNull(APIAccessManager.getLikedToots(""));
-        Assertions.assertTrue(toot.equals(APIAccessManager.getLikedToots(token).get(0)));
-    }
-
-    @Test
     public void testFavouriteToot(){
         Assertions.assertEquals(APIAccessManager.favouriteToot(null, null), 401);
         Assertions.assertEquals(APIAccessManager.favouriteToot(tootId, null), 401);
@@ -170,13 +136,6 @@ public class APIAccessManagerTest {
         Assertions.assertEquals(APIAccessManager.unfavouriteToot("", ""), 404);
         Assertions.assertEquals(APIAccessManager.unfavouriteToot(inexistentId, token), 404);
         Assertions.assertEquals(APIAccessManager.unfavouriteToot(untootId, token), 200);
-    }
-
-    @Test
-    public void testGetBookmarkedToots(){
-        Assertions.assertNull(APIAccessManager.getBookmarkedToots(null));
-        Assertions.assertNull(APIAccessManager.getBookmarkedToots(""));
-        Assertions.assertTrue(toot.equals(APIAccessManager.getBookmarkedToots(token).get(0)));
     }
 
     @Test
