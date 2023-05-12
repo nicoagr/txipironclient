@@ -269,6 +269,10 @@
     -fx-image: url(../mainassets/error_light.png);
 }
 
+#bttnNotis > #notisIcon{
+    -fx-image: url(../icons/notis_dark.png);
+}
+
 /*postToot*/
 
 #content{
