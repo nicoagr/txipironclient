@@ -93,7 +93,8 @@ public class PostTootController {
             logger.warn("Toot is empty or has more than 500 characters. - Cancelling posting toot.");
             return;
         }
-        master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Processing..."));
+        String process = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Processing");
+        master.listViewItems.add(new Generic(Generic.of.MESSAGE, process));
         logger.info("Attempting to post toot...");
         master.showLoading();
         AsyncUtils.asyncTask(() -> {
@@ -106,7 +107,8 @@ public class PostTootController {
                 // Upload media
                 mediaIds = new ArrayList<>();
                 MediaAttachment res;
-                Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Uploading media...")));
+                String uMedia = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("UploadingMedia");
+                Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, uMedia)));
                 for (File path : paths) {
                     logger.debug("Uploading media: " + path.getAbsolutePath());
                     res = APIAccessManager.uploadMedia(master.token, path);
@@ -115,7 +117,8 @@ public class PostTootController {
                 boolean processed = false;
                 int time = 0;
                 // Check if media was processed correctly
-                Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Waiting for server response...")));
+                String server = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("WaitingServer");
+                Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, server)));
                 logger.debug("Waiting for media processing done by server...");
                 while (!processed) {
                     for (String id : mediaIds) {
@@ -139,7 +142,8 @@ public class PostTootController {
             }
             // Create toot to be posted object and post it
             TootToBePosted toot = new TootToBePosted(content.getText(), sensitiveId.isSelected(), mediaIds, isoDate);
-            Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, "Posting toot...")));
+            String post = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Posting");
+            Platform.runLater(() -> master.listViewItems.add(new Generic(Generic.of.MESSAGE, post)));
             logger.debug("Sending toot to mastodon's servers...");
             return APIAccessManager.postToot(master.token, toot);
         }, res -> {
@@ -148,7 +152,8 @@ public class PostTootController {
                 master.homeListView();//despues de postear el toot, se resetea y se muestra home
             } else {
                 master.listViewItems.clear();
-                master.listViewItems.add(new Generic(Generic.of.ERROR, "Error when posting toot to the servers. Please check connection and try again."));
+                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error9");
+                master.listViewItems.add(new Generic(Generic.of.ERROR, error));
             }
             master.hideLoading();
         });
@@ -201,7 +206,8 @@ public class PostTootController {
     void pickFileAction() {
         if (paths != null && paths.size() > 0) {
             paths.clear();
-            pickFileBtn.setText("Media Attachment (Optional)");
+            String media = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Media");
+            pickFileBtn.setText(media);
             selectTxt.setText("");
             logger.info("Cleared file selection.");
             return;
@@ -211,7 +217,8 @@ public class PostTootController {
         FileChooser fileChooser = new FileChooser();
 
         // Set the title of the dialog
-        fileChooser.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Multiple File Chooser");
+        String post = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("PostHeader");
+        fileChooser.setTitle(post);
 
         // Set the file extension filters
         fileChooser.getExtensionFilters().addAll(
@@ -233,22 +240,26 @@ public class PostTootController {
                     selectTxt.setText("Video:" + f.getName());
                 } else {
                     logger.warn("Selected Video too large. Max size: 40 MB");
-                    selectTxt.setText("Selected Video too large. Max size: 40 MB");
+                    String video = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Video");
+                    selectTxt.setText(video);
                 }
             } else {
                 for (File f : selectedFiles) {
                     if (HTMLParser.getFileExtension(f).matches("png|jpg|jpeg") && paths.size() < MAX_IMAGES && f.length() < 8388608) {
-                        selectTxt.setText((paths.size() == 0) ? "Image: " + f.getName() : selectTxt.getText() + "\n" + f.getName());
+                        String image = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Image");
+                        selectTxt.setText((paths.size() == 0) ?  image + f.getName() : selectTxt.getText() + "\n" + f.getName());
                         logger.info("Selected image: " + f.getAbsolutePath());
                         paths.add(f);
                     } else
                         logger.warn("Selected image too large (>8MB) or image limit reached (4 images)");
                 }
                 if (paths.size() == 0) {
-                    selectTxt.setText("No matching files selected");
+                    String no = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoFile");
+                    selectTxt.setText(no);
                     logger.warn("No matching files selected");
                 } else {
-                    pickFileBtn.setText("Clear Selection");
+                    String clear = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Clear");
+                    pickFileBtn.setText(clear);
                 }
             }
         }
@@ -266,7 +277,8 @@ public class PostTootController {
         content.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 501) {
                 content.setText(oldValue);
-                charLabel.setText("500 Character Limit Reached");
+                String charLimit = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("CharLimit");
+                charLabel.setText(charLimit);
                 return;
             }
             content.setText(newValue);

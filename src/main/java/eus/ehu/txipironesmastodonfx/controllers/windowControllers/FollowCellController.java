@@ -110,10 +110,10 @@ public class FollowCellController {
             if (following == null) return "Error!";
             for (Follow f : following) {
                 if (f.id.equals(follow.id)) {
-                    return "Unfollow";
+                    return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
                 }
             }
-            return "Follow";
+            return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
         }, param -> {
             if (param.equals("Self")) followButton.setVisible(false);
             if (!param.equals("Error!")) followButton.setDisable(false);

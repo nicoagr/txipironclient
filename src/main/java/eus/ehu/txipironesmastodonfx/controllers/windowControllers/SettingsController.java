@@ -54,10 +54,12 @@ public class SettingsController {
             autoplaycheck.setVisible(false);
             if (res != null) {
                 logger.error("Error applying settings: " + res);
-                infoLabel.setText("Error: " + res + ". Please try again.");
+                String again = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Again");
+                infoLabel.setText("Error: " + res + again);
             } else {
                 logger.info("Settings applied successfully.");
-                infoLabel.setText("Settings applied successfully.");
+                String success = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Success");
+                infoLabel.setText(success);
             }
         });
     }

@@ -150,15 +150,17 @@ public class ProfileCellControllers {
                 }
         );
         AsyncUtils.asyncTask(() -> {
-            if (account.id.equals(master.authenticatedId)) return "Change Picture";
+            if (account.id.equals(master.authenticatedId)){
+                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("ChPic");
+            }
             List<Follow> following = APIAccessManager.getFollow(master.authenticatedId, master.token, true);
             if (following == null) return "Error!";
             for (Follow f : following) {
                 if (f.id.equals(account.id)) {
-                    return "Unfollow";
+                    return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
                 }
             }
-            return "Follow";
+            return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
         }, param -> {
             if (param.equals("Change Picture")) self = true;
             if (!param.equals("Error!")) omniButton.setDisable(false);
@@ -191,7 +193,8 @@ public class ProfileCellControllers {
         omniButton.setDisable(true);
         // Create a file chooser dialog
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Txipiron Client [v1.0] - a Mastodon Client - File Chooser");
+        String fileHeader = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FileHeader");
+        fileChooser.setTitle(fileHeader);
         // Set the file extension filters
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
