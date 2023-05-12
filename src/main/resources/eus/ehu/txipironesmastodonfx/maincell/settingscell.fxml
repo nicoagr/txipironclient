@@ -19,7 +19,7 @@
          <Font name="System Bold" size="36.0" />
       </font>
    </Label>
-   <Label styleClass="fill" fx:id="infoLabel" text="%Global">
+   <Label fx:id="infoLabel" styleClass="fill" text="%Global">
       <font>
          <Font size="16.0" />
       </font>
@@ -35,7 +35,7 @@
          <Font size="14.0" />
       </font>
    </CheckBox>
-   <Label styleClass="fill" text="Styles:">
+   <Label styleClass="fill" text="%Styles">
       <VBox.margin>
          <Insets bottom="-15.0" top="10.0" />
       </VBox.margin>
@@ -45,13 +45,13 @@
          <Insets top="15.0" />
       </VBox.margin>
    </ComboBox>
-   <Label styleClass="fill" text="Language:">
+   <Label styleClass="fill" text="%Language">
       <VBox.margin>
          <Insets top="15.0" />
       </VBox.margin>
    </Label>
    <ComboBox fx:id="comboLanguages" prefWidth="150.0" />
-   <Button styleClass="button_gen" fx:id="applyBtn" mnemonicParsing="false" onAction="#applyBtnAction" text="%Apply">
+   <Button fx:id="applyBtn" mnemonicParsing="false" onAction="#applyBtnAction" styleClass="button_gen" text="%Apply">
       <font>
          <Font size="14.0" />
       </font>
