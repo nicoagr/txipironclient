@@ -293,10 +293,10 @@
 
 #content{
     -fx-background-color: #EEEEEE;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
-#sensitiveId{
+#sensitiveId {
     -fx-background-color: #EEEEEE;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }

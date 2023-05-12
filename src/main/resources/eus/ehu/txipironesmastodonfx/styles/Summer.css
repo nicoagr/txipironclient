@@ -306,7 +306,7 @@
 
 #content {
     -fx-background-color: #007991;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
 #sensitiveId {

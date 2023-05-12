@@ -114,7 +114,7 @@ public class SettingsController {
                     authMaster.vbox.getStylesheets().add(light);
                     txipi.color = "light";
                 }
-                case "Haloween" -> {
+                case "Halloween" -> {
                     master.mainBorderpane.getStylesheets().remove(light);
                     master.mainBorderpane.getStylesheets().remove(dark);
                     master.mainBorderpane.getStylesheets().remove(summer);
@@ -137,16 +137,18 @@ public class SettingsController {
                     txipi.color = "summer";
                 }
             }
+        applyBtn.setDisable(false);
+        applyBtn.setText(ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Apply"));
+        autoplaycheck.setDisable(false);
         if (comboLanguages.getValue() == null) {
             return;
         }
 
-        if(comboLanguages.getValue().equals(spanish)){
+        if (comboLanguages.getValue().equals(spanish)) {
             Locale.setDefault(new Locale("es", "ES"));
             TxipironClient.lang = Locale.getDefault();
             ResourceBundle.clearCache();
-        }
-        else if (comboLanguages.getValue().equals(english)){
+        } else if (comboLanguages.getValue().equals(english)) {
             Locale.setDefault(new Locale("en", "US"));
             TxipironClient.lang = Locale.getDefault();
             ResourceBundle.clearCache();
