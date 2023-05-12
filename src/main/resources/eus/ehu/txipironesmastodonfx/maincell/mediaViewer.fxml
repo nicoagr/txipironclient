@@ -25,7 +25,8 @@
          <Font size="24.0"/>
       </font>
    </Label>
-   <Label fx:id="mediaCounterTxt" layoutX="206.0" layoutY="453.0" styleClass="fill"text="Viewing media 0 of 0" />
+   <Label fx:id="mediaCounterTxt" layoutX="206.0" layoutY="453.0" styleClass="fill" text="Viewing media 0 of 0"/>
    <HBox fx:id="mediaBar" layoutX="51.0" layoutY="404.0" prefHeight="25.0" prefWidth="600.0" />
-   <Button layoutX="412.0" layoutY="449.0" mnemonicParsing="false" onAction="#openInBrowser"styleClass="button_gen" text="%Open" />
+   <Button layoutX="412.0" layoutY="449.0" mnemonicParsing="false" onAction="#openInBrowser" styleClass="button_gen"
+           text="%Open"/>
 </AnchorPane>
