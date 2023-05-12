@@ -12,7 +12,7 @@
 <AnchorPane fx:id="anchor" prefHeight="151.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <ImageView fx:id="imagen" fitHeight="75.0" fitWidth="75.0" layoutX="22.0" layoutY="38.0" onMouseClicked="#profilePictureClicked" onMousePressed="#profilePictureClicked" pickOnBounds="true" preserveRatio="true" />
     <Label fx:id="username" layoutX="22.0" layoutY="122.0" onMouseClicked="#usernameClicked" text="\@username" textFill="#605f5f" />
-    <Label fx:id="date" layoutX="670.0" layoutY="13.0" text="Loading..." />
+    <Label fx:id="date" layoutX="670.0" layoutY="13.0" text="%Load" />
     <Label fx:id="numLikes" layoutX="548.0" layoutY="121.0" text="Likes" />
     <Label fx:id="numReboots" layoutX="616.0" layoutY="122.0" text="Reboots" />
     <Label fx:id="numComments" layoutX="679.0" layoutY="122.0" text="Comments" />
@@ -31,9 +31,8 @@
     <ImageView fx:id="rebootedBy" fitHeight="30.0" fitWidth="25.0" layoutX="114.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" visible="false">
         <Image url="@../mainassets/dark-retweet-512.png" />
     </ImageView>
-    <Hyperlink fx:id="viewMediaTxt" focusTraversable="false" layoutX="390.0" layoutY="117.0" onAction="#viewMedia"
-               text="View attached media" visible="false"/>
-    <ImageView fx:id="mediaImg" fitHeight="25.0" fitWidth="25.0" layoutX="365.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true" visible="false">
+    <Hyperlink fx:id="viewMediaTxt" focusTraversable="false" layoutX="360.0" layoutY="117.0" onAction="#viewMedia" text="%View" visible="false" />
+    <ImageView fx:id="mediaImg" fitHeight="25.0" fitWidth="25.0" layoutX="335.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true" visible="false">
         <Image url="@../mainassets/dark-media-512.png" />
     </ImageView>
     <ImageView fx:id="sensitiveImg" fitHeight="75.0" fitWidth="658.0" layoutX="114.0" layoutY="38.0" onMouseClicked="#sensitiveClose" pickOnBounds="true" preserveRatio="true" visible="false">

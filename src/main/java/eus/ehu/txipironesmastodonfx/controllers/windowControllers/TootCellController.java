@@ -1,5 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
+import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
@@ -33,6 +34,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Controller for the TootCell
@@ -97,7 +99,8 @@ public class TootCellController {
      * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
     public TootCellController(MainWindowController master) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/tootcell.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/tootcell.fxml"),
+                ResourceBundle.getBundle("strings", TxipironClient.lang));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
@@ -135,7 +138,8 @@ public class TootCellController {
         if (toot.reblog != null) {
             rebootedBy.setVisible(true);
             rebootedText.setVisible(true);
-            rebootedText.setText("Rebooted by @" + toot.account.acct);
+            String rebooted = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("RebootBy");
+            rebootedText.setText(rebooted + toot.account.acct);
         }
         while (toot.reblog != null) toot = toot.reblog;
         // set the values for the toot cell
@@ -260,10 +264,12 @@ public class TootCellController {
      */
     @FXML
     void viewMedia() {
-        viewMediaTxt.setText("Loading...");
+        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        viewMediaTxt.setText(load);
         AsyncUtils.asyncTask(() -> {
             // create the popup
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"),
+                    ResourceBundle.getBundle("strings", TxipironClient.lang));
             Parent root = fxmlLoader.load();
             MediaViewController contr = fxmlLoader.getController();
             contr.setMedia(media);
@@ -275,10 +281,12 @@ public class TootCellController {
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setScene((Scene) list.get(0));
             popupStage.setResizable(false);
-            popupStage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Media Viewer");
+            String popup = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MediaViewer");
+            popupStage.setTitle(popup);
             popupStage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/mainassets/dark-media-512.png"));
             ((MediaViewController) list.get(1)).setPopupStage(popupStage);
-            viewMediaTxt.setText("View attached media");
+            String media = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("View");
+            viewMediaTxt.setText(media);
             popupStage.showAndWait();
         });
     }

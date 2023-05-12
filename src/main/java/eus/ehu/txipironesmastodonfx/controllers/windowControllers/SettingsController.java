@@ -1,5 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
+import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class SettingsController {
     private MainWindowController master;
@@ -34,7 +36,8 @@ public class SettingsController {
     @FXML
     private void applyBtnAction() {
         applyBtn.setDisable(true);
-        applyBtn.setText("Loading...");
+        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        applyBtn.setText(load);
         autoplaycheck.setDisable(true);
         logger.info("Applying selected settings...");
         AsyncUtils.asyncTask(() -> {
@@ -51,10 +54,12 @@ public class SettingsController {
             autoplaycheck.setVisible(false);
             if (res != null) {
                 logger.error("Error applying settings: " + res);
-                infoLabel.setText("Error: " + res + ". Please try again.");
+                String again = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Again");
+                infoLabel.setText("Error: " + res + again);
             } else {
                 logger.info("Settings applied successfully.");
-                infoLabel.setText("Settings applied successfully.");
+                String success = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Success");
+                infoLabel.setText(success);
             }
         });
     }
@@ -86,7 +91,8 @@ public class SettingsController {
      * @param master (MainWindowController)- The controller of the main class, will be used for internal comunication
      */
     public SettingsController(MainWindowController master) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/settingscell.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/settingscell.fxml"),
+                ResourceBundle.getBundle("strings", TxipironClient.lang));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();

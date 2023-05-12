@@ -15,6 +15,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Main class of the application. This will be the starting point.
@@ -43,7 +44,7 @@ public class TxipironClient extends Application {
     /*
      * This attribute will hold the locale of the application
      */
-    public static Locale lang = new Locale("en-US");
+    public static Locale lang = Locale.getDefault();
     private Window authWindow;
     private Window mainWindow;
 
@@ -65,7 +66,8 @@ public class TxipironClient extends Application {
      */
     private Window load(String fxmlFile) throws IOException {
         Window window = new Window();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile),
+                ResourceBundle.getBundle("strings", lang));
         window.ui = fxmlLoader.load();
         window.controller = fxmlLoader.getController();
         window.controller.setMain(this);
@@ -105,7 +107,8 @@ public class TxipironClient extends Application {
         scene = new Scene(authWindow.ui);
         scene.getStylesheets().add(getClass().getResource("styles/listView.css").toExternalForm());
         logger.debug("Stylesheet loaded");
-        setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
+        String authTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("AuthTitle");
+        setStageTitle(authTitle);
         stage.getIcons().add(new Image(getClass().getResource("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg").toExternalForm()));
         logger.debug("Icon loaded");
         stage.setScene(scene);
@@ -144,12 +147,14 @@ public class TxipironClient extends Application {
     public void changeScene(String sceneName, List<Object> result) {
         switch (sceneName) {
             case "Auth" -> {
-                setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Account Management");
+                String authTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("AuthTitle");
+                setStageTitle(authTitle);
                 logger.info("Changed scene to Auth");
                 scene.setRoot(authWindow.ui);
             }
             case "Main" -> {
-                setStageTitle("Txipiron Client [v1.0] - a Mastodon Client - Main Window");
+                String mainTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MainTitle");
+                setStageTitle(mainTitle);
                 scene.setRoot(mainWindow.ui);
                 logger.info("Changed scene to Main");
                 mainWindow.controller.setRefTokenId(result);

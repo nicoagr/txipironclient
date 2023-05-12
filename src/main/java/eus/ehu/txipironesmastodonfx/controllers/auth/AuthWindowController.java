@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Controller for the authentication window.
@@ -177,7 +178,8 @@ public class AuthWindowController implements WindowController {
     @FXML
     void initialize() {
         logger.debug("Starting auth initial tasks...");
-        errorLabel.setText("Loading...");
+        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        errorLabel.setText(load);
         AsyncUtils.asyncTask(() -> {
                     // Check for internet connection
                     if (!NetworkUtils.hasInternet()) {

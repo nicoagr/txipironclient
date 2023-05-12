@@ -1,5 +1,6 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
+import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
@@ -82,6 +83,7 @@ public class ProfileCellControllers {
     @FXML
     private TextFlow description;
     private String imageurl;
+    private String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");;
 
     /**
      * Constructor for the profile cell controller
@@ -89,7 +91,8 @@ public class ProfileCellControllers {
      * @param master (MainWindowController) - The reference to the main window controller
      */
     public ProfileCellControllers(MainWindowController master) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/profileCell.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/profileCell.fxml"),
+                ResourceBundle.getBundle("strings", TxipironClient.lang));
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
@@ -149,15 +152,17 @@ public class ProfileCellControllers {
                 }
         );
         AsyncUtils.asyncTask(() -> {
-            if (account.id.equals(master.authenticatedId)) return "Change Picture";
+            if (account.id.equals(master.authenticatedId)){
+                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("ChPic");
+            }
             List<Follow> following = APIAccessManager.getFollow(master.authenticatedId, master.token, true);
             if (following == null) return "Error!";
             for (Follow f : following) {
                 if (f.id.equals(account.id)) {
-                    return "Unfollow";
+                    return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
                 }
             }
-            return "Follow";
+            return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
         }, param -> {
             if (param.equals("Change Picture")) self = true;
             if (!param.equals("Error!")) omniButton.setDisable(false);
@@ -187,11 +192,12 @@ public class ProfileCellControllers {
      * "Change Account"
      */
     private void onClickChangeProfilePicButton() {
-        omniButton.setText("Loading...");
+        omniButton.setText(load);
         omniButton.setDisable(true);
         // Create a file chooser dialog
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Txipiron Client [v1.0] - a Mastodon Client - File Chooser");
+        String fileHeader = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FileHeader");
+        fileChooser.setTitle(fileHeader);
         // Set the file extension filters
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
@@ -201,7 +207,8 @@ public class ProfileCellControllers {
         File selectedFile = fileChooser.showOpenDialog(master.TxipironClient().stage);
         if (selectedFile == null) {
             omniButton.setDisable(false);
-            omniButton.setText("Change Picture");
+            String chanPic = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("ChPic");
+            omniButton.setText(chanPic);
             return;
         }
         if (HTMLParser.getFileExtension(selectedFile).matches("png|jpg|jpeg")) {
@@ -237,26 +244,28 @@ public class ProfileCellControllers {
     private void onClickFollowButton() {
         omniButton.setDisable(true);
         if (omniButton.getText().equals("Follow")) {
-            omniButton.setText("Loading...");
+            omniButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, this.id), param -> {
                 if (param == null) {
                     omniButton.setText("Error!");
                     logger.error("Error when following user with id " + this.id);
                 } else {
                     logger.info("Followed user with id " + this.id + " successfully");
-                    omniButton.setText("Unfollow");
+                    String unfollow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
+                    omniButton.setText(unfollow);
                     omniButton.setDisable(false);
                 }
             });
         } else if (omniButton.getText().equals("Unfollow")) {
-            omniButton.setText("Loading...");
+            omniButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, this.id), param -> {
                 if (param == null) {
                     omniButton.setText("Error!");
                     logger.error("Error when unfollowing user with id " + this.id);
                 } else {
                     logger.info("Unfollowed user with id " + this.id + " successfully");
-                    omniButton.setText("Follow");
+                    String follow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
+                    omniButton.setText(follow);
                     omniButton.setDisable(false);
                 }
             });
@@ -273,7 +282,8 @@ public class ProfileCellControllers {
         if (imageurl == null) return;
         AsyncUtils.asyncTask(() -> {
             // create the popup
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/eus/ehu/txipironesmastodonfx/maincell/mediaViewer.fxml"),
+                    ResourceBundle.getBundle("strings", TxipironClient.lang));
             Parent root = fxmlLoader.load();
             MediaViewController contr = fxmlLoader.getController();
             contr.setMedia(List.of(new MediaAttachment("image", imageurl)));
@@ -285,7 +295,8 @@ public class ProfileCellControllers {
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setScene((Scene) list.get(0));
             popupStage.setResizable(false);
-            popupStage.setTitle("Txipiron Client [v1.0] - a Mastodon Client - Media Viewer");
+            String popup = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MediaViewer");
+            popupStage.setTitle(popup);
             popupStage.getIcons().add(new Image("file:src/main/resources/eus/ehu/txipironesmastodonfx/mainassets/dark-media-512.png"));
             ((MediaViewController) list.get(1)).setPopupStage(popupStage);
             logger.info("Showing profile photo for userid: " + id);

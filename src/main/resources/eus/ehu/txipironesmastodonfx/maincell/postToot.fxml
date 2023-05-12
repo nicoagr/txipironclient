@@ -7,22 +7,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" prefHeight="401.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <Button layoutX="631.0" layoutY="239.0" mnemonicParsing="false" onAction="#PostAction" prefHeight="45.0"
-            prefWidth="112.0" text="Post!">
+<AnchorPane fx:id="anchor" prefHeight="401.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <Button layoutX="631.0" layoutY="239.0" mnemonicParsing="false" onAction="#PostAction" prefHeight="45.0" prefWidth="112.0" text="%Post!">
         <font>
-            <Font size="15.0"/>
+            <Font size="15.0" />
         </font>
     </Button>
-    <TextArea fx:id="content" layoutX="60.0" layoutY="29.0" prefHeight="172.0" prefWidth="699.0"
-              promptText="Lorem ipsum..."/>
-    <Label fx:id="charLabel" layoutX="60.0" layoutY="213.0" text="0/500 Characters"/>
-    <CheckBox fx:id="sensitiveId" layoutX="229.0" layoutY="213.0" mnemonicParsing="false"
-              text="Mark toot as sensitive"/>
-    <Label layoutX="60.0" layoutY="244.0" text="Recognized Accounts:"/>
-    <Label fx:id="taggedAcctTxt" layoutX="180.0" layoutY="244.0" text="None"/>
-    <Label fx:id="selectTxt" layoutX="63.0" layoutY="300.0"/>
-    <Button fx:id="pickFileBtn" layoutX="60.0" layoutY="271.0" mnemonicParsing="false" onAction="#pickFileAction"
-            prefHeight="26.0" prefWidth="226.0" text="Media Attachment (Optional)"/>
+    <TextArea fx:id="content" layoutX="60.0" layoutY="29.0" prefHeight="172.0" prefWidth="699.0" promptText="Lorem ipsum..." />
+    <Label fx:id="charLabel" layoutX="60.0" layoutY="213.0" text="%Chars" />
+    <CheckBox fx:id="sensitiveId" layoutX="229.0" layoutY="213.0" mnemonicParsing="false" text="%Mark" />
+    <Label layoutX="60.0" layoutY="244.0" text="%Accounts" />
+    <Label fx:id="taggedAcctTxt" layoutX="180.0" layoutY="244.0" text="%None" />
+    <Label fx:id="selectTxt" layoutX="63.0" layoutY="300.0" />
+    <Button fx:id="pickFileBtn" layoutX="60.0" layoutY="271.0" mnemonicParsing="false" onAction="#pickFileAction" prefHeight="26.0" prefWidth="226.0" text="%Media" />
 </AnchorPane>
