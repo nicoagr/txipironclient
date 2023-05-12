@@ -1,11 +1,13 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
+import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.domain.Notification;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static java.lang.Thread.sleep;
 
@@ -32,6 +34,7 @@ public class NotificationSystem {
      */
     public void activateNotifications(MainWindowController master) {
         this.master = master;
+        String mention;
         WindowNotificationSystem = new WindowNotificationSystem(this);
         AsyncUtils.asyncTask(() -> {
             List<Notification> notifications;
@@ -59,17 +62,17 @@ public class NotificationSystem {
                     }
                     switch (notifications.get(0).type) {
                         case "mention" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has mentioned you");
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Mention"));
                         case "status" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has posted an toot");
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Status"));
                         case "reblog" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has reblogged a toot");
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Reboot"));
                         case "follow" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has followed you");
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FollowNotif"));
                         case "favourite" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has liked your toot");
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FavNotif"));
                         default ->
-                                WindowNotificationSystem.trowNotificationWindow("A notification in your account has happened!");
+                                WindowNotificationSystem.trowNotificationWindow(ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Notif"));
                     }
                     master.lastNotification = notifications.get(0).id;
                     logger.debug("Set last notification: id=" + master.lastNotification);

@@ -47,8 +47,7 @@
            <Button fx:id="postToot" layoutY="210.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="186.0" text="%Post" />
            <Button layoutY="484.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="185.0" text="%Settings" />
            <Button fx:id="likedToots" layoutY="140.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="185.0" text="%Like" />
-           <Button fx:id="profile1" layoutY="280.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
-                   onAction="#NotificationListView" prefHeight="70.0" prefWidth="185.0" text="Notifications "/>
+           <Button fx:id="profile1" layoutY="280.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#NotificationListView" prefHeight="70.0" prefWidth="185.0" text="%Notification" />
        </AnchorPane>
    </left>
 </BorderPane>

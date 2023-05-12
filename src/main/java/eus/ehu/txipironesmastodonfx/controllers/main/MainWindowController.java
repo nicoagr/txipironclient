@@ -253,7 +253,7 @@ public class MainWindowController implements WindowController {
     @FXML
     void NotificationListView() {
         listViewItems.clear();
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
@@ -265,27 +265,33 @@ public class MainWindowController implements WindowController {
         }, notifications -> {
             listViewItems.clear();
             if (notifications == null) {
-                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading notifications. Please check your connection and try again."));
+                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error19");
+                listViewItems.add(new Generic(Generic.of.ERROR, error));
                 return;
             }
             hideLoading();
             status.clear();
             status.put(view.NOTIFICATION, null);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Notifications"));
+            String notif = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Notification");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, notif));
             lastNotification = notifications.get(0).id;
             logger.info("Downloaded " + notifications.size() + " notifications");
             for (Notification element : notifications) {
                 if (element.type.equals("mention")) {
-                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + " has mentioned you!"));
+                    String mention = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Mention");
+                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + mention));
                     listViewItems.add(element.status);
                 } else if (element.type.equals("status")) {
-                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + ", has posted a toot!"));
+                    String status = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Status");
+                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + status));
                     listViewItems.add(element.status);
                 } else if (element.type.equals("follow")) {
-                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + ", has followed you!"));
+                    String follow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FollowNotif");
+                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + follow));
                     listViewItems.add(element.account);
                 } else if (element.type.equals("favorite")) {
-                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + ", has liked your toot!"));
+                    String fav = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FavNotif");
+                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + fav));
                     listViewItems.add(element.status);
                 }
             }
