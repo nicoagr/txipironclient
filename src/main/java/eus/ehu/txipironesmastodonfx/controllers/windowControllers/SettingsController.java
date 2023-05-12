@@ -121,22 +121,22 @@ public class SettingsController {
         }
 
         if(comboLanguages.getValue().equals(spanish)){
-            Locale.setDefault(new Locale("es-ES"));
+            Locale.setDefault(new Locale("es", "ES"));
             TxipironClient.lang = Locale.getDefault();
             ResourceBundle.clearCache();
         }
         else if (comboLanguages.getValue().equals(english)){
-            Locale.setDefault(new Locale("en-US"));
+            Locale.setDefault(new Locale("en", "US"));
             TxipironClient.lang = Locale.getDefault();
             ResourceBundle.clearCache();
         }
         else if (comboLanguages.getValue().equals(basque)){
-            Locale.setDefault(new Locale("eus-ES"));
+            Locale.setDefault(new Locale("eus", "ES"));
             TxipironClient.lang = Locale.getDefault();
             ResourceBundle.clearCache();
         }
         else if (comboLanguages.getValue().equals(french)){
-            Locale.setDefault(new Locale("fr-FR"));
+            Locale.setDefault(new Locale("fr", "FR"));
             TxipironClient.lang = Locale.getDefault();
             ResourceBundle.clearCache();
         }
@@ -198,13 +198,11 @@ public class SettingsController {
 
     @FXML
     void initialize() {
-        comboStyles.getItems().addAll("Dark", "Light", "Haloween");
+        comboStyles.getItems().addAll("Dark", "Light", "Halloween");
         spanish = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Spanish");
         english = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("English");
         basque = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Basque");
         french = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("French");
         comboLanguages.getItems().addAll(spanish, english, basque, french);
     }
-
-
 }
