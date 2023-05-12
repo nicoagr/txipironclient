@@ -13,6 +13,7 @@
 /*General*/
 .root {
     -fx-background-color: #0D1317;
+    -fx-tootText-fill: white;
 }
 
 .fill{
@@ -151,6 +152,16 @@
 .list-cell{
     -fx-background-color: #262731;
 }
+.account:hover{
+    -fx-background-color: #101D42;
+    -fx-cursor: hand;
+}
+
+.account:pressed{
+    -fx-background-color: #101D42;
+    -fx-cursor: hand;
+}
+
 #errorLabel{
     -fx-text-fill: #6564DB;
 }
@@ -159,6 +170,7 @@
     -fx-background-color: #6564DB;
     -fx-text-fill: white;
 }
+
 
 .button_auth:pressed{
     -fx-background-color: #232ED1;
@@ -192,72 +204,28 @@
     -fx-text-fill: white;
 }
 
-
-
-/*
-.button{
-    -fx-background-color: #0D1317;
+#textFlow{
+    -fx-background-color: #262731;
     -fx-text-fill: white;
-    -fx-text-size: 30px;
+    -fx-border-color: #262731;
+    -fx-prompt-text-fill: white;
 }
 
-#headercell {
-    -fx-background-color: #0D1317;
+.tootText{
+
     -fx-text-fill: white;
+
 }
 
-Button:hover {
-    -fx-background-color: #232ED1;
-    -fx-font-size: 22px;
+/*profile*/
+
+.rectangle:hover{
+    -fx-cursor: hand;
+    -fx-border-color: #101D42;
 }
 
-Button:pressed {
-    -fx-background-color: #101D42;
-    -fx-text-fill: #FFFFFF;
-    -fx-font-weight: bold;
+.rectangle:pressed{
+    -fx-cursor: hand;
+    -fx-border-color: #101D42;
 }
-
-
-
-.menu{
-    -fx-background-color: #101D42;
-}
-*/
-
-/*
-#searchBtn {
-    -fx-background-color: var(--primary-color);
-    -fx-text-fill: white;
-}
-
-#searchQuery {
-    -fx-background-color: white;
-}
-
-#home, #bookmarkedToots, #changeAcctBtn, #postToot, #settings, #likedToots {
-    -fx-background-color: var(--secondary-color);
-    -fx-text-fill: white;
-}
-
-#logo, #loading, #icon {
-    -fx-background-color: var(--tertiary-color);
-}
-
-#vbox {
-    -fx-background-color: var(--background-color);
-}
-
-#scrollpane {
-    -fx-background-color: var(--background-color);
-}
-
-.bottom {
-    -fx-background-color: var(--primary-color);
-    -fx-text-fill: white;
-}
-*/
-
-/*.label {
-    -fx-font-size: 18px;
-}*/
 

@@ -23,6 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -280,6 +281,30 @@ public class ProfileCellControllers {
             ((MediaViewController) list.get(1)).setPopupStage(popupStage);
             popupStage.showAndWait();
         });
+    }
+
+    /**
+     * This method will be executed when the user clicks on the "Post" button
+     */
+    @FXML
+    void onClickPost() {
+        master.userTootListViewFromId(id);
+    }
+
+    /**
+     * This method will be executed when the user clicks on the "Followers" button
+     */
+    @FXML
+    void onClickFollowers() {
+        master.userTootListViewFromIdFollowers(id);
+    }
+
+    /**
+     * This method will be executed when the user clicks on the "Following" button
+     */
+    @FXML
+    void onClickFollowing() {
+        master.userTootListViewFromIdFollowings(id);
     }
 
     /**

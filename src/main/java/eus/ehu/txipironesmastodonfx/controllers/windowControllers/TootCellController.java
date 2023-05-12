@@ -184,6 +184,7 @@ public class TootCellController {
         AsyncUtils.asyncTask(() -> updateContent(finalToot.content), param -> {
             for (Text t : param)
                 textFlow.getChildren().add(t);
+                textFlow.getStyleClass().add("tootText");
         });
     }
 
@@ -202,6 +203,7 @@ public class TootCellController {
                 continue;
 
             Text textElement = new Text();
+            textElement.getStyleClass().add("tootText");
 
             // User tag
             if (element.startsWith("@")) {
