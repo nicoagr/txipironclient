@@ -12,6 +12,7 @@ module eus.ehu.txipironesmastodonfx {
     requires java.desktop;
     requires org.jsoup;
     requires javafx.media;
+    requires jdk.accessibility;
     requires jfxtras.controls;
     requires org.apache.logging.log4j;
     requires prettytime;

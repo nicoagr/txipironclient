@@ -9,7 +9,9 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import okhttp3.internal.http.RetryAndFollowUpInterceptor;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +73,15 @@ public class TxipironClient extends Application {
     }
 
     public Stage stage;
-    private Scene scene;
+    public Scene scene;
+
+    /**
+     * Returns the main scene
+     * @return (Scene) - main scene
+     */
+    public Scene getScene(){
+        return this.scene;
+    }
 
     /**
      * Loading point of the application.
@@ -126,6 +136,7 @@ public class TxipironClient extends Application {
     /**
      * Dinamically Change Scenes on-the-fly.
      * Will change the scene to the one passed as parameter.
+     * Will also activate the notifications
      *
      * @param sceneName (String) - Name of the scene to change to
      * @param result    (List<Object>) - List of reference, token and id to pass to the controller

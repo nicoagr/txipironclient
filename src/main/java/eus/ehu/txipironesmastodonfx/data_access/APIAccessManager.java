@@ -682,4 +682,65 @@ public class APIAccessManager {
         return (request("media/" + mediaId, token) != null);
     }
 
+    /**
+     * Send a signal to the server to clear the notifications
+     * @param token (String) - token of the account
+
+     */
+    public static void clearNotification(String token) throws IOException{
+        String response = request("notifications/clear", token);
+    }
+
+    /**
+     * Get an array of the type Notifications from the server
+     * @param token (String) - token of the account
+     * @return (List < Notification >) - list of notification
+     */
+    public static List<Notification> getNewNotification(String token) throws IOException {
+        String response = request("notifications", token);
+        if (response == null) {
+            // token is invalid
+            return null;
+        }
+        Type NotificationListType = new TypeToken<ArrayList<Notification>>() {
+        }.getType();
+        // get json array and then convert it to a list of Notifications
+        return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
+    }
+    /**
+     * Get an array of the type Notifications from the server since the Notification ip that is passed as a parameter
+     * @param token (String) - token of the account
+     * @param id (String) - id of the Notification
+     * @return (List < Notification >) - list of notification
+     */
+    public static List<Notification> getNotificationSinceip(String token,String id) throws IOException {
+        String result = null;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://mastodon.social/api/v1/" + "notifications/?since_id=" + id)
+                .get()
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200 && response.body() != null) {
+                result = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String response = result;
+        Type NotificationListType = new TypeToken<ArrayList<Notification>>() {
+        }.getType();
+        // get json array and then convert it to a list of Notifications
+        if (result != null) {
+            return gson.fromJson(gson.fromJson(response, JsonArray.class).getAsJsonArray(), NotificationListType);
+        }
+        else {
+            List<Notification> a = new ArrayList<>();
+            return a;
+        }
+    }
+
 }
