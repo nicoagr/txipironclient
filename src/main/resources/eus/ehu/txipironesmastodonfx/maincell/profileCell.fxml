@@ -33,23 +33,23 @@
          <Font size="14.0" />
       </font>
    </Label>
-   <Label fx:id="numPost" layoutX="171.0" layoutY="327.0" styleClass="fill" text="n">
+   <Label fx:id="numPost" layoutX="213.0" layoutY="327.0" styleClass="fill" text="n">
       <font>
          <Font size="14.0" />
       </font>
    </Label>
-   <Label fx:id="numFollowing" layoutX="461.0" layoutY="327.0" styleClass="fill" text="n">
+   <Label fx:id="numFollowing" layoutX="492.0" layoutY="327.0" styleClass="fill" text="n">
       <font>
          <Font size="14.0" />
       </font>
    </Label>
-   <Label fx:id="numFollowers" layoutX="718.0" layoutY="327.0" styleClass="fill" text="n">
+   <Label fx:id="numFollowers" layoutX="747.0" layoutY="327.0" styleClass="fill" text="n">
       <font>
          <Font size="14.0" />
       </font>
    </Label>
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="46.0" layoutY="314.0" onMouseClicked="#onClickPost" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="rectangle" width="266.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="46.0" layoutX="265.0" layoutY="314.0" onMouseClicked="#onClickFollowing" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="rectangle" width="266.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="46.0" layoutX="531.0" layoutY="314.0" onMouseClicked="#onClickFollowers" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="rectangle" width="266.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="46.0" layoutY="314.0" onMouseClicked="#onClickPost" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="rectangle" width="266.0" />
    <Button fx:id="omniButton" disable="true" layoutX="49.0" layoutY="245.0" mnemonicParsing="false" onAction="#onClickOmniButton" prefHeight="45.0" prefWidth="122.0" styleClass="button_gen" text="%Load" />
 </AnchorPane>

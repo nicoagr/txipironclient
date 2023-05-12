@@ -169,9 +169,9 @@ public class TootCellController {
 
         numReboots.setText(Integer.toString(finalToot.reblogs_count));
         if(toot.bookmarked)
-            bookmarks.setId("unbookmarked");
-        else
             bookmarks.setId("bookmarked");
+        else
+            bookmarks.setId("unBookmarked");
         mentions = toot.mentions;
         numComments.setText(Integer.toString(finalToot.replies_count));
         uri = toot.uri;

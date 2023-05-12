@@ -193,6 +193,10 @@
     -fx-background-color: #0D1317;
     -fx-text-fill: white;
 }
+.combo-box-popup>  Text{
+    -fx-background-color: #0D1317;
+    -fx-text-fill: white;
+}
 
 .combo-box-popup > .list-cell{
     -fx-background-color: #0D1317;

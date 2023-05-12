@@ -67,14 +67,14 @@
                      <ImageView fx:id="likeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                  </graphic>
              </Button>
-             <Button fx:id="postToot" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
-                 <graphic>
-                     <ImageView fx:id="postIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
-                 </graphic>
-             </Button>
              <Button fx:id="bttnNotis" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#NotificationListView" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
                  <graphic>
                      <ImageView fx:id="notisIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+                 </graphic>
+             </Button>
+             <Button fx:id="postToot" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
+                 <graphic>
+                     <ImageView fx:id="postIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                  </graphic>
              </Button>
              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="123.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
