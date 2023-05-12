@@ -47,19 +47,23 @@
                   <ImageView fx:id="settingIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
-              <Button fx:id="changeAcctBtn" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#changeAcctBtnClick" prefHeight="78.0" prefWidth="200.0" styleClass="left_button" text="Change account">
-               <font>
-                  <Font size="21.0" />
-               </font></Button>
+              <Button fx:id="changeAcctBtn" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
+                      onAction="#changeAcctBtnClick" prefHeight="78.0" prefWidth="200.0" styleClass="left_button"
+                      text="%Account">
+                  <font>
+                      <Font size="21.0"/>
+                  </font>
+              </Button>
          </children>
       </VBox>
    </left>
    <bottom>
-      <Label fx:id="copyright" contentDisplay="CENTER" prefHeight="19.0" prefWidth="265.0" text="v1.0 by Nicolás, Haizea, Xiomara and Marcos" textAlignment="CENTER" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
+       <Label fx:id="copyright" contentDisplay="CENTER" prefHeight="19.0" prefWidth="265.0" text="%v1"
+              textAlignment="CENTER" BorderPane.alignment="CENTER">
+           <font>
+               <Font size="13.0"/>
+           </font>
+       </Label>
    </bottom>
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="990.0" BorderPane.alignment="CENTER">
@@ -67,7 +71,8 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="107.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
               <ImageView fx:id="icon" fitHeight="97.0" fitWidth="116.0" onMouseClicked="#loggedUserListView" pickOnBounds="true" preserveRatio="true" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="97.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="58.0" />
-              <TextField fx:id="searchQuery" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="485.0" promptText="Search here for an account name or an specific status" />
+             <TextField fx:id="searchQuery" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="485.0"
+                        promptText="%Search"/>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="58.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
               <Button fx:id="searchBtn" minHeight="40.0" mnemonicParsing="false" onAction="#performSearch" prefHeight="40.0" prefWidth="53.0">
                <graphic>
