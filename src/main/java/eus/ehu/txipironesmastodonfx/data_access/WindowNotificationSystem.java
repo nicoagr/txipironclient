@@ -1,5 +1,8 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.TrayIcon;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
@@ -13,6 +16,7 @@ public class WindowNotificationSystem {
     private TrayIcon trayIcon;
 
     private NotificationSystem noti;
+    private static final Logger logger = LogManager.getLogger("WindowNotificationSystem");
 
     /**
      * This method intiializes the tray sistem for notifications
@@ -50,6 +54,7 @@ public class WindowNotificationSystem {
      */
     public void trowNotificationWindow(String mainText) throws IOException {
         String os = System.getProperty("os.name");
+        logger.info("Throwing notification with text: " + mainText);
         if (os.contains("Linux")) {
             ProcessBuilder builder = new ProcessBuilder(
                     "zenity",

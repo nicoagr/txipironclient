@@ -22,7 +22,7 @@ public class NotificationSystem {
     public volatile boolean shutdown = false;
     public Thread mytread;
     WindowNotificationSystem WindowNotificationSystem;
-    private static final Logger logger = LogManager.getLogger("MainWindowController");
+    private static final Logger logger = LogManager.getLogger("NotificationSystem");
     MainWindowController master;
 
     /**
