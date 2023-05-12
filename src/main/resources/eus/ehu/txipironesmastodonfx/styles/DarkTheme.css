@@ -182,36 +182,12 @@
 .combo-box{
     -fx-background-color: #0D1317;
     -fx-text-fill: white;
+    -fx-border-color: #0D1317;
 }
-
-.combo-box-popup{
+.combo-box .list-cell{
     -fx-background-color: #0D1317;
     -fx-text-fill: white;
 }
-
-.combo-box > .list-cell{
-    -fx-background-color: #0D1317;
-    -fx-text-fill: white;
-}
-.combo-box-popup>  Text{
-    -fx-background-color: #0D1317;
-    -fx-text-fill: white;
-}
-
-.combo-box-popup > .list-cell{
-    -fx-background-color: #0D1317;
-    -fx-text-fill: white;
-}
-
-.combo-box-popup {
-    -fx-background-color: #0D1317;
-    -fx-progress-color: #0D1317;
-    -fx-progress-color: #0D1317;
-    -fx-prompt-text-fill: white;
-    -fx-tick-label-fill: white;
-    -fx-text-fill: white;
-}
-
 .check-box{
     -fx-tick-label-fill: #0D1317;
     -fx-text-fill: white;
