@@ -4,18 +4,15 @@ import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
 import eus.ehu.txipironesmastodonfx.data_access.*;
-import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
-import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
-import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
 import eus.ehu.txipironesmastodonfx.domain.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.AccessibleAttribute;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -28,7 +25,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
-import static java.awt.SystemColor.window;
 
 /**
  * Controller class for the main window.
@@ -40,19 +36,12 @@ import static java.awt.SystemColor.window;
  */
 public class MainWindowController implements WindowController {
 
-
-
     public NotificationSystem notificationSystem = new NotificationSystem();
-
     private TxipironClient mainApp;
-
-
     public String id;
-
     private Integer ref;
     public String lastNotification;
     public String authenticatedId;
-
     public String token;
     @FXML
     private ImageView icon;
@@ -66,7 +55,6 @@ public class MainWindowController implements WindowController {
     public ListView<Object> listView;
     public ObservableList<Object> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
-
 
 
     /**
@@ -98,13 +86,11 @@ public class MainWindowController implements WindowController {
     }
 
 
-
     /**
      * Loads the notification
      */
     @FXML
-    void NotificationListView() throws IOException, AWTException {
-
+    void NotificationListView() throws IOException {
         listViewItems.clear();
         listViewItems.add("Loading...");
         showLoading();
@@ -116,7 +102,7 @@ public class MainWindowController implements WindowController {
         }, notifications -> {
             listViewItems.clear();
             if (notifications == null) {
-                listViewItems.add("Error downloading following. Please check your connection and try again.");
+                listViewItems.add("Error downloading notifications. Please check your connection and try again.");
                 return;
             }
             hideLoading();
@@ -124,25 +110,27 @@ public class MainWindowController implements WindowController {
             lastNotification = notifications.get(0).id;
             for (Notification element : notifications) {
                 if (element.type.equals("mention")) {
-                    listViewItems.add(element.account.acct + " has mention you :D");
+                    listViewItems.add(element.account.acct + " has mentioned you!");
                     listViewItems.add(element.status);
                 } else if (element.type.equals("status")) {
-                    listViewItems.add(element.account.acct + ", has posted a toot    :P");
+                    listViewItems.add(element.account.acct + ", has posted a toot!");
                     listViewItems.add(element.status);
                 } else if (element.type.equals("follow")) {
-                    listViewItems.add(element.account.acct + ", has followed you");
+                    listViewItems.add(element.account.acct + ", has followed you!");
                     listViewItems.add(element.account);
                 } else if (element.type.equals("favorite")) {
-                    listViewItems.add(element.account.acct + ", has liked your toot :v");
+                    listViewItems.add(element.account.acct + ", has liked your toot!");
                     listViewItems.add(element.status);
                 }
             }
         });
         APIAccessManager.clearNotification(token);
     }
+
     /**
      * Gets the reference to the main application
-     * @return
+     *
+     * @return (TxipironClient) - The main application
      */
     public Application TxipironClient() {
         return mainApp;
@@ -174,7 +162,8 @@ public class MainWindowController implements WindowController {
      * @param result (List<Object>) - The list of reference and token to be set
      */
     @Override
-    public void setRefTokenId(List<Object> result) throws IOException, AWTException, InterruptedException {
+    public void setRefTokenId(List<Object> result) {
+        // Add listener for correctly closing notifications
         mainApp.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
 
         listView.setItems(listViewItems);
@@ -282,7 +271,6 @@ public class MainWindowController implements WindowController {
      */
     @FXML
     void followingListView() {
-        notificationSystem.deactivateNotification();
         listViewItems.clear();
         listViewItems.add("Loading...");
         showLoading();
@@ -447,11 +435,14 @@ public class MainWindowController implements WindowController {
         });
     }
 
-
-    void closeWindowEvent(WindowEvent windowEvent){
-
-    notificationSystem.deactivateNotification();
-
+    /**
+     * Event triggered when the window is closing
+     * It will turn off the notification system
+     *
+     * @param windowEvent (WindowEvent) The event triggered
+     */
+    void closeWindowEvent(WindowEvent windowEvent) {
+        notificationSystem.deactivateNotification();
     }
 
     /**
@@ -460,19 +451,12 @@ public class MainWindowController implements WindowController {
     @FXML
     void initialize() {
         MainWindowController thisclass = this;
-
-
-
-
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 notificationSystem.deactivateNotification();
-                System.out.println("se cerro");
             }
         });
-
-
-        listView.setCellFactory(param -> new ListCell<>(){
+        listView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);
@@ -505,7 +489,7 @@ public class MainWindowController implements WindowController {
                     setText(null);
                     HeaderCellController c = new HeaderCellController((String) item, thisclass);
                     setGraphic(c.getUI());
-                }else if (item instanceof Account) {
+                } else if (item instanceof Account) {
                     setText(null);
                     AsyncUtils.asyncTask(() -> new ProfileCellControllers(thisclass), param -> {
                                 setGraphic(param.getUI());

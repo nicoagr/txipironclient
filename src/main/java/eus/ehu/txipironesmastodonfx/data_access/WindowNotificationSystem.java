@@ -1,59 +1,75 @@
 package eus.ehu.txipironesmastodonfx.data_access;
 
-import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.TrayIcon.MessageType;
-import java.awt.image.BufferedImage;
+import java.awt.TrayIcon;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.Image;
+import java.awt.AWTException;
 import java.io.IOException;
+import java.awt.PopupMenu;
+import java.awt.MenuItem;
 
 public class WindowNotificationSystem {
     private TrayIcon trayIcon;
 
-private MainWindowController master;
-    public WindowNotificationSystem(MainWindowController master) {
-        this.master = master;
-
-    }
-    /**
-     * This method intiializes the tray sistem for notifications to thw winodows and macOS
-     */
+    private NotificationSystem noti;
 
     /**
-     * This method cheks the OS and display a notification Window with the mainText
+     * This method intiializes the tray sistem for notifications
      */
-        public  void trowNotificationWindow(String mainText) throws IOException, AWTException {
-            String os = System.getProperty("os.name");
-            if (os.contains("Linux")) {
-                ProcessBuilder builder = new ProcessBuilder(
-                        "zenity",
-                        "--notification",
-                        "--text=" + mainText);
-                builder.inheritIO().start();
-            }else if(SystemTray.isSupported()) {
-
-
-                SystemTray tray = SystemTray.getSystemTray();
-
-                //If the icon is a file
-                //Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-                //Alternative (if the icon is on the classpath):
-                Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg"));
-
-                TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
-                //Let the system resize the image if needed
-                trayIcon.setImageAutoSize(true);
-                //Set tooltip text for the tray icon
-                trayIcon.setToolTip("System tray icon demo");
-                tray.add(trayIcon);
-
-                trayIcon.displayMessage("Txipiron Client", mainText, MessageType.INFO);
-
-
-            }
-
+    public WindowNotificationSystem(NotificationSystem notify) {
+        this.noti = notify;
+        if (!SystemTray.isSupported()) {
+            return;
         }
+        SystemTray tray = SystemTray.getSystemTray();
+
+        Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg"));
+        trayIcon = new TrayIcon(image, "Txipiron Client Notification Service");
+        //Let the system resize the image if needed
+        trayIcon.setImageAutoSize(true);
+        //Add the icon to the system tray
+        try {
+            tray.add(trayIcon);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        // Add a popup exit menu to tray icon
+        PopupMenu popupMenu = new PopupMenu();
+        MenuItem closeItem = new MenuItem("Close Application");
+        closeItem.addActionListener(e -> {
+            noti.deactivateNotification();
+            System.exit(0);
+        });
+        popupMenu.add(closeItem);
+        trayIcon.setPopupMenu(popupMenu);
+    }
+
+    /**
+     * This method checks the OS and displays a notification Window with the mainText
+     */
+    public void trowNotificationWindow(String mainText) throws IOException {
+        String os = System.getProperty("os.name");
+        if (os.contains("Linux")) {
+            ProcessBuilder builder = new ProcessBuilder(
+                    "zenity",
+                    "--notification",
+                    "--text=" + mainText);
+            builder.inheritIO().start();
+        } else if (SystemTray.isSupported()) {
+            trayIcon.displayMessage("Txipiron Client", mainText, TrayIcon.MessageType.INFO);
+        }
+    }
+
+    /**
+     * This method removes the tray icon from the system tray
+     */
+    public void removeTrayIcon() {
+        if (SystemTray.isSupported()) {
+            SystemTray tray = SystemTray.getSystemTray();
+            tray.remove(trayIcon);
+        }
+    }
 }
 
 
