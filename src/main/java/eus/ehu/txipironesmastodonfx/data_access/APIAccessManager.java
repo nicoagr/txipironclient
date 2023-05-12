@@ -97,6 +97,7 @@ public class APIAccessManager {
      *
      * @param selectedAccId (String) - id of the account
      * @param token         (String) - system variable of the account
+     * @param max_id        (String) - max_id of the toot
      * @return (List < Toot >) - list of toots
      */
     public static List<Toot> getTootId(String selectedAccId, String token, String max_id) {

@@ -86,7 +86,7 @@ public class FollowCellController {
      */
     @FXML
     void pickClick() {
-        master.userTootListViewFromId(idauxi);
+        master.firstUserTootListViewFromId(idauxi);
     }
 
     /**

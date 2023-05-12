@@ -13,9 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import java.util.ResourceBundle;
-import java.util.Iterator;
-import java.util.List;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -25,7 +22,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.event.WindowAdapter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
@@ -459,7 +458,7 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            toots = APIAccessManager.getTootId(id, token, max_id);
+            toots = APIAccessManager.getTootId(id, token, null);
             return toots;
         }, toots -> {
             if (toots == null) {
@@ -483,15 +482,18 @@ public class MainWindowController implements WindowController {
      * Sets the list view to show the toots of
      * the user with the id passed as a parameter
      *
-     * @param id (String) The id of the user whose toots are going to be shown
+     * @param id     (String) The id of the user whose toots are going to be shown
+     * @param max_id (String) The id of the minimum toot to show
      */
     @FXML
-    public void userTootListViewFromId(String id) {
-        Iterator<CellController> it = listViewItems.iterator();
-        it.next();
-        while (it.hasNext()) {
+    public void userTootListViewFromId(String id, String max_id) {
+        if (max_id == null) {
+            Iterator<CellController> it = listViewItems.iterator();
             it.next();
-            it.remove();
+            while (it.hasNext()) {
+                it.next();
+                it.remove();
+            }
         }
         logger.debug("Attempting to download profile and toots from id: " + id);
         showLoading();
@@ -515,11 +517,7 @@ public class MainWindowController implements WindowController {
             List<Toot> toots;
             // Here, the id parameter is going to control which toots
             // from which are going to be downloaded
-            try {
-                toots = APIAccessManager.getTootId(id, token);
-            } catch (IOException e) {
-                toots = null;
-            }
+            toots = APIAccessManager.getTootId(id, token, max_id);
             return toots;
         }, toots -> {
             if (toots == null) {
@@ -527,8 +525,8 @@ public class MainWindowController implements WindowController {
                 logger.error("Error downloading profile toots from user id" + id);
                 return;
             }
-            //listViewItems.remove(listViewItems.size() - 1);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Toots and replies"));
+            String tootreply = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("TootReply");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, tootreply));
             listViewItems.addAll(toots);
             logger.info("Downloaded " + toots.size() + " toots from user id: " + id);
             hideLoading();
@@ -565,7 +563,8 @@ public class MainWindowController implements WindowController {
         }, account -> {
             listViewItems.clear();
             if (account == null) {
-                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile . Please check your connection and try again."));
+                String profileerr = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error6");
+                listViewItems.add(new Generic(Generic.of.ERROR, profileerr));
                 logger.error("Error downloading profile from user id: " + id);
                 return;
             }
@@ -582,8 +581,8 @@ public class MainWindowController implements WindowController {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "Error downloading followers. Please check your connection and try again."));
                 return;
             }
-            //listViewItems.remove(listViewItems.size() - 1);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Followers"));
+            String followtxt = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Followers");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, followtxt));
             listViewItems.addAll(follower);
             logger.info("Downloaded " + follower.size() + " followers from user id: " + id);
             hideLoading();
@@ -613,7 +612,8 @@ public class MainWindowController implements WindowController {
         }, account -> {
             listViewItems.clear();
             if (account == null) {
-                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile . Please check your connection and try again."));
+                String profileerr = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error6");
+                listViewItems.add(new Generic(Generic.of.ERROR, profileerr));
                 logger.error("Error downloading profile from user id: " + id);
                 return;
             }
@@ -630,8 +630,8 @@ public class MainWindowController implements WindowController {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "Error downloading following. Please check your connection and try again."));
                 return;
             }
-            //listViewItems.remove(listViewItems.size() - 1);
-            listViewItems.add(new Generic(Generic.of.MESSAGE, "Following"));
+            String following = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Following");
+            listViewItems.add(new Generic(Generic.of.MESSAGE, following));
             listViewItems.addAll(follower);
             logger.info("Downloaded " + follower.size() + " followings from user id: " + id);
             hideLoading();
@@ -675,7 +675,7 @@ public class MainWindowController implements WindowController {
             it.next();
             it.remove();
         }
-        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        listViewItems.add(new Generic(Generic.of.MESSAGE, load));
         showLoading();
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;

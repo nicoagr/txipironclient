@@ -2,11 +2,7 @@ package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
-import eus.ehu.txipironesmastodonfx.data_access.APIAccessManager;
-import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
-import eus.ehu.txipironesmastodonfx.data_access.HTMLParser;
-import eus.ehu.txipironesmastodonfx.data_access.DisplayUtils;
-import eus.ehu.txipironesmastodonfx.data_access.NetworkUtils;
+import eus.ehu.txipironesmastodonfx.data_access.*;
 import eus.ehu.txipironesmastodonfx.domain.MediaAttachment;
 import eus.ehu.txipironesmastodonfx.domain.Toot;
 import javafx.fxml.FXML;
@@ -28,10 +24,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -228,7 +220,7 @@ public class TootCellController {
                     }
                     return null;
                 }, param -> {
-                    if (param != null) master.userTootListViewFromId(param);
+                    if (param != null) master.firstUserTootListViewFromId(param);
                 }));
             }
             // HashTags

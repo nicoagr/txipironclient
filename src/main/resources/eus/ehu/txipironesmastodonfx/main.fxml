@@ -31,29 +31,43 @@
                   <ImageView fx:id="bookmarkedIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
-              <Button fx:id="likedToots" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
-               <graphic>
-                  <ImageView fx:id="likeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-            </Button>
-              <Button fx:id="postToot" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
-               <graphic>
-                  <ImageView fx:id="postIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-            </Button>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-              <Button fx:id="settings" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
-               <graphic>
-                  <ImageView fx:id="settingIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-            </Button>
-              <Button fx:id="changeAcctBtn" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
-                      onAction="#changeAcctBtnClick" prefHeight="78.0" prefWidth="200.0" styleClass="left_button"
-                      text="%Account">
-                  <font>
-                      <Font size="21.0"/>
-                  </font>
-              </Button>
+             <Button fx:id="likedToots" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
+                     onAction="#likedTootsListView" prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
+                 <graphic>
+                     <ImageView fx:id="likeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true"
+                                preserveRatio="true"/>
+                 </graphic>
+             </Button>
+             <Button fx:id="postToot" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
+                     onAction="#postTootListview" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
+                 <graphic>
+                     <ImageView fx:id="postIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true"
+                                preserveRatio="true"/>
+                 </graphic>
+             </Button>
+             <Button minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#NotificationListView"
+                     prefHeight="70.0" prefWidth="211.0" styleClass="left_button" text="%Notification">
+                 <graphic>
+                     <ImageView fx:id="postIcon1" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true"
+                                preserveRatio="true"/>
+                 </graphic>
+             </Button>
+             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="168.0" opacity="0.0" stroke="BLACK"
+                        strokeType="INSIDE" width="200.0"/>
+             <Button fx:id="settings" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings"
+                     prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
+                 <graphic>
+                     <ImageView fx:id="settingIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true"
+                                preserveRatio="true"/>
+                 </graphic>
+             </Button>
+             <Button fx:id="changeAcctBtn" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
+                     onAction="#changeAcctBtnClick" prefHeight="78.0" prefWidth="200.0" styleClass="left_button"
+                     text="%Account">
+                 <font>
+                     <Font size="21.0"/>
+                 </font>
+             </Button>
          </children>
       </VBox>
    </left>

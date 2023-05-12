@@ -26,7 +26,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -310,7 +309,7 @@ public class ProfileCellControllers {
      */
     @FXML
     void onClickPost() {
-        master.userTootListViewFromId(id);
+        master.userTootListViewFromId(id, null);
     }
 
     /**
