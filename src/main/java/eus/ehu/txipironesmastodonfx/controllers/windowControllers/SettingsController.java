@@ -49,8 +49,8 @@ public class SettingsController {
     public TxipironClient txipi;
 
     public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
-
     public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
+    public String halloween= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
     private String spanish;
     private String english;
     private String basque;
@@ -96,14 +96,23 @@ public class SettingsController {
         switch (val) {
             case "Dark" -> {
                 master.mainBorderpane.getStylesheets().remove(light);
+                master.mainBorderpane.getStylesheets().remove(halloween);
                 master.mainBorderpane.getStylesheets().add(dark);
                 txipi.color = "dark";
                 break;
            }
             case "Light" -> {
                 master.mainBorderpane.getStylesheets().remove(dark);
+                master.mainBorderpane.getStylesheets().remove(halloween);
                 master.mainBorderpane.getStylesheets().add(light);
                 txipi.color = "light";
+                break;
+            }
+            case "Haloween" -> {
+                master.mainBorderpane.getStylesheets().remove(light);
+                master.mainBorderpane.getStylesheets().remove(dark);
+                master.mainBorderpane.getStylesheets().add(halloween);
+                txipi.color = "halloween";
                 break;
             }
         }
@@ -189,7 +198,7 @@ public class SettingsController {
 
     @FXML
     void initialize() {
-        comboStyles.getItems().addAll("Dark", "Light");
+        comboStyles.getItems().addAll("Dark", "Light", "Haloween");
         spanish = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Spanish");
         english = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("English");
         basque = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Basque");

@@ -55,7 +55,7 @@ public class TxipironClient extends Application {
 
     public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
 
-
+    public String halloween= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
 
     public AuthWindowController authMaster;
 
@@ -107,9 +107,17 @@ public class TxipironClient extends Application {
         scene = new Scene(authWindow.ui);
         if (color.equals("dark")){
             scene.getStylesheets().remove(light);
+            scene.getStylesheets().remove(halloween);
             scene.getStylesheets().add(dark);}
-        else {scene.getStylesheets().remove(dark);
+        else if(color.equals("light"))
+        {scene.getStylesheets().remove(dark);
+            scene.getStylesheets().remove(halloween);
             scene.getStylesheets().add(light);}
+        else if(color.equals("halloween")){
+            scene.getStylesheets().remove(dark);
+            scene.getStylesheets().remove(light);
+            scene.getStylesheets().add(halloween);
+        }
         stage.setScene(scene);
     }
 
@@ -180,12 +188,18 @@ public class TxipironClient extends Application {
                 setStageTitle(authTitle);
                 logger.info("Changed scene to Auth");
                 scene.setRoot(authWindow.ui);
-                if(color.equals("dark")){
+                if (color.equals("dark")){
                     scene.getStylesheets().remove(light);
+                    scene.getStylesheets().remove(halloween);
                     scene.getStylesheets().add(dark);}
-                else{
+                else if(color.equals("light"))
+                {scene.getStylesheets().remove(dark);
+                    scene.getStylesheets().remove(halloween);
+                    scene.getStylesheets().add(light);}
+                else if(color.equals("halloween")){
                     scene.getStylesheets().remove(dark);
-                    scene.getStylesheets().add(light);
+                    scene.getStylesheets().remove(light);
+                    scene.getStylesheets().add(halloween);
                 }
             }
             case "Main" -> {
@@ -195,12 +209,18 @@ public class TxipironClient extends Application {
                 logger.info("Changed scene to Main");
                 mainWindow.controller.setRefTokenId(result);
                 mainWindow.controller.homeListView();
-                if(color.equals("dark")){
+                if (color.equals("dark")){
                     scene.getStylesheets().remove(light);
+                    scene.getStylesheets().remove(halloween);
                     scene.getStylesheets().add(dark);}
-                else{
+                else if(color.equals("light"))
+                {scene.getStylesheets().remove(dark);
+                    scene.getStylesheets().remove(halloween);
+                    scene.getStylesheets().add(light);}
+                else if(color.equals("halloween")){
                     scene.getStylesheets().remove(dark);
-                    scene.getStylesheets().add(light);
+                    scene.getStylesheets().remove(light);
+                    scene.getStylesheets().add(halloween);
                 }
             }
             default -> {

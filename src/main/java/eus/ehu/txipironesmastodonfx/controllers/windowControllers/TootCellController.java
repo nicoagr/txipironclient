@@ -89,6 +89,8 @@ public class TootCellController {
 
     public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
 
+    public String halloween= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
+
     /**
      * Constructor for the controller.
      * It will load itself at take consciousness (set itself as controller)
@@ -276,10 +278,16 @@ public class TootCellController {
             Scene scene = new Scene(root);
             if(txipi.color.equals("dark")){
                 scene.getStylesheets().remove(light);
+                scene.getStylesheets().remove(halloween);
                 scene.getStylesheets().add(dark);}
-            else{
+            else if(txipi.color.equals("light")){
                 scene.getStylesheets().remove(dark);
+                scene.getStylesheets().remove(halloween);
                 scene.getStylesheets().add(light);
+            } else if (txipi.color.equals("halloween")) {
+                scene.getStylesheets().remove(dark);
+                scene.getStylesheets().remove(light);
+                scene.getStylesheets().add(halloween);
             }
             return List.of(scene, contr);
         }, list -> {

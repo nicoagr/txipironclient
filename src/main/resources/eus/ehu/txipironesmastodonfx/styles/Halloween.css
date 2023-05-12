@@ -1,0 +1,303 @@
+/*********************************/
+/**********COLOR PALETTE**********/
+/*********************************/
+/*                               */
+/*    #89D2DC non-photo blue     */
+/*    #ff6500 orange             */
+/*    #f69350 light orange       */
+/*    #262731 oxford blue        */
+/*    #0D1317 rich black         */
+/*                               */
+/*********************************/
+
+/*General*/
+.root {
+    -fx-background-color: #0D1317;
+}
+
+.fill{
+    -fx-text-fill: white;
+}
+
+.button_gen{
+    -fx-background-color: #ff6500;
+    -fx-text-fill: white
+}
+
+.button_gen:pressed{
+    -fx-background-color: #f69350;
+    -fx-text-fill: white;
+}
+.button_gen:hover{
+    -fx-cursor: hand;
+}
+
+#content{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+#icon{
+    -fx-cursor: hand;
+}
+.image_click{
+    -fx-cursor: hand;
+}
+
+/*Left bar buttons*/
+
+.left_button {
+    -fx-background-color: #0D1317;
+    -fx-text-fill: #ff6500;
+    -fx-text-size: 30px;
+}
+
+.left_button:hover{
+    -fx-background-color: #562d17;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    /* -fx-font-size: 22px;*/
+}
+
+.left_button:pressed {
+    -fx-background-color: #a44400;
+    -fx-text-fill: #FFFFFF;
+    /* -fx-font-weight: bold;*/
+}
+
+/*Search*/
+
+#searchQuery {
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
+
+#searchBtn{
+    -fx-background-color: #ff6500;
+    -fx-text-fill: white;
+}
+
+#searchBtn:pressed{
+    -fx-background-color: #f69350;
+    -fx-text-fill: #FFFFFF;
+
+}
+
+#searchBtn:hover{
+    -fx-cursor: hand;
+}
+
+/*anchor*/
+
+#anchor{
+    -fx-background-color: #262731;
+
+}
+
+.anchor{
+    -fx-background-color: #262731;
+}
+
+/*toot*/
+
+#sensitiveId{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
+#tootText{
+    -fx-fill:white;
+}
+/*botton*/
+
+#copyright{
+    -fx-text-fill: white;
+}
+
+/*scrollbane*/
+
+#scrollpane{
+    -fx-background-color: #0D1317;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: #0D1317;
+
+}
+.scroll-bar:vertical .thumb{
+    -fx-background-color: #262731;
+}
+
+.scroll-bar:horizontal{
+    -fx-background-color: #0D1317;
+}
+
+#vbox{
+    -fx-background-color: #0D1317;
+}
+
+/*cells*/
+
+#info{
+    -fx-text-fill: white;
+}
+
+
+/*Auth*/
+
+.list-view{
+    -fx-background-color: #262731;
+}
+.list-cell{
+    -fx-background-color: #262731;
+}
+.account:hover{
+    -fx-background-color: #a44400;
+    -fx-cursor: hand;
+}
+
+.account:pressed{
+    -fx-background-color: #a44400;
+    -fx-cursor: hand;
+}
+
+#errorLabel{
+    -fx-text-fill: #ff6500;
+}
+
+.button_auth{
+    -fx-background-color: #ff6500;
+    -fx-text-fill: white;
+}
+
+
+.button_auth:pressed{
+    -fx-background-color: #f69350;
+    -fx-text-fill: white;
+}
+
+
+/*settings*/
+
+.combo-box{
+    -fx-background-color: #0D1317;
+    -fx-text-fill: white;
+    -fx-border-color: #0D1317;
+}
+.combo-box .list-cell{
+    -fx-background-color: #0D1317;
+    -fx-text-fill: white;
+}
+
+
+.check-box{
+    -fx-tick-label-fill: #0D1317;
+    -fx-text-fill: white;
+}
+
+#textFlow{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+    -fx-border-color: #262731;
+    -fx-prompt-text-fill: white;
+}
+
+.tootText{
+
+    -fx-text-fill: white;
+
+}
+
+/*profile*/
+
+.rectangle:hover{
+    -fx-cursor: hand;
+    -fx-border-color: #a44400;
+}
+
+.rectangle:pressed{
+    -fx-cursor: hand;
+    -fx-border-color: #a44400;
+}
+
+/*images*/
+
+.logo{
+    -fx-image: url(../logos/dark_transparent_1000.png);
+}
+
+#home > #homeIcon{
+    -fx-image: url(../icons/home_hall.png);
+}
+
+#bookmarkedToots > #bookmarkedIcon{
+    -fx-image: url(../icons/book_hall.png);
+}
+
+#likedToots > #likeIcon{
+    -fx-image: url(../icons/like_hall.png);
+}
+
+#postToot > #postIcon{
+    -fx-image: url(../icons/plus_hall.png);
+}
+
+#settings > #settingIcon{
+    -fx-image: url(../icons/settings_hall.png);
+}
+
+#searchBtn > #searchIcon{
+    -fx-image: url(../icons/search_dark.png);
+}
+#errorIcon{
+    -fx-image: url(../mainassets/error_dark.png);
+}
+
+#bttnNotis > #notisIcon{
+    -fx-image: url(../icons/notis_hall.png);
+}
+#shareImg{
+    -fx-image: url(../icons/share_dark.png);
+}
+#rebootedBy{
+    -fx-image: url(../icons/reboot_dark.png);
+}
+
+#commentIcon{
+    -fx-image: url(../icons/comment_dark.png);
+}
+#reboot{
+    -fx-image: url(../icons/reboot_dark.png);
+}
+#unReboot{
+    -fx-image: url(../icons/unreboot_dark.png);
+}
+
+#liked{
+    -fx-image: url(../icons/bright_pumpkin.png);
+}
+
+#unliked{
+    -fx-image: url(../icons/pumpkin.png);
+}
+
+#bookmarked{
+    -fx-image: url(../icons/book_dark.png);
+}
+
+#unBookmarked{
+    -fx-image: url(../icons/unbook_dark.png);
+}
+
+
+/*postToot*/
+
+#content{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
+#sensitiveId{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
