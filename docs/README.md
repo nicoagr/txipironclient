@@ -20,7 +20,7 @@ The entirety of the client's code was developed for the "Software Engineering I"
 ## Some views
 ![Timeline with media view](https://i.imgur.com/DEaF0jG.png)
 ![Profile View](https://i.imgur.com/0l628SX.png)
-![Post Toot View](https://i.imgur.com/WrwaaUI.png)
+![Authentication View](https://github.com/UPV-EHU-Bilbao/txipirones-mastodonFX/assets/61473739/f9b91a6d-cb77-43d1-a36c-cef7f91475c2)
 ![Followers](https://i.imgur.com/w2XRBwn.png)
 
 ## Chef's touch
