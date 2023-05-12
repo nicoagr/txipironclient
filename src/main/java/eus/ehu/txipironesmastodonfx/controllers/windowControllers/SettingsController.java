@@ -45,6 +45,8 @@ public class SettingsController {
 
     ObservableList<String> Styles = FXCollections.observableArrayList();
 
+    public TxipironClient txipi;
+
     public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
 
     public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
@@ -89,11 +91,17 @@ public class SettingsController {
             case "Dark" -> {
                 master.mainBorderpane.getStylesheets().remove(light);
                 master.mainBorderpane.getStylesheets().add(dark);
+                txipi.color = "dark";
+                break;
             }
             case "Light" -> {
                 master.mainBorderpane.getStylesheets().remove(dark);
                 master.mainBorderpane.getStylesheets().add(light);
+                txipi.color = "light";
+                break;
             }
+
+
         }
     }
 

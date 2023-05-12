@@ -49,6 +49,14 @@ public class TxipironClient extends Application {
     private Window authWindow;
     private Window mainWindow;
 
+    public static String color;
+
+    public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
+
+    public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
+
+
+
     public AuthWindowController authMaster;
 
 
@@ -69,6 +77,7 @@ public class TxipironClient extends Application {
      * @throws IOException - When the FXML file is not found
      */
     private Window load(String fxmlFile) throws IOException {
+        color="dark";
         Window window = new Window();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile),
                 ResourceBundle.getBundle("strings", lang));
@@ -109,6 +118,7 @@ public class TxipironClient extends Application {
         mainWindow = load("main.fxml");
         logger.debug("Windows (UIs) loaded");
         scene = new Scene(authWindow.ui);
+
         scene.getStylesheets().add(getClass().getResource("styles/DarkTheme.css").toExternalForm());
         logger.debug("Stylesheet loaded");
         String authTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("AuthTitle");
@@ -155,6 +165,13 @@ public class TxipironClient extends Application {
                 setStageTitle(authTitle);
                 logger.info("Changed scene to Auth");
                 scene.setRoot(authWindow.ui);
+                if(color.equals("dark")){
+                    scene.getStylesheets().remove(light);
+                    scene.getStylesheets().add(dark);}
+                else{
+                    scene.getStylesheets().remove(dark);
+                    scene.getStylesheets().add(light);
+                }
             }
             case "Main" -> {
                 String mainTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MainTitle");
@@ -163,6 +180,13 @@ public class TxipironClient extends Application {
                 logger.info("Changed scene to Main");
                 mainWindow.controller.setRefTokenId(result);
                 mainWindow.controller.homeListView();
+                if(color.equals("dark")){
+                    scene.getStylesheets().remove(light);
+                    scene.getStylesheets().add(dark);}
+                else{
+                    scene.getStylesheets().remove(dark);
+                    scene.getStylesheets().add(light);
+                }
             }
             default -> {
             }

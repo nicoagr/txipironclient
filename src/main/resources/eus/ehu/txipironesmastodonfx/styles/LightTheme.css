@@ -270,7 +270,7 @@
 }
 
 #bttnNotis > #notisIcon{
-    -fx-image: url(../icons/notis_dark.png);
+    -fx-image: url(../icons/notis_light.png);
 }
 
 /*postToot*/
