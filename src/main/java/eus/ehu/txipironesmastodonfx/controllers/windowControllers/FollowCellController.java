@@ -49,8 +49,10 @@ public class FollowCellController {
      */
     @FXML
     void onClickFollowButton() {
+        String foll = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
+        String unfoll = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
         followButton.setDisable(true);
-        if (followButton.getText().equals("Follow")) {
+        if (followButton.getText().equals(foll)) {
             String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
             followButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, idauxi), param -> {
@@ -59,12 +61,11 @@ public class FollowCellController {
                     logger.error("Error when following userid: " + idauxi);
                 } else {
                     logger.info("Followed user with id: " + idauxi + " successfully");
-                    String unfollow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
-                    followButton.setText(unfollow);
+                    followButton.setText(unfoll);
                     followButton.setDisable(false);
                 }
             });
-        } else if (followButton.getText().equals("Unfollow")) {
+        } else if (followButton.getText().equals(unfoll)) {
             String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
             followButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, idauxi), param -> {
@@ -73,8 +74,7 @@ public class FollowCellController {
                     logger.error("Error when unfollowing userid: " + idauxi);
                 } else {
                     logger.info("Unfollowed user with id: " + idauxi + " successfully");
-                    String follow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
-                    followButton.setText(follow);
+                    followButton.setText(foll);
                     followButton.setDisable(false);
                 }
             });

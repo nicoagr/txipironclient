@@ -488,30 +488,12 @@ public class MainWindowController implements WindowController {
     @FXML
     public void userTootListViewFromId(String id, String max_id) {
         if (max_id == null) {
-            Iterator<CellController> it = listViewItems.iterator();
-            it.next();
-            while (it.hasNext()) {
-                it.next();
-                it.remove();
-            }
+            Account a = (Account) listViewItems.get(0);
+            listViewItems.clear();
+            listViewItems.add(a);
         }
         logger.debug("Attempting to download profile and toots from id: " + id);
         showLoading();
-        AsyncUtils.asyncTask(() -> {
-            if (!NetworkUtils.hasInternet()) return null;
-            Account account;
-            account = APIAccessManager.getAccount(id, token);
-            return account;
-        }, account -> {
-            listViewItems.clear();
-            if (account == null) {
-                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading profile . Please check your connection and try again."));
-                logger.error("Error downloading profile from user id: " + id);
-                return;
-            }
-            listViewItems.add(account);
-            logger.info("Downloaded profile from id: " + id);
-        });
         AsyncUtils.asyncTask(() -> {
             if (!NetworkUtils.hasInternet()) return null;
             List<Toot> toots;
@@ -525,8 +507,12 @@ public class MainWindowController implements WindowController {
                 logger.error("Error downloading profile toots from user id" + id);
                 return;
             }
-            String tootreply = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("TootReply");
-            listViewItems.add(new Generic(Generic.of.MESSAGE, tootreply));
+            status.clear();
+            status.put(view.PROFILETOOT, id);
+            if (max_id == null) {
+                String tootreply = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("TootReply");
+                listViewItems.add(new Generic(Generic.of.MESSAGE, tootreply));
+            }
             listViewItems.addAll(toots);
             logger.info("Downloaded " + toots.size() + " toots from user id: " + id);
             hideLoading();
@@ -581,6 +567,8 @@ public class MainWindowController implements WindowController {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "Error downloading followers. Please check your connection and try again."));
                 return;
             }
+            status.clear();
+            status.put(view.PROFILEFOLLOWERS, id);
             String followtxt = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Followers");
             listViewItems.add(new Generic(Generic.of.MESSAGE, followtxt));
             listViewItems.addAll(follower);
@@ -630,6 +618,8 @@ public class MainWindowController implements WindowController {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "Error downloading following. Please check your connection and try again."));
                 return;
             }
+            status.clear();
+            status.put(view.PROFILEFOLLOWING, id);
             String following = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Following");
             listViewItems.add(new Generic(Generic.of.MESSAGE, following));
             listViewItems.addAll(follower);
@@ -722,7 +712,7 @@ public class MainWindowController implements WindowController {
                 return;
             }
             logger.debug("Downloaded id from username: " + username);
-            userTootListViewFromId(id, null);
+            firstUserTootListViewFromId(id);
         });
     }
 
@@ -779,8 +769,10 @@ public class MainWindowController implements WindowController {
                         if (v == view.LOADING) continue;
                         switch (v) {
                             case HOME -> homeListView(((Toot) listViewItems.get(listViewItems.size() - 1)).id);
-                            case PROFILETOOT ->
+                            case PROFILETOOT -> {
+                                if (listViewItems.get(listViewItems.size() - 1) instanceof Toot)
                                     userTootListViewFromId(status.get(view.PROFILETOOT), ((Toot) listViewItems.get(listViewItems.size() - 1)).id);
+                            }
                         }
                     }
                     infinityBlock = false;

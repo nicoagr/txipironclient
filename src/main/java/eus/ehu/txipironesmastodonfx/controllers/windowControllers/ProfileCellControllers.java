@@ -243,7 +243,9 @@ public class ProfileCellControllers {
      */
     private void onClickFollowButton() {
         omniButton.setDisable(true);
-        if (omniButton.getText().equals("Follow")) {
+        String foll = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
+        String unfoll = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
+        if (omniButton.getText().equals(foll)) {
             omniButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, this.id), param -> {
                 if (param == null) {
@@ -251,12 +253,11 @@ public class ProfileCellControllers {
                     logger.error("Error when following user with id " + this.id);
                 } else {
                     logger.info("Followed user with id " + this.id + " successfully");
-                    String unfollow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
-                    omniButton.setText(unfollow);
+                    omniButton.setText(unfoll);
                     omniButton.setDisable(false);
                 }
             });
-        } else if (omniButton.getText().equals("Unfollow")) {
+        } else if (omniButton.getText().equals(unfoll)) {
             omniButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, this.id), param -> {
                 if (param == null) {
@@ -264,8 +265,7 @@ public class ProfileCellControllers {
                     logger.error("Error when unfollowing user with id " + this.id);
                 } else {
                     logger.info("Unfollowed user with id " + this.id + " successfully");
-                    String follow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
-                    omniButton.setText(follow);
+                    omniButton.setText(foll);
                     omniButton.setDisable(false);
                 }
             });

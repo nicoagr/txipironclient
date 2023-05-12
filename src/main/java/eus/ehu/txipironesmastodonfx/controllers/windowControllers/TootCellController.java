@@ -116,8 +116,6 @@ public class TootCellController {
     @FXML
     void profilePictureClicked() {
         master.userTootListView(username.getText());
-        System.out.println(id);
-
     }
 
     /**

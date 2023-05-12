@@ -73,6 +73,8 @@ public class SettingsController {
         }, res -> {
             applyBtn.setVisible(false);
             autoplaycheck.setVisible(false);
+            comboStyles.setVisible(false);
+            comboLanguages.setVisible(false);
             if (res != null) {
                 logger.error("Error applying settings: " + res);
                 String again = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Again");
@@ -80,24 +82,19 @@ public class SettingsController {
             } else {
                 logger.info("Settings applied successfully.");
                 String success = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Success");
-                infoLabel.setText(success);            }
-        });
-        AsyncUtils.asyncTask(() -> {
-            String value=comboStyles.getValue();
-            return value;
-        }, style ->{
-            switch (style){
-                case "Dark":
-                    master.mainBorderpane.getStylesheets().remove(light);
-                    master.mainBorderpane.getStylesheets().add(dark);
-                    break;
-                case "Light":
-                    master.mainBorderpane.getStylesheets().remove(dark);
-                    master.mainBorderpane.getStylesheets().add(light);
-                    break;
-
+                infoLabel.setText(success);
             }
         });
+        switch (comboStyles.getValue()) {
+            case "Dark" -> {
+                master.mainBorderpane.getStylesheets().remove(light);
+                master.mainBorderpane.getStylesheets().add(dark);
+            }
+            case "Light" -> {
+                master.mainBorderpane.getStylesheets().remove(dark);
+                master.mainBorderpane.getStylesheets().add(light);
+            }
+        }
     }
 
     /**
