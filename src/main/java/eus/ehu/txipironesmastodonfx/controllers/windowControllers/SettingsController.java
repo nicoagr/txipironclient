@@ -92,21 +92,21 @@ public class SettingsController {
                 infoLabel.setText(success);
             }
         });
-//        String val = comboStyles.getValue();
-//        switch (val) {
-//            case "Dark" -> {
-//                master.mainBorderpane.getStylesheets().remove(light);
-//                master.mainBorderpane.getStylesheets().add(dark);
-//                txipi.color = "dark";
-//                break;
-//            }
-//            case "Light" -> {
-//                master.mainBorderpane.getStylesheets().remove(dark);
-//                master.mainBorderpane.getStylesheets().add(light);
-//                txipi.color = "light";
-//                break;
-//            }
-//        }
+        String val = comboStyles.getValue();
+        switch (val) {
+            case "Dark" -> {
+                master.mainBorderpane.getStylesheets().remove(light);
+                master.mainBorderpane.getStylesheets().add(dark);
+                txipi.color = "dark";
+                break;
+           }
+            case "Light" -> {
+                master.mainBorderpane.getStylesheets().remove(dark);
+                master.mainBorderpane.getStylesheets().add(light);
+                txipi.color = "light";
+                break;
+            }
+        }
         if (comboLanguages.getValue() == null) {
             return;
         }

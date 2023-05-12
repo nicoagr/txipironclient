@@ -83,6 +83,12 @@ public class TootCellController {
     private boolean bm;
     private String id;
 
+    public TxipironClient txipi;
+
+    public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
+
+    public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
+
     /**
      * Constructor for the controller.
      * It will load itself at take consciousness (set itself as controller)
@@ -268,6 +274,13 @@ public class TootCellController {
             contr.setMedia(media);
             contr.setReference(master);
             Scene scene = new Scene(root);
+            if(txipi.color.equals("dark")){
+                scene.getStylesheets().remove(light);
+                scene.getStylesheets().add(dark);}
+            else{
+                scene.getStylesheets().remove(dark);
+                scene.getStylesheets().add(light);
+            }
             return List.of(scene, contr);
         }, list -> {
             Stage popupStage = new Stage();

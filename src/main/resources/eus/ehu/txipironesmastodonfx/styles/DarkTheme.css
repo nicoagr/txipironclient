@@ -188,6 +188,8 @@
     -fx-background-color: #0D1317;
     -fx-text-fill: white;
 }
+
+
 .check-box{
     -fx-tick-label-fill: #0D1317;
     -fx-text-fill: white;

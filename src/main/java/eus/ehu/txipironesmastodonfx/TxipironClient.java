@@ -105,9 +105,11 @@ public class TxipironClient extends Application {
         authWindow = load("auth/auth.fxml");
         mainWindow = load("main.fxml");
         scene = new Scene(authWindow.ui);
-        if (color.equals("dark"))
-            scene.getStylesheets().add(dark);
-        else scene.getStylesheets().add(light);
+        if (color.equals("dark")){
+            scene.getStylesheets().remove(light);
+            scene.getStylesheets().add(dark);}
+        else {scene.getStylesheets().remove(dark);
+            scene.getStylesheets().add(light);}
         stage.setScene(scene);
     }
 
