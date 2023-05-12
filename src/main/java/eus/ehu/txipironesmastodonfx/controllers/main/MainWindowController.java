@@ -4,29 +4,24 @@ import eus.ehu.txipironesmastodonfx.TxipironClient;
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
 import eus.ehu.txipironesmastodonfx.data_access.*;
 import eus.ehu.txipironesmastodonfx.domain.*;
-import eus.ehu.txipironesmastodonfx.controllers.windowControllers.*;
 import javafx.collections.FXCollections;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.AccessibleAttribute;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import java.util.HashMap;
-import java.util.List;
-import javafx.stage.WindowEvent;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.io.IOException;
-import java.sql.SQLException;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.awt.event.WindowAdapter;
+import java.util.HashMap;
+import java.util.List;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
@@ -103,47 +98,6 @@ public class MainWindowController implements WindowController {
         status.put(view.POST_TOOT, null);
     }
 
-
-    /**
-     * Loads the notification
-     */
-    @FXML
-    void NotificationListView() throws IOException {
-        listViewItems.clear();
-        listViewItems.add("Loading...");
-        showLoading();
-        AsyncUtils.asyncTask(() -> {
-            if (!NetworkUtils.hasInternet()) return null;
-            List<Notification> notifications;
-            notifications = APIAccessManager.getNewNotification(token);
-            return notifications;
-        }, notifications -> {
-            listViewItems.clear();
-            if (notifications == null) {
-                listViewItems.add("Error downloading notifications. Please check your connection and try again.");
-                return;
-            }
-            hideLoading();
-            listViewItems.add("Notifications");
-            lastNotification = notifications.get(0).id;
-            for (Notification element : notifications) {
-                if (element.type.equals("mention")) {
-                    listViewItems.add(element.account.acct + " has mentioned you!");
-                    listViewItems.add(element.status);
-                } else if (element.type.equals("status")) {
-                    listViewItems.add(element.account.acct + ", has posted a toot!");
-                    listViewItems.add(element.status);
-                } else if (element.type.equals("follow")) {
-                    listViewItems.add(element.account.acct + ", has followed you!");
-                    listViewItems.add(element.account);
-                } else if (element.type.equals("favorite")) {
-                    listViewItems.add(element.account.acct + ", has liked your toot!");
-                    listViewItems.add(element.status);
-                }
-            }
-        });
-        APIAccessManager.clearNotification(token);
-    }
 
     /**
      * Gets the reference to the main application
@@ -277,6 +231,51 @@ public class MainWindowController implements WindowController {
             } else {
                 listViewItems.add(new Generic(Generic.of.MESSAGE, "Result statuses"));
                 listViewItems.addAll(res.statuses);
+            }
+        });
+    }
+
+    /**
+     * Loads the notification view
+     */
+    @FXML
+    void NotificationListView() {
+        listViewItems.clear();
+        listViewItems.add(new Generic(Generic.of.MESSAGE, "Loading..."));
+        showLoading();
+        AsyncUtils.asyncTask(() -> {
+            if (!NetworkUtils.hasInternet()) return null;
+            List<Notification> notifications;
+            logger.debug("Attempting to download notifications and clear them");
+            notifications = APIAccessManager.getNewNotification(token);
+            APIAccessManager.clearNotification(token);
+            return notifications;
+        }, notifications -> {
+            listViewItems.clear();
+            if (notifications == null) {
+                listViewItems.add(new Generic(Generic.of.ERROR, "Error downloading notifications. Please check your connection and try again."));
+                return;
+            }
+            hideLoading();
+            status.clear();
+            status.put(view.NOTIFICATION, null);
+            listViewItems.add(new Generic(Generic.of.MESSAGE, "Notifications"));
+            lastNotification = notifications.get(0).id;
+            logger.info("Downloaded " + notifications.size() + " notifications");
+            for (Notification element : notifications) {
+                if (element.type.equals("mention")) {
+                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + " has mentioned you!"));
+                    listViewItems.add(element.status);
+                } else if (element.type.equals("status")) {
+                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + ", has posted a toot!"));
+                    listViewItems.add(element.status);
+                } else if (element.type.equals("follow")) {
+                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + ", has followed you!"));
+                    listViewItems.add(element.account);
+                } else if (element.type.equals("favorite")) {
+                    listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + ", has liked your toot!"));
+                    listViewItems.add(element.status);
+                }
             }
         });
     }
@@ -507,6 +506,7 @@ public class MainWindowController implements WindowController {
      * @param windowEvent (WindowEvent) The event triggered
      */
     void closeWindowEvent(WindowEvent windowEvent) {
+        logger.info("Detected window closing. Shutting down...");
         notificationSystem.deactivateNotification();
     }
 

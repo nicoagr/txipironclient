@@ -2,7 +2,11 @@ package eus.ehu.txipironesmastodonfx.data_access;
 
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.domain.Notification;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
+
 import static java.lang.Thread.sleep;
 
 /**
@@ -18,6 +22,7 @@ public class NotificationSystem {
     public volatile boolean shutdown = false;
     public Thread mytread;
     WindowNotificationSystem WindowNotificationSystem;
+    private static final Logger logger = LogManager.getLogger("MainWindowController");
     MainWindowController master;
 
     /**
@@ -33,6 +38,7 @@ public class NotificationSystem {
             notifications = APIAccessManager.getNewNotification(master.token);
             return notifications;
         }, notifications -> {
+            logger.debug("Downloaded last notification: id" + notifications.get(0).id);
             master.lastNotification = notifications.get(0).id;
         });
 
@@ -52,29 +58,25 @@ public class NotificationSystem {
                         return;
                     }
                     switch (notifications.get(0).type) {
-                        case "mention":
-                            WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has mentioned you");
-                            break;
-                        case "status":
-                            WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has posted an toot");
-                            break;
-                        case "reblog":
-                            WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has reblogged a toot");
-                            break;
-                        case "follow":
-                            WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has followed you");
-                            break;
-                        case "favourite":
-                            WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has liked your toot");
-                            break;
-                        default:
-                            WindowNotificationSystem.trowNotificationWindow("A notification in your account has happened!");
+                        case "mention" ->
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has mentioned you");
+                        case "status" ->
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has posted an toot");
+                        case "reblog" ->
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has reblogged a toot");
+                        case "follow" ->
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has followed you");
+                        case "favourite" ->
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + " has liked your toot");
+                        default ->
+                                WindowNotificationSystem.trowNotificationWindow("A notification in your account has happened!");
                     }
                     master.lastNotification = notifications.get(0).id;
+                    logger.debug("Set last notification: id=" + master.lastNotification);
                 });
             }
         };
-
+        logger.info("Starting notification service (tray icon)");
         this.mytread = new Thread(toBeExecutedPeriodically);
         this.mytread.start();
     }
@@ -86,5 +88,6 @@ public class NotificationSystem {
     public void deactivateNotification() {
         this.mytread.interrupt();
         WindowNotificationSystem.removeTrayIcon();
+        logger.info("Deactivated notification service");
     }
 }
