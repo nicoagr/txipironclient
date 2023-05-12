@@ -154,24 +154,24 @@ public class TootCellController {
 
                 }
         );
-        AsyncUtils.asyncTask(() -> DisplayUtils.formatDate(finalToot.created_at), param -> date.setText(param));
+       AsyncUtils.asyncTask(() -> DisplayUtils.formatDate(finalToot.created_at), param -> date.setText(param));
         if (toot.favourited)
-            likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+            likes.setId("liked");
         else
-            likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
+            likes.setId("unliked");
         numLikes.setText(Integer.toString(finalToot.favourites_count));
         if (finalToot.sensitive)
             sensitiveImg.setVisible(true);
         if(toot.reblogged)
-            reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-retweet-512.png")));
+            reboot.setId("reboot");
         else
-            reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
+            reboot.setId("unReboot");
 
         numReboots.setText(Integer.toString(finalToot.reblogs_count));
         if(toot.bookmarked)
-            bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-bookmark.png")));
+            bookmarks.setId("unbookmarked");
         else
-            bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-bookmark.png")));
+            bookmarks.setId("bookmarked");
         mentions = toot.mentions;
         numComments.setText(Integer.toString(finalToot.replies_count));
         uri = toot.uri;
@@ -299,8 +299,6 @@ public class TootCellController {
         StringSelection selection = new StringSelection(uri);
         // Set the clipboard content with the string selection
         clipboard.setContents(selection, null);
-        // Change image to a checkbox
-        shareImg.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-ok.png")));
         // Open the default browser with the toot's uri
         NetworkUtils.openWebPage(uri);
     }
@@ -362,7 +360,7 @@ public class TootCellController {
                     }
                     fav = true;
                     numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) + 1));
-                    likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-heart_160.png")));
+                    likes.setId("liked");
                     likes.setVisible(true);
                 });
             }
@@ -385,7 +383,7 @@ public class TootCellController {
                     }
                     fav = false;
                     numLikes.setText(String.valueOf(Integer.parseInt(numLikes.getText()) - 1));
-                    likes.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-heart.png")));
+                    likes.setId("unliked");
                     likes.setVisible(true);
                 });
             }
@@ -418,7 +416,7 @@ public class TootCellController {
                     }
                     reblog = true;
                     numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) + 1));
-                    reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/dark-retweet-512.png")));
+                    reboot.setId("reboot");
                     reboot.setVisible(true);
                 });
             }
@@ -441,7 +439,7 @@ public class TootCellController {
                     }
                     reblog = false;
                     numReboots.setText(String.valueOf(Integer.parseInt(numReboots.getText()) - 1));
-                    reboot.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-retweet.png")));
+                    reboot.setId("unReboot");
                     reboot.setVisible(true);
                 });
             }
@@ -470,7 +468,7 @@ public class TootCellController {
                 }, pos -> {
                     if(pos != -1) ((Toot) master.listViewItems.get(pos)).bookmarked=true;
                     bm = true;
-                    bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/black-bookmark.png")));
+                    bookmarks.setId("bookmarked");
                     bookmarks.setVisible(true);
                 });
             }
@@ -489,7 +487,7 @@ public class TootCellController {
                 }, pos -> {
                     if(pos!=-1) ((Toot) master.listViewItems.get(pos)).bookmarked=false;
                     bm = false;
-                    bookmarks.setImage(new Image(getClass().getResourceAsStream("/eus/ehu/txipironesmastodonfx/mainassets/grey-bookmark.png")));
+                    bookmarks.setId("unBookmarked");
                     bookmarks.setVisible(true);
                 });
             }

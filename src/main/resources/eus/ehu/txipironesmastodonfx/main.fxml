@@ -15,13 +15,13 @@
 <BorderPane fx:id="mainBorderpane" maxHeight="700" maxWidth="1200" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController">
    <center>
         <ScrollPane fx:id="scrollpane" prefHeight="627.0" prefWidth="805.0" BorderPane.alignment="CENTER">
-            <VBox fx:id="vbox" prefHeight="627.0" prefWidth="821.0" />
+            <VBox fx:id="vbox" alignment="TOP_CENTER" prefHeight="627.0" prefWidth="821.0" />
         </ScrollPane>
    </center>
    <bottom>
-       <Label fx:id="copyright" contentDisplay="CENTER" prefHeight="19.0" prefWidth="265.0" text="%v1" textAlignment="CENTER" BorderPane.alignment="CENTER">
+       <Label fx:id="copyright" contentDisplay="CENTER" prefHeight="30.0" prefWidth="511.0" text="%v1" textAlignment="CENTER" BorderPane.alignment="CENTER">
            <font>
-               <Font size="13.0" />
+               <Font size="20.0" />
            </font>
        </Label>
    </bottom>
@@ -50,7 +50,7 @@
       </HBox>
    </top>
    <left>
-      <VBox minHeight="-Infinity" prefHeight="600.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="600.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
               <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="210.0" styleClass="left_button">
                <graphic>

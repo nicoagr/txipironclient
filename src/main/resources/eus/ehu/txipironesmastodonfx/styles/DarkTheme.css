@@ -274,6 +274,39 @@
 #bttnNotis > #notisIcon{
     -fx-image: url(../icons/notis_dark.png);
 }
+#shareImg{
+    -fx-image: url(../icons/share_dark.png);
+}
+#rebootedBy{
+    -fx-image: url(../icons/reboot_dark.png);
+}
+
+#commentIcon{
+    -fx-image: url(../icons/comment_dark.png);
+}
+#reboot{
+    -fx-image: url(../icons/reboot_dark.png);
+}
+#unReboot{
+    -fx-image: url(../icons/unreboot_dark.png);
+}
+
+#liked{
+    -fx-image: url(../icons/like_dark.png);
+}
+
+#unliked{
+    -fx-image: url(../icons/unlike_dark.png);
+}
+
+#bookmarked{
+    -fx-image: url(../icons/book_dark.png);
+}
+
+#unBookmarked{
+    -fx-image: url(../icons/unbook_dark.png);
+}
+
 
 /*postToot*/
 
