@@ -18,7 +18,10 @@ This application provides basic support in order to interact with the mastodon s
 
 The entirety of the client's code was developed for the "Software Engineering I" subject in the second year of the "Computer Engineering" university degree.
 ## Some views
-// TODO Screenshots
+![Timeline with media view](https://i.imgur.com/DEaF0jG.png)
+![Profile View](https://i.imgur.com/0l628SX.png)
+![Post Toot View](https://i.imgur.com/WrwaaUI.png)
+![Followers](https://i.imgur.com/w2XRBwn.png)
 
 ## Chef's touch
 For developers these are features related to code quality:
@@ -45,7 +48,7 @@ For developers these are features related to code quality:
 
 
 ## Download and Installation
-Application installers for all operating systems are included in the "assets" section in the [latest release](https://github.com/UPV-EHU-Bilbao/txipirones-mastodonFX/releases/latest).
+Application installers for all operating systems are included in the "assets" section in the [latest release page](https://github.com/UPV-EHU-Bilbao/txipirones-mastodonFX/releases/latest).
 
 ### Legal
 *This project does NOT have an open-source license. For more information about open source licenses, click [here](https://opensource.org/faq). If you want more information about what does mean to NOT have an open-source license, click [here](https://choosealicense.com/no-permission/)*
