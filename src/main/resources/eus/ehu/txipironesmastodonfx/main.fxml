@@ -18,64 +18,10 @@
             <VBox fx:id="vbox" prefHeight="627.0" prefWidth="821.0" />
         </ScrollPane>
    </center>
-   <left>
-      <VBox prefHeight="625.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-              <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="210.0" styleClass="left_button">
-               <graphic>
-                  <ImageView fx:id="homeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-            </Button>
-              <Button fx:id="bookmarkedToots" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#bookmarkedTootsListView" prefHeight="70.0" prefWidth="203.0" styleClass="left_button">
-               <graphic>
-                  <ImageView fx:id="bookmarkedIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-            </Button>
-             <Button fx:id="likedToots" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
-                     onAction="#likedTootsListView" prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
-                 <graphic>
-                     <ImageView fx:id="likeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true"
-                                preserveRatio="true"/>
-                 </graphic>
-             </Button>
-             <Button fx:id="postToot" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
-                     onAction="#postTootListview" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
-                 <graphic>
-                     <ImageView fx:id="postIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true"
-                                preserveRatio="true"/>
-                 </graphic>
-             </Button>
-             <Button minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#NotificationListView"
-                     prefHeight="70.0" prefWidth="211.0" styleClass="left_button" text="%Notification">
-                 <graphic>
-                     <ImageView fx:id="postIcon1" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true"
-                                preserveRatio="true"/>
-                 </graphic>
-             </Button>
-             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="168.0" opacity="0.0" stroke="BLACK"
-                        strokeType="INSIDE" width="200.0"/>
-             <Button fx:id="settings" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings"
-                     prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
-                 <graphic>
-                     <ImageView fx:id="settingIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true"
-                                preserveRatio="true"/>
-                 </graphic>
-             </Button>
-             <Button fx:id="changeAcctBtn" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
-                     onAction="#changeAcctBtnClick" prefHeight="78.0" prefWidth="200.0" styleClass="left_button"
-                     text="%Account">
-                 <font>
-                     <Font size="21.0"/>
-                 </font>
-             </Button>
-         </children>
-      </VBox>
-   </left>
    <bottom>
-       <Label fx:id="copyright" contentDisplay="CENTER" prefHeight="19.0" prefWidth="265.0" text="%v1"
-              textAlignment="CENTER" BorderPane.alignment="CENTER">
+       <Label fx:id="copyright" contentDisplay="CENTER" prefHeight="19.0" prefWidth="265.0" text="%v1" textAlignment="CENTER" BorderPane.alignment="CENTER">
            <font>
-               <Font size="13.0"/>
+               <Font size="13.0" />
            </font>
        </Label>
    </bottom>
@@ -85,8 +31,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="107.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
               <ImageView fx:id="icon" fitHeight="97.0" fitWidth="116.0" onMouseClicked="#loggedUserListView" pickOnBounds="true" preserveRatio="true" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="97.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="58.0" />
-             <TextField fx:id="searchQuery" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="485.0"
-                        promptText="%Search"/>
+             <TextField fx:id="searchQuery" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="485.0" promptText="%Search" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="58.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
               <Button fx:id="searchBtn" minHeight="40.0" mnemonicParsing="false" onAction="#performSearch" prefHeight="40.0" prefWidth="53.0">
                <graphic>
@@ -104,4 +49,46 @@
          </children>
       </HBox>
    </top>
+   <left>
+      <VBox minHeight="-Infinity" prefHeight="600.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+              <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="210.0" styleClass="left_button">
+               <graphic>
+                  <ImageView fx:id="homeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+              <Button fx:id="bookmarkedToots" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#bookmarkedTootsListView" prefHeight="70.0" prefWidth="203.0" styleClass="left_button">
+               <graphic>
+                  <ImageView fx:id="bookmarkedIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+             <Button fx:id="likedToots" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
+                 <graphic>
+                     <ImageView fx:id="likeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+                 </graphic>
+             </Button>
+             <Button fx:id="postToot" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
+                 <graphic>
+                     <ImageView fx:id="postIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+                 </graphic>
+             </Button>
+             <Button fx:id="bttnNotis" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#NotificationListView" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
+                 <graphic>
+                     <ImageView fx:id="notisIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+                 </graphic>
+             </Button>
+             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="123.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+             <Button fx:id="settings" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
+                 <graphic>
+                     <ImageView fx:id="settingIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+                 </graphic>
+             </Button>
+             <Button fx:id="changeAcctBtn" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#changeAcctBtnClick" prefHeight="78.0" prefWidth="200.0" styleClass="left_button" text="%Account">
+                 <font>
+                     <Font size="21.0" />
+                 </font>
+             </Button>
+         </children>
+      </VBox>
+   </left>
 </BorderPane>
