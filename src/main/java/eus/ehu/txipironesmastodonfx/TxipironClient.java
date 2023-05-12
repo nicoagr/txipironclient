@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx;
 
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
+import eus.ehu.txipironesmastodonfx.controllers.auth.AuthWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,6 +48,9 @@ public class TxipironClient extends Application {
     public static Locale lang = Locale.getDefault();
     private Window authWindow;
     private Window mainWindow;
+
+    public AuthWindowController authMaster;
+
 
     /**
      * An abstracted class that will contain the UI and the controller of a window
@@ -105,7 +109,7 @@ public class TxipironClient extends Application {
         mainWindow = load("main.fxml");
         logger.debug("Windows (UIs) loaded");
         scene = new Scene(authWindow.ui);
-        scene.getStylesheets().add(getClass().getResource("styles/listView.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("styles/DarkTheme.css").toExternalForm());
         logger.debug("Stylesheet loaded");
         String authTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("AuthTitle");
         setStageTitle(authTitle);

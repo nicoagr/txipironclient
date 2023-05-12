@@ -53,7 +53,9 @@ public class AuthWindowController implements WindowController {
 
     private String selectedAccId;
     @FXML
-    private VBox vbox;
+    public VBox vbox;
+
+    public String color;
     @FXML
     private ListView<Object> accountListView;
     private ObservableList<Object> listViewItems = FXCollections.observableArrayList();
@@ -177,6 +179,7 @@ public class AuthWindowController implements WindowController {
      */
     @FXML
     void initialize() {
+        color="default";
         logger.debug("Starting auth initial tasks...");
         String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
         errorLabel.setText(load);

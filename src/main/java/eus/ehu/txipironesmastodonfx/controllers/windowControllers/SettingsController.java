@@ -1,13 +1,17 @@
 package eus.ehu.txipironesmastodonfx.controllers.windowControllers;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
+import eus.ehu.txipironesmastodonfx.controllers.auth.AuthWindowController;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.data_access.AsyncUtils;
 import eus.ehu.txipironesmastodonfx.data_access.DBAccessManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +23,10 @@ import java.util.ResourceBundle;
 
 public class SettingsController {
     private MainWindowController master;
+
+    private AuthWindowController authMaster;
+
+    private MediaViewController mediaMaster;
     @FXML
     private VBox anchor;
     @FXML
@@ -28,6 +36,19 @@ public class SettingsController {
     private static final Logger logger = LogManager.getLogger("SettingsController");
     @FXML
     private Button applyBtn;
+
+    @FXML
+    private ComboBox<?> comboLanguages;
+
+    @FXML
+    private ComboBox<String> comboStyles;
+
+    ObservableList<String> Styles = FXCollections.observableArrayList();
+
+    public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
+
+    public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
+
 
     /**
      * This method will be used to
@@ -59,7 +80,22 @@ public class SettingsController {
             } else {
                 logger.info("Settings applied successfully.");
                 String success = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Success");
-                infoLabel.setText(success);
+                infoLabel.setText(success);            }
+        });
+        AsyncUtils.asyncTask(() -> {
+            String value=comboStyles.getValue();
+            return value;
+        }, style ->{
+            switch (style){
+                case "Dark":
+                    master.mainBorderpane.getStylesheets().remove(light);
+                    master.mainBorderpane.getStylesheets().add(dark);
+                    break;
+                case "Light":
+                    master.mainBorderpane.getStylesheets().remove(dark);
+                    master.mainBorderpane.getStylesheets().add(light);
+                    break;
+
             }
         });
     }
@@ -110,5 +146,11 @@ public class SettingsController {
     public void setReference(MainWindowController master) {
         this.master = master;
     }
+
+    @FXML
+    void initialize() {
+        comboStyles.getItems().addAll("Dark", "Light");
+    }
+
 
 }

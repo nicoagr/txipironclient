@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -302,6 +303,30 @@ public class ProfileCellControllers {
             logger.info("Showing profile photo for userid: " + id);
             popupStage.showAndWait();
         });
+    }
+
+    /**
+     * This method will be executed when the user clicks on the "Post" button
+     */
+    @FXML
+    void onClickPost() {
+        master.userTootListViewFromId(id);
+    }
+
+    /**
+     * This method will be executed when the user clicks on the "Followers" button
+     */
+    @FXML
+    void onClickFollowers() {
+        master.userTootListViewFromIdFollowers(id);
+    }
+
+    /**
+     * This method will be executed when the user clicks on the "Following" button
+     */
+    @FXML
+    void onClickFollowing() {
+        master.userTootListViewFromIdFollowings(id);
     }
 
     /**

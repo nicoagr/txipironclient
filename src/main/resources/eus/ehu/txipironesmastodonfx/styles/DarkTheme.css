@@ -1,0 +1,281 @@
+/*********************************/
+/**********COLOR PALETTE**********/
+/*********************************/
+/*                               */
+/*    #89D2DC non-photo blue     */
+/*    #6564DB slate blue         */
+/*    #232ED1 palatine blue      */
+/*    #262731 oxford blue        */
+/*    #0D1317 rich black         */
+/*                               */
+/*********************************/
+
+/*General*/
+.root {
+    -fx-background-color: #0D1317;
+    -fx-tootText-fill: white;
+}
+
+.fill{
+    -fx-text-fill: white;
+}
+
+.button_gen{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: white;
+}
+
+.button_gen:pressed{
+    -fx-background-color: #232ED1;
+    -fx-text-fill: white;
+}
+.button_gen:hover{
+    -fx-cursor: hand;
+}
+
+#content{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+#icon{
+    -fx-cursor: hand;
+}
+.image_click{
+    -fx-cursor: hand;
+}
+
+/*Left bar buttons*/
+
+.left_button {
+    -fx-background-color: #0D1317;
+    -fx-text-fill: white;
+    -fx-text-size: 30px;
+}
+
+.left_button:hover{
+    -fx-background-color: #101D42;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+   /* -fx-font-size: 22px;*/
+}
+
+.left_button:pressed {
+    -fx-background-color: #101D42;
+    -fx-text-fill: #FFFFFF;
+   /* -fx-font-weight: bold;*/
+}
+
+/*Search*/
+
+#searchQuery {
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
+
+#searchBtn{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: white;
+}
+
+#searchBtn:pressed{
+    -fx-background-color: #232ED1;
+    -fx-text-fill: #FFFFFF;
+
+}
+
+#searchBtn:hover{
+    -fx-cursor: hand;
+}
+
+/*anchor*/
+
+#anchor{
+    -fx-background-color: #262731;
+
+}
+
+.anchor{
+    -fx-background-color: #262731;
+}
+
+/*Post toot*/
+
+#sensitiveId{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+/*botton*/
+
+#copyright{
+    -fx-text-fill: white;
+}
+
+/*scrollbane*/
+
+#scrollpane{
+    -fx-background-color: #0D1317;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: #0D1317;
+
+}
+.scroll-bar:vertical .thumb{
+    -fx-background-color: #262731;
+}
+
+.scroll-bar:horizontal{
+    -fx-background-color: #0D1317;
+}
+
+#vbox{
+    -fx-background-color: #0D1317;
+}
+
+/*cells*/
+
+#info{
+    -fx-text-fill: white;
+}
+
+
+/*Auth*/
+
+.list-view{
+    -fx-background-color: #262731;
+}
+.list-cell{
+    -fx-background-color: #262731;
+}
+.account:hover{
+    -fx-background-color: #101D42;
+    -fx-cursor: hand;
+}
+
+.account:pressed{
+    -fx-background-color: #101D42;
+    -fx-cursor: hand;
+}
+
+#errorLabel{
+    -fx-text-fill: #6564DB;
+}
+
+.button_auth{
+    -fx-background-color: #6564DB;
+    -fx-text-fill: white;
+}
+
+
+.button_auth:pressed{
+    -fx-background-color: #232ED1;
+    -fx-text-fill: white;
+}
+
+
+/*settings*/
+
+.combo-box{
+    -fx-background-color: #0D1317;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup{
+    -fx-background-color: #0D1317;
+    -fx-text-fill: white;
+}
+
+.combo-box > .list-cell{
+    -fx-background-color: #0D1317;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup > .list-cell{
+    -fx-background-color: #0D1317;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup {
+    -fx-background-color: #0D1317;
+    -fx-progress-color: #0D1317;
+    -fx-progress-color: #0D1317;
+    -fx-prompt-text-fill: white;
+    -fx-tick-label-fill: white;
+    -fx-text-fill: white;
+}
+
+.check-box{
+    -fx-tick-label-fill: #0D1317;
+    -fx-text-fill: white;
+}
+
+#textFlow{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+    -fx-border-color: #262731;
+    -fx-prompt-text-fill: white;
+}
+
+.tootText{
+
+    -fx-text-fill: white;
+
+}
+
+/*profile*/
+
+.rectangle:hover{
+    -fx-cursor: hand;
+    -fx-border-color: #101D42;
+}
+
+.rectangle:pressed{
+    -fx-cursor: hand;
+    -fx-border-color: #101D42;
+}
+
+/*images*/
+
+.logo{
+    -fx-image: url(../logos/dark_transparent_1000.png);
+}
+
+#home > #homeIcon{
+    -fx-image: url(../icons/home_dark.png);
+}
+
+#bookmarkedToots > #bookmarkedIcon{
+    -fx-image: url(../icons/book_dark.png);
+}
+
+#likedToots > #likeIcon{
+    -fx-image: url(../icons/like_dark.png);
+}
+
+#postToot > #postIcon{
+    -fx-image: url(../icons/plus_dark.png);
+}
+
+#settings > #settingIcon{
+    -fx-image: url(../icons/settings_dark.png);
+}
+
+#searchBtn > #searchIcon{
+    -fx-image: url(../icons/search_dark.png);
+}
+#errorIcon{
+    -fx-image: url(../mainassets/error_dark.png);
+}
+
+/*postToot*/
+
+#content{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}
+
+#sensitiveId{
+    -fx-background-color: #262731;
+    -fx-text-fill: white;
+}

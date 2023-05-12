@@ -6,49 +6,83 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="700" maxWidth="1200" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController">
+<BorderPane fx:id="mainBorderpane" maxHeight="700" maxWidth="1200" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController">
+   <center>
+        <ScrollPane fx:id="scrollpane" prefHeight="627.0" prefWidth="805.0" BorderPane.alignment="CENTER">
+            <VBox fx:id="vbox" prefHeight="627.0" prefWidth="821.0" />
+        </ScrollPane>
+   </center>
+   <left>
+      <VBox prefHeight="625.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+              <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="210.0" styleClass="left_button">
+               <graphic>
+                  <ImageView fx:id="homeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+              <Button fx:id="bookmarkedToots" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#bookmarkedTootsListView" prefHeight="70.0" prefWidth="203.0" styleClass="left_button">
+               <graphic>
+                  <ImageView fx:id="bookmarkedIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+              <Button fx:id="likedToots" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
+               <graphic>
+                  <ImageView fx:id="likeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+              <Button fx:id="postToot" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="211.0" styleClass="left_button">
+               <graphic>
+                  <ImageView fx:id="postIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+              <Button fx:id="settings" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="200.0" styleClass="left_button">
+               <graphic>
+                  <ImageView fx:id="settingIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+              <Button fx:id="changeAcctBtn" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#changeAcctBtnClick" prefHeight="78.0" prefWidth="200.0" styleClass="left_button" text="Change account">
+               <font>
+                  <Font size="21.0" />
+               </font></Button>
+         </children>
+      </VBox>
+   </left>
    <bottom>
-      <AnchorPane prefHeight="35.0" prefWidth="900.0" BorderPane.alignment="CENTER">
-         <Label fx:id="copyright" contentDisplay="CENTER" layoutX="362.0" layoutY="8.0" prefHeight="19.0" prefWidth="265.0" text="%v1" textAlignment="CENTER">
-            <font>
-               <Font size="13.0" />
-            </font></Label>
-      </AnchorPane>
+      <Label fx:id="copyright" contentDisplay="CENTER" prefHeight="19.0" prefWidth="265.0" text="v1.0 by Nicolás, Haizea, Xiomara and Marcos" textAlignment="CENTER" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
    </bottom>
    <top>
-       <AnchorPane prefHeight="90.0" prefWidth="900.0" BorderPane.alignment="CENTER">
-           <ImageView fx:id="logo" fitHeight="75.0" fitWidth="75.0" layoutX="901.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@logos/light_transparent_75.png" />
-           </ImageView>
-         <ImageView fx:id="loading" fitHeight="55.0" fitWidth="55.0" layoutX="825.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@loading-gif.gif" />
-            </image>
-         </ImageView>
-           <ImageView fx:id="icon" fitHeight="75.0" fitWidth="75.0" layoutX="14.0" layoutY="8.0" onMouseClicked="#loggedUserListView" pickOnBounds="true" preserveRatio="true" />
-           <Label fx:id="searchbar" layoutX="259.0" layoutY="26.0" prefHeight="40.0" prefWidth="403.0" />
-           <Button fx:id="searchBtn" layoutX="686.0" layoutY="25.0" minHeight="40.0" mnemonicParsing="false" onAction="#performSearch" prefHeight="40.0" prefWidth="102.0" text="%Perform " />
-           <TextField fx:id="searchQuery" layoutX="192.0" layoutY="25.0" prefHeight="40.0" prefWidth="485.0" promptText="%Search" />
-       </AnchorPane>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="990.0" BorderPane.alignment="CENTER">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="107.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
+              <ImageView fx:id="icon" fitHeight="97.0" fitWidth="116.0" onMouseClicked="#loggedUserListView" pickOnBounds="true" preserveRatio="true" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="97.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="58.0" />
+              <TextField fx:id="searchQuery" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="485.0" promptText="Search here for an account name or an specific status" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="58.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+              <Button fx:id="searchBtn" minHeight="40.0" mnemonicParsing="false" onAction="#performSearch" prefHeight="40.0" prefWidth="53.0">
+               <graphic>
+                  <ImageView fx:id="searchIcon" fitHeight="43.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Button>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="49.0" />
+            <ImageView fx:id="loading" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@loading-gif.gif" />
+               </image>
+            </ImageView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="68.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="23.0" />
+              <ImageView fitHeight="64.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true" styleClass="logo" />
+         </children>
+      </HBox>
    </top>
-   <left>
-       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="185.0" text="%Home" />
-           <Button fx:id="bookmarkedToots" layoutY="70.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#bookmarkedTootsListView" prefHeight="70.0" prefWidth="186.0" text="%Bookmark" />
-           <Button fx:id="changeAcctBtn" layoutY="555.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#changeAcctBtnClick" prefHeight="70.0" prefWidth="185.0" text="%Account" />
-           <ScrollPane fx:id="scrollpane" layoutX="185.0" prefHeight="627.0" prefWidth="805.0">
-               <VBox fx:id="vbox" prefHeight="627.0" prefWidth="805.0" />
-           </ScrollPane>
-           <Button fx:id="postToot" layoutY="210.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#postTootListview" prefHeight="70.0" prefWidth="186.0" text="%Post" />
-           <Button layoutY="484.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#settings" prefHeight="70.0" prefWidth="185.0" text="%Settings" />
-           <Button fx:id="likedToots" layoutY="140.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#likedTootsListView" prefHeight="70.0" prefWidth="185.0" text="%Like" />
-           <Button fx:id="profile1" layoutY="280.0" minHeight="70.0" minWidth="135.0" mnemonicParsing="false"
-                   onAction="#NotificationListView" prefHeight="70.0" prefWidth="185.0" text="Notifications "/>
-       </AnchorPane>
-   </left>
 </BorderPane>
