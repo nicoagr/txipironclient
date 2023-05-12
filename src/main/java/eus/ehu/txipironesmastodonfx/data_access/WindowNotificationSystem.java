@@ -23,7 +23,7 @@ public class WindowNotificationSystem {
      */
     public WindowNotificationSystem(NotificationSystem notify) {
         this.noti = notify;
-        if (!SystemTray.isSupported()) {
+        if (!SystemTray.isSupported() || System.getProperty("os.name").contains("Linux")) {
             return;
         }
         SystemTray tray = SystemTray.getSystemTray();
