@@ -93,7 +93,8 @@ public class AuthWindowController implements WindowController {
         logger.debug("Attempting login...");
         loginBtn.setVisible(false);
         accountListView.setVisible(false);
-        errorLabel.setText("Loading Data...");
+        String ld  = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("LoadData");
+        errorLabel.setText(ld);
 
         // execute database and API access tasks asynchronously
         AsyncUtils.asyncTask(() -> DBAccessManager.getRefTokenFromId(selectedAccId), result -> {
@@ -107,7 +108,8 @@ public class AuthWindowController implements WindowController {
                 mainApp.changeScene("Main", result);
             } else {
                 logger.error("Error when getting ref token from database.");
-                errorLabel.setText("Error when getting account id & token from database.");
+                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error18");
+                errorLabel.setText(error);
             }
         });
     }
