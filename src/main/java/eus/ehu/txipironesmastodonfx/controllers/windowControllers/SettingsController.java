@@ -50,7 +50,8 @@ public class SettingsController {
 
     public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
     public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
-    public String halloween= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
+    public String halloween = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
+    public String summer = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Summer.css").toExternalForm();
     private String spanish;
     private String english;
     private String basque;
@@ -78,10 +79,6 @@ public class SettingsController {
             master.autoplayMedia = autoplaycheck.isSelected();
             return null;
         }, res -> {
-            applyBtn.setVisible(false);
-            autoplaycheck.setVisible(false);
-            comboStyles.setVisible(false);
-            comboLanguages.setVisible(false);
             if (res != null) {
                 logger.error("Error applying settings: " + res);
                 String again = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Again");
@@ -93,29 +90,53 @@ public class SettingsController {
             }
         });
         String val = comboStyles.getValue();
-        switch (val) {
-            case "Dark" -> {
-                master.mainBorderpane.getStylesheets().remove(light);
-                master.mainBorderpane.getStylesheets().remove(halloween);
-                master.mainBorderpane.getStylesheets().add(dark);
-                txipi.color = "dark";
-                break;
-           }
-            case "Light" -> {
-                master.mainBorderpane.getStylesheets().remove(dark);
-                master.mainBorderpane.getStylesheets().remove(halloween);
-                master.mainBorderpane.getStylesheets().add(light);
-                txipi.color = "light";
-                break;
+        if (val != null)
+            switch (val) {
+                case "Dark" -> {
+                    master.mainBorderpane.getStylesheets().remove(light);
+                    master.mainBorderpane.getStylesheets().remove(halloween);
+                    master.mainBorderpane.getStylesheets().remove(summer);
+                    master.mainBorderpane.getStylesheets().add(dark);
+                    authMaster.vbox.getStylesheets().remove(light);
+                    authMaster.vbox.getStylesheets().remove(halloween);
+                    authMaster.vbox.getStylesheets().remove(summer);
+                    authMaster.vbox.getStylesheets().add(dark);
+                    txipi.color = "dark";
+                }
+                case "Light" -> {
+                    master.mainBorderpane.getStylesheets().remove(dark);
+                    master.mainBorderpane.getStylesheets().remove(halloween);
+                    master.mainBorderpane.getStylesheets().remove(summer);
+                    master.mainBorderpane.getStylesheets().add(light);
+                    authMaster.vbox.getStylesheets().remove(dark);
+                    authMaster.vbox.getStylesheets().remove(halloween);
+                    authMaster.vbox.getStylesheets().remove(summer);
+                    authMaster.vbox.getStylesheets().add(light);
+                    txipi.color = "light";
+                }
+                case "Haloween" -> {
+                    master.mainBorderpane.getStylesheets().remove(light);
+                    master.mainBorderpane.getStylesheets().remove(dark);
+                    master.mainBorderpane.getStylesheets().remove(summer);
+                    master.mainBorderpane.getStylesheets().add(halloween);
+                    authMaster.vbox.getStylesheets().remove(light);
+                    authMaster.vbox.getStylesheets().remove(dark);
+                    authMaster.vbox.getStylesheets().remove(summer);
+                    authMaster.vbox.getStylesheets().add(halloween);
+                    txipi.color = "halloween";
+                }
+                case "Summer" -> {
+                    master.mainBorderpane.getStylesheets().remove(light);
+                    master.mainBorderpane.getStylesheets().remove(dark);
+                    master.mainBorderpane.getStylesheets().remove(halloween);
+                    master.mainBorderpane.getStylesheets().add(summer);
+                    authMaster.vbox.getStylesheets().remove(light);
+                    authMaster.vbox.getStylesheets().remove(dark);
+                    authMaster.vbox.getStylesheets().remove(halloween);
+                    authMaster.vbox.getStylesheets().add(summer);
+                    txipi.color = "summer";
+                }
             }
-            case "Haloween" -> {
-                master.mainBorderpane.getStylesheets().remove(light);
-                master.mainBorderpane.getStylesheets().remove(dark);
-                master.mainBorderpane.getStylesheets().add(halloween);
-                txipi.color = "halloween";
-                break;
-            }
-        }
         if (comboLanguages.getValue() == null) {
             return;
         }
@@ -194,11 +215,13 @@ public class SettingsController {
      */
     public void setReference(MainWindowController master) {
         this.master = master;
+        this.txipi = master.mainApp;
+        authMaster = (AuthWindowController) txipi.authWindow.controller;
     }
 
     @FXML
     void initialize() {
-        comboStyles.getItems().addAll("Dark", "Light", "Halloween");
+        comboStyles.getItems().addAll("Dark", "Light", "Halloween", "Summer");
         spanish = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Spanish");
         english = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("English");
         basque = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Basque");

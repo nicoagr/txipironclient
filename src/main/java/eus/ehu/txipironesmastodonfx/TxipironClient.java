@@ -1,7 +1,6 @@
 package eus.ehu.txipironesmastodonfx;
 
 import eus.ehu.txipironesmastodonfx.controllers.WindowController;
-import eus.ehu.txipironesmastodonfx.controllers.auth.AuthWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,9 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import okhttp3.internal.http.RetryAndFollowUpInterceptor;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +43,7 @@ public class TxipironClient extends Application {
      * This attribute will hold the locale of the application
      */
     public static Locale lang = Locale.getDefault();
-    private Window authWindow;
+    public Window authWindow;
     private Window mainWindow;
 
     public static String color;
@@ -57,15 +54,15 @@ public class TxipironClient extends Application {
 
     public String halloween= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
 
-    public AuthWindowController authMaster;
+    public String summer = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Summer.css").toExternalForm();
 
 
     /**
      * An abstracted class that will contain the UI and the controller of a window
      */
-    static class Window {
+    public static class Window {
         Parent ui;
-        WindowController controller;
+        public WindowController controller;
     }
 
     /**
@@ -105,18 +102,15 @@ public class TxipironClient extends Application {
         authWindow = load("auth/auth.fxml");
         mainWindow = load("main.fxml");
         scene = new Scene(authWindow.ui);
-        if (color.equals("dark")){
-            scene.getStylesheets().remove(light);
-            scene.getStylesheets().remove(halloween);
-            scene.getStylesheets().add(dark);}
-        else if(color.equals("light"))
-        {scene.getStylesheets().remove(dark);
-            scene.getStylesheets().remove(halloween);
-            scene.getStylesheets().add(light);}
-        else if(color.equals("halloween")){
-            scene.getStylesheets().remove(dark);
-            scene.getStylesheets().remove(light);
-            scene.getStylesheets().add(halloween);
+        scene.getStylesheets().remove(light);
+        scene.getStylesheets().remove(halloween);
+        scene.getStylesheets().remove(dark);
+        scene.getStylesheets().remove(summer);
+        switch (color) {
+            case "dark" -> scene.getStylesheets().add(dark);
+            case "light" -> scene.getStylesheets().add(light);
+            case "halloween" -> scene.getStylesheets().add(halloween);
+            case "summer" -> scene.getStylesheets().add(summer);
         }
         stage.setScene(scene);
     }

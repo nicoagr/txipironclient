@@ -89,7 +89,8 @@ public class TootCellController {
 
     public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
 
-    public String halloween= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
+    public String halloween = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
+    public String summer = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Summer.css").toExternalForm();
 
     /**
      * Constructor for the controller.
@@ -276,18 +277,16 @@ public class TootCellController {
             contr.setMedia(media);
             contr.setReference(master);
             Scene scene = new Scene(root);
-            if(txipi.color.equals("dark")){
-                scene.getStylesheets().remove(light);
-                scene.getStylesheets().remove(halloween);
-                scene.getStylesheets().add(dark);}
-            else if(txipi.color.equals("light")){
-                scene.getStylesheets().remove(dark);
-                scene.getStylesheets().remove(halloween);
-                scene.getStylesheets().add(light);
-            } else if (txipi.color.equals("halloween")) {
-                scene.getStylesheets().remove(dark);
-                scene.getStylesheets().remove(light);
-                scene.getStylesheets().add(halloween);
+            scene.getStylesheets().remove(light);
+            scene.getStylesheets().remove(halloween);
+            scene.getStylesheets().remove(dark);
+            scene.getStylesheets().remove(summer);
+
+            switch (txipi.color) {
+                case "dark" -> scene.getStylesheets().add(dark);
+                case "light" -> scene.getStylesheets().add(light);
+                case "halloween" -> scene.getStylesheets().add(halloween);
+                case "summer" -> scene.getStylesheets().add(summer);
             }
             return List.of(scene, contr);
         }, list -> {

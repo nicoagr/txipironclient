@@ -70,7 +70,7 @@ public class AuthNewAccoCellController {
      * @param authCode (String) - The auth code to be checked.
      */
     private void oauthAuthentication(String authCode) {
-        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("loading");
+        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
         mstdTokenTxt.setText(load);
         logger.info("Starting oauth authentication...");
         addAccBtn.setDisable(true);

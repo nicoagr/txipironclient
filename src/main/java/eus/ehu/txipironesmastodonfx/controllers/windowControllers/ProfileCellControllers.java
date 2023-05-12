@@ -151,9 +151,10 @@ public class ProfileCellControllers {
                     if (param != null) bannerPic.setImage(param);
                 }
         );
+        String pic = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("ChPic");
         AsyncUtils.asyncTask(() -> {
             if (account.id.equals(master.authenticatedId)){
-                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("ChPic");
+                return pic;
             }
             List<Follow> following = APIAccessManager.getFollow(master.authenticatedId, master.token, true);
             if (following == null) return "Error!";
@@ -164,7 +165,7 @@ public class ProfileCellControllers {
             }
             return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
         }, param -> {
-            if (param.equals("Change Picture")) self = true;
+            if (param.equals(pic)) self = true;
             if (!param.equals("Error!")) omniButton.setDisable(false);
             omniButton.setText(param);
             logger.debug("Loaded profile account for userid " + account.id);
