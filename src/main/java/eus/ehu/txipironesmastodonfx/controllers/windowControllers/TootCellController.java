@@ -222,22 +222,23 @@ public class TootCellController {
                 }));
             }
             // HashTags
-//            else if (element.startsWith("#")) {
-//                textElement.setText(element);
-//                textElement.setFill(Color.BLUE);
-//                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: white; -fx-cursor: hand"));
-//                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: blue; -fx-cursor: inherit"));
-//            }
+            else if (element.startsWith("#")) {
+                textElement.setText(element);
+                textElement.setFill(Color.CADETBLUE);
+                textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: white;"));
+                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: CADETBLUE"));
+            }
             // URLs
             else if (element.startsWith("http://") || element.startsWith("https://")) {
                 textElement.setText(element);
-                textElement.setFill(Color.BLUE);
+                textElement.setFill(Color.CORNFLOWERBLUE);
                 textElement.setOnMouseEntered(event -> textElement.setStyle("-fx-text-fill: white; -fx-cursor: hand"));
-                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: blue; -fx-cursor: inherit"));
+                textElement.setOnMouseExited(event -> textElement.setStyle("-fx-text-fill: CORNFLOWERBLUE; -fx-cursor: inherit"));
                 textElement.setOnMouseClicked(event -> NetworkUtils.openWebPage(element));
             }
             // Regular text
             else {
+                textElement.setId("tootText");
                 textElement.setText(element);
             }
             lista.add(textElement);

@@ -100,11 +100,15 @@
     -fx-background-color: #EEEEEE;
 }
 
-/*Post toot*/
+/*toot*/
 
 #sensitiveId{
     -fx-background-color: #EEEEEE;
     -fx-text-fill: black;
+}
+
+#tootText{
+    -fx-fill:black;
 }
 /*botton*/
 

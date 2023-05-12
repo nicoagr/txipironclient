@@ -13,7 +13,6 @@
 /*General*/
 .root {
     -fx-background-color: #0D1317;
-    -fx-tootText-fill: white;
 }
 
 .fill{
@@ -99,11 +98,15 @@
     -fx-background-color: #262731;
 }
 
-/*Post toot*/
+/*toot*/
 
 #sensitiveId{
     -fx-background-color: #262731;
     -fx-text-fill: white;
+}
+
+#tootText{
+    -fx-fill:white;
 }
 /*botton*/
 
