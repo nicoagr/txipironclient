@@ -39,7 +39,7 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 public class MainWindowController implements WindowController {
 
     @FXML
-    public BorderPane mainBorderpane;
+    private BorderPane mainBorderpane;
     public NotificationSystem notificationSystem = new NotificationSystem();
     public TxipironClient mainApp;
     private static final Logger logger = LogManager.getLogger("MainWindowController");
@@ -90,6 +90,16 @@ public class MainWindowController implements WindowController {
         mainApp.setStageTitle(mainTitle2);
         loading.setVisible(false);
         status.remove(view.LOADING);
+    }
+
+    /**
+     * This will return the main border pane
+     * of the main window. Used for applying styles
+     * @return (BorderPane) - The main border pane
+     */
+    @Override
+    public BorderPane getSceneWrapper() {
+        return mainBorderpane;
     }
 
     /**
@@ -343,7 +353,7 @@ public class MainWindowController implements WindowController {
      * Action when clicking on the home button
      */
     @FXML
-    public void homeListView() {
+    public void initialTask() {
         homeListView(null);
     }
 

@@ -45,7 +45,7 @@
    <left>
       <VBox alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="600.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-              <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#homeListView" prefHeight="70.0" prefWidth="210.0" styleClass="left_button">
+              <Button fx:id="home" minHeight="70.0" minWidth="135.0" mnemonicParsing="false" onAction="#initialTask" prefHeight="70.0" prefWidth="210.0" styleClass="left_button">
                <graphic>
                   <ImageView fx:id="homeIcon" fitHeight="63.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
                </graphic>

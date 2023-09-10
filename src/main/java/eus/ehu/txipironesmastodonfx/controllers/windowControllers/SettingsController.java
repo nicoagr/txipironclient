@@ -47,11 +47,6 @@ public class SettingsController {
     ObservableList<String> Styles = FXCollections.observableArrayList();
 
     public TxipironClient txipi;
-
-    public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
-    public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
-    public String halloween = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
-    public String summer = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Summer.css").toExternalForm();
     private String spanish;
     private String english;
     private String basque;
@@ -90,53 +85,9 @@ public class SettingsController {
             }
         });
         String val = comboStyles.getValue();
-        if (val != null)
-            switch (val) {
-                case "Dark" -> {
-                    master.mainBorderpane.getStylesheets().remove(light);
-                    master.mainBorderpane.getStylesheets().remove(halloween);
-                    master.mainBorderpane.getStylesheets().remove(summer);
-                    master.mainBorderpane.getStylesheets().add(dark);
-                    authMaster.vbox.getStylesheets().remove(light);
-                    authMaster.vbox.getStylesheets().remove(halloween);
-                    authMaster.vbox.getStylesheets().remove(summer);
-                    authMaster.vbox.getStylesheets().add(dark);
-                    txipi.color = "dark";
-                }
-                case "Light" -> {
-                    master.mainBorderpane.getStylesheets().remove(dark);
-                    master.mainBorderpane.getStylesheets().remove(halloween);
-                    master.mainBorderpane.getStylesheets().remove(summer);
-                    master.mainBorderpane.getStylesheets().add(light);
-                    authMaster.vbox.getStylesheets().remove(dark);
-                    authMaster.vbox.getStylesheets().remove(halloween);
-                    authMaster.vbox.getStylesheets().remove(summer);
-                    authMaster.vbox.getStylesheets().add(light);
-                    txipi.color = "light";
-                }
-                case "Halloween" -> {
-                    master.mainBorderpane.getStylesheets().remove(light);
-                    master.mainBorderpane.getStylesheets().remove(dark);
-                    master.mainBorderpane.getStylesheets().remove(summer);
-                    master.mainBorderpane.getStylesheets().add(halloween);
-                    authMaster.vbox.getStylesheets().remove(light);
-                    authMaster.vbox.getStylesheets().remove(dark);
-                    authMaster.vbox.getStylesheets().remove(summer);
-                    authMaster.vbox.getStylesheets().add(halloween);
-                    txipi.color = "halloween";
-                }
-                case "Summer" -> {
-                    master.mainBorderpane.getStylesheets().remove(light);
-                    master.mainBorderpane.getStylesheets().remove(dark);
-                    master.mainBorderpane.getStylesheets().remove(halloween);
-                    master.mainBorderpane.getStylesheets().add(summer);
-                    authMaster.vbox.getStylesheets().remove(light);
-                    authMaster.vbox.getStylesheets().remove(dark);
-                    authMaster.vbox.getStylesheets().remove(halloween);
-                    authMaster.vbox.getStylesheets().add(summer);
-                    txipi.color = "summer";
-                }
-            }
+        if (val != null) {
+            master.mainApp.changeStyle(val);
+        }
         applyBtn.setDisable(false);
         applyBtn.setText(TxipironClient.s("Apply"));
         autoplaycheck.setDisable(false);

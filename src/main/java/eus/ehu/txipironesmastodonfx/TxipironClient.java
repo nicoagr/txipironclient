@@ -47,16 +47,11 @@ public class TxipironClient extends Application {
     public Window authWindow;
     private Window mainWindow;
 
-    public static String color;
-
-    public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
-
-    public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
-
-    public String halloween= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
-
-    public String summer = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Summer.css").toExternalForm();
-
+    public String currentstyle;
+    public final String darkstyle = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
+    public final String lightstyle = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
+    public final String halloweenstyle = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
+    public final String summerstyle = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Summer.css").toExternalForm();
 
     /**
      * An abstracted class that will contain the UI and the controller of a window
@@ -75,7 +70,6 @@ public class TxipironClient extends Application {
      * @throws IOException - When the FXML file is not found
      */
     private Window load(String fxmlFile) throws IOException {
-        color="dark";
         Window window = new Window();
         // Load the FXML file with language pack "strings", being the default language "lang"
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile),
@@ -104,17 +98,9 @@ public class TxipironClient extends Application {
         authWindow = load("auth/auth.fxml");
         mainWindow = load("main.fxml");
         scene = new Scene(authWindow.ui);
-        scene.getStylesheets().remove(light);
-        scene.getStylesheets().remove(halloween);
-        scene.getStylesheets().remove(dark);
-        scene.getStylesheets().remove(summer);
-        switch (color) {
-            case "dark" -> scene.getStylesheets().add(dark);
-            case "light" -> scene.getStylesheets().add(light);
-            case "halloween" -> scene.getStylesheets().add(halloween);
-            case "summer" -> scene.getStylesheets().add(summer);
-        }
         stage.setScene(scene);
+        stage.show();
+        changeStyle(currentstyle);
     }
 
     /**
@@ -148,13 +134,13 @@ public class TxipironClient extends Application {
         logger.debug("Windows (UIs) loaded");
         scene = new Scene(authWindow.ui);
 
-        scene.getStylesheets().add(getClass().getResource("styles/DarkTheme.css").toExternalForm());
-        logger.debug("Stylesheet loaded");
         String authTitle = s("AuthTitle");
         setStageTitle(authTitle);
         stage.getIcons().add(new Image(getClass().getResource("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg").toExternalForm()));
         logger.debug("Icon loaded");
         stage.setScene(scene);
+        // Initial (default) theme is dark theme
+        changeStyle("Dark");
         stage.show();
         logger.info("Scene shown - Client Started");
     }
@@ -193,41 +179,48 @@ public class TxipironClient extends Application {
                 setStageTitle(s("AuthTitle"));
                 logger.info("Changed scene to Auth");
                 scene.setRoot(authWindow.ui);
-                if (color.equals("dark")){
-                    scene.getStylesheets().remove(light);
-                    scene.getStylesheets().remove(halloween);
-                    scene.getStylesheets().add(dark);}
-                else if(color.equals("light"))
-                {scene.getStylesheets().remove(dark);
-                    scene.getStylesheets().remove(halloween);
-                    scene.getStylesheets().add(light);}
-                else if(color.equals("halloween")){
-                    scene.getStylesheets().remove(dark);
-                    scene.getStylesheets().remove(light);
-                    scene.getStylesheets().add(halloween);
-                }
+                authWindow.controller.initialTask();
             }
             case "Main" -> {
                 setStageTitle(s("MainTitle"));
                 scene.setRoot(mainWindow.ui);
                 logger.info("Changed scene to Main");
                 mainWindow.controller.setRefTokenId(result);
-                mainWindow.controller.homeListView();
-                if (color.equals("dark")){
-                    scene.getStylesheets().remove(light);
-                    scene.getStylesheets().remove(halloween);
-                    scene.getStylesheets().add(dark);}
-                else if(color.equals("light"))
-                {scene.getStylesheets().remove(dark);
-                    scene.getStylesheets().remove(halloween);
-                    scene.getStylesheets().add(light);}
-                else if(color.equals("halloween")){
-                    scene.getStylesheets().remove(dark);
-                    scene.getStylesheets().remove(light);
-                    scene.getStylesheets().add(halloween);
-                }
+                mainWindow.controller.initialTask();
             }
             default -> {
+            }
+        }
+    }
+
+    /**
+     * Changes the style of the application
+     * @param styleName (String) - Name of the style to change to (dark, light, halloween, summer)
+     */
+    public void changeStyle(String styleName) {
+        logger.debug("Changing style to " + styleName);
+        mainWindow.controller.getSceneWrapper().getStylesheets().removeAll(darkstyle, lightstyle, halloweenstyle, summerstyle);
+        authWindow.controller.getSceneWrapper().getStylesheets().removeAll(darkstyle, lightstyle, halloweenstyle, summerstyle);
+        switch (styleName) {
+            case "Light" -> {
+                mainWindow.controller.getSceneWrapper().getStylesheets().add(lightstyle);
+                authWindow.controller.getSceneWrapper().getStylesheets().add(lightstyle);
+                currentstyle = "Light";
+            }
+            case "Halloween" -> {
+                mainWindow.controller.getSceneWrapper().getStylesheets().add(halloweenstyle);
+                authWindow.controller.getSceneWrapper().getStylesheets().add(halloweenstyle);
+                currentstyle = "Halloween";
+            }
+            case "Summer" -> {
+                mainWindow.controller.getSceneWrapper().getStylesheets().add(summerstyle);
+                authWindow.controller.getSceneWrapper().getStylesheets().add(summerstyle);
+                currentstyle = "Summer";
+            }
+            default -> {
+                mainWindow.controller.getSceneWrapper().getStylesheets().add(darkstyle);
+                authWindow.controller.getSceneWrapper().getStylesheets().add(darkstyle);
+                currentstyle = "Dark";
             }
         }
     }

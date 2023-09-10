@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -170,6 +171,16 @@ public class AuthWindowController implements WindowController {
     }
 
     /**
+     * Returns the main scene wrapper. Used by the main app
+     * for applying styles
+     * @return (Parent) - The main scene wrapper
+     */
+    @Override
+    public Parent getSceneWrapper() {
+        return vbox;
+    }
+
+    /**
      * Starting point of this window.
      * Will check for internet connection, database
      * existance and tables inside the database.
@@ -264,5 +275,14 @@ public class AuthWindowController implements WindowController {
             }
         });
         logger.info("Authentication initial tasks finished - Client operative");
+    }
+
+    // Tasks to perform after the window is shown
+    public void initialTask() {
+        // Reset selected account
+        selectedAccId = null;
+        loginBtn.setDisable(true);
+        // Refresh ListView
+        updateListView();
     }
 }

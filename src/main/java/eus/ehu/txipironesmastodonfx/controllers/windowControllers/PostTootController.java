@@ -149,7 +149,7 @@ public class PostTootController {
         }, res -> {
             if (res != null) {
                 logger.info("Toot successfully posted!");
-                master.homeListView();//despues de postear el toot, se resetea y se muestra home
+                master.initialTask();//despues de postear el toot, se resetea y se muestra home
             } else {
                 master.listViewItems.clear();
                 String error = TxipironClient.s("Error9");

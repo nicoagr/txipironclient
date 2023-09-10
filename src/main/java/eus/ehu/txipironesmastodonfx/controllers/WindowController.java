@@ -1,6 +1,7 @@
 package eus.ehu.txipironesmastodonfx.controllers;
 
 import eus.ehu.txipironesmastodonfx.TxipironClient;
+import javafx.scene.Parent;
 
 import java.util.List;
 
@@ -13,6 +14,14 @@ import java.util.List;
  * @author Marcos Chouciño
  */
 public interface WindowController {
+
+    /**
+     * Gets the scene wrapper. This can be an
+     * AnchorPane, a BorderPane, a VBox, etc.
+     * Used for applying styles
+     * @return (Parent) - The scene wrapper
+     */
+     Parent getSceneWrapper();
 
     /**
      * Sets a reference to the main application
@@ -33,10 +42,7 @@ public interface WindowController {
     /**
      * homeListView method
      */
-    default void homeListView() {
+    default void initialTask() {
         // Do nothing
     }
-
-
-
 }

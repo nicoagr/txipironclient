@@ -85,13 +85,6 @@ public class TootCellController {
 
     public TxipironClient txipi;
 
-    public String dark= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/DarkTheme.css").toExternalForm();
-
-    public String light= getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/LightTheme.css").toExternalForm();
-
-    public String halloween = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Halloween.css").toExternalForm();
-    public String summer = getClass().getResource("/eus/ehu/txipironesmastodonfx/styles/Summer.css").toExternalForm();
-
     /**
      * Constructor for the controller.
      * It will load itself at take consciousness (set itself as controller)
@@ -277,16 +270,11 @@ public class TootCellController {
             contr.setMedia(media);
             contr.setReference(master);
             Scene scene = new Scene(root);
-            scene.getStylesheets().remove(light);
-            scene.getStylesheets().remove(halloween);
-            scene.getStylesheets().remove(dark);
-            scene.getStylesheets().remove(summer);
-
-            switch (txipi.color) {
-                case "dark" -> scene.getStylesheets().add(dark);
-                case "light" -> scene.getStylesheets().add(light);
-                case "halloween" -> scene.getStylesheets().add(halloween);
-                case "summer" -> scene.getStylesheets().add(summer);
+            switch (txipi.currentstyle) {
+                case "Dark" -> scene.getStylesheets().add(txipi.darkstyle);
+                case "Light" -> scene.getStylesheets().add(txipi.lightstyle);
+                case "Halloween" -> scene.getStylesheets().add(txipi.halloweenstyle);
+                case "Summer" -> scene.getStylesheets().add(txipi.summerstyle);
             }
             return List.of(scene, contr);
         }, list -> {
@@ -348,10 +336,11 @@ public class TootCellController {
     /**
      * Setter for the reference to the auth window controller
      *
-     * @param thisclass (AuthWindowController) - The reference to the auth window controller
+     * @param thisclass (AuthWindowController) - The reference to the main window controller
      */
     public void setReference(MainWindowController thisclass) {
         this.master = thisclass;
+        this.txipi = thisclass.mainApp;
     }
 
     /**
