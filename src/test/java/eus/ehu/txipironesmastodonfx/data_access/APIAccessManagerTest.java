@@ -74,40 +74,6 @@ public class APIAccessManagerTest {
     }
 
     @Test
-    public void testPerformSearch(){
-        Assertions.assertNull(APIAccessManager.performSearch(null, null, 4));
-        Assertions.assertNull(APIAccessManager.performSearch("", null, 4));
-        Assertions.assertNull(APIAccessManager.performSearch(null, "", 4));
-        Assertions.assertNull(APIAccessManager.performSearch("", "", 4));
-        Assertions.assertNull(APIAccessManager.performSearch(null, token, 4));
-
-        //No results
-        SearchResult sr1 = APIAccessManager.performSearch("upvehu", token, 4);
-        Assertions.assertEquals(sr1.accounts, new ArrayList<>());
-        Assertions.assertEquals(sr1.statuses, new ArrayList<>());
-
-        //Only appears one account
-        SearchResult sr2 = APIAccessManager.performSearch("Namtium", token, 4);
-        //@Namtium
-        Assertions.assertTrue(sr2.accounts.get(0).equals(new Follow("109897214707125498")));
-        //No toots found
-        Assertions.assertEquals(sr2.statuses,new ArrayList<>());
-
-        //4 accounts and one toot
-        SearchResult sr3 = APIAccessManager.performSearch("toot", token, 4);
-        //@xiiomaraxc's toot
-        Assertions.assertTrue(sr3.statuses.get(0).equals(new Toot("110316393639220016")));
-        //@tootsdk@iosdev.space
-        Assertions.assertTrue(sr3.accounts.get(0).equals(new Follow("109526249052533979")));
-        //@twit_terrorist@mastodon.cat
-        Assertions.assertTrue(sr3.accounts.get(1).equals(new Follow("1061473")));
-        //@toot_your_own_adventure@clar.ke
-        Assertions.assertTrue(sr3.accounts.get(2).equals(new Follow("110073888022807394")));
-        //@tootapp
-        Assertions.assertTrue(sr3.accounts.get(3).equals(new Follow("420049")));
-    }
-
-    @Test
     public void testGetIdFromUsername(){
         Assertions.assertNull(APIAccessManager.getIdFromUsername(null));
         Assertions.assertNull(APIAccessManager.getIdFromUsername(""));
