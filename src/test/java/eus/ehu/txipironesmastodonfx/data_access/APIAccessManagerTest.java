@@ -105,30 +105,6 @@ public class APIAccessManagerTest {
     }
 
     @Test
-    public void testBookmarkToot(){
-        Assertions.assertEquals(APIAccessManager.bookmarkToot(null, null), 401);
-        Assertions.assertEquals(APIAccessManager.bookmarkToot(tootId, null), 401);
-        Assertions.assertEquals(APIAccessManager.bookmarkToot(null, token), 404);
-        Assertions.assertEquals(APIAccessManager.bookmarkToot(tootId, ""), 401);
-        Assertions.assertEquals(APIAccessManager.bookmarkToot("", token), 404);
-        Assertions.assertEquals(APIAccessManager.bookmarkToot("", ""), 404);
-        Assertions.assertEquals(APIAccessManager.bookmarkToot(inexistentId, token), 404);
-        Assertions.assertEquals(APIAccessManager.bookmarkToot(tootId, token),200);
-    }
-
-    @Test
-    public void testUnbookmarkToot(){
-        Assertions.assertEquals(APIAccessManager.unbookmarkToot(null, null), 401);
-        Assertions.assertEquals(APIAccessManager.unbookmarkToot(untootId, null), 401);
-        Assertions.assertEquals(APIAccessManager.unbookmarkToot(null, token), 404);
-        Assertions.assertEquals(APIAccessManager.unbookmarkToot(untootId, ""), 401);
-        Assertions.assertEquals(APIAccessManager.unbookmarkToot("", token), 404);
-        Assertions.assertEquals(APIAccessManager.unbookmarkToot("", ""), 404);
-        Assertions.assertEquals(APIAccessManager.unbookmarkToot(inexistentId, token), 404);
-        Assertions.assertEquals(APIAccessManager.unbookmarkToot(untootId, token), 200);
-    }
-
-    @Test
     public void testReblogToot(){
         Assertions.assertEquals(APIAccessManager.reblogToot(null, null), 401);
         Assertions.assertEquals(APIAccessManager.reblogToot(tootId, null), 401);

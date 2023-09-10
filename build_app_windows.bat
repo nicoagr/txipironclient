@@ -74,9 +74,10 @@ call "%JAVA_HOME%\bin\jlink" ^
   --strip-debug ^
   --module-path target/installer/input/libs/ ^
   --add-modules %detected_modules%%manual_modules% ^
-  --include-locales=en,es ^
+  --include-locales=en,es,fr,eu ^
   --output target/java-runtime
 
+echo packaging application
 
 rem ------ PACKAGING ----------------------------------------------------------
 rem In the end we will find the package inside the target/installer directory.
