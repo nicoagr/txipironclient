@@ -78,7 +78,7 @@ $JAVA_HOME/bin/jlink \
   --strip-debug \
   --module-path "target/installer/input/libs/" \
   --add-modules "${detected_modules}${manual_modules}" \
-  --include-locales=en,de \
+  --include-locales=en,es,fr,eu \
   --output target/java-runtime
 
 # ------ PACKAGING ----------------------------------------------------------
