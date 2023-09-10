@@ -64,7 +64,7 @@ public class MainWindowController implements WindowController {
     public ScrollPane scrollpane;
     public ObservableList<CellController> listViewItems = FXCollections.observableArrayList();
     public boolean autoplayMedia = false;
-    public String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+    public String load = TxipironClient.s("Load");
 
     private enum view {
         HOME, PROFILETOOT, PROFILEFOLLOWING, PROFILEFOLLOWERS, SEARCH, POST_TOOT, NOTIFICATION, FAVOURITES, BOOKMARKS, SETTINGS, LOADING
@@ -74,7 +74,7 @@ public class MainWindowController implements WindowController {
      * Changes title and Shows loading gif
      */
     public void showLoading() {
-        String mainTitle1 = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("LoadTitle");
+        String mainTitle1 = TxipironClient.s("LoadTitle");
         mainApp.setStageTitle(mainTitle1);
         loading.setVisible(true);
         status.clear();
@@ -86,7 +86,7 @@ public class MainWindowController implements WindowController {
      * and hides the loading gif
      */
     public void hideLoading() {
-        String mainTitle2 = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MainTitle");
+        String mainTitle2 = TxipironClient.s("MainTitle");
         mainApp.setStageTitle(mainTitle2);
         loading.setVisible(false);
         status.remove(view.LOADING);
@@ -99,7 +99,7 @@ public class MainWindowController implements WindowController {
     public void postTootListview() {
         showLoading();
         listViewItems.clear();
-        String post = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Post");
+        String post = TxipironClient.s("Post");
         listViewItems.add(new Generic(Generic.of.POST_TOOT, post));
         logger.info("Loaded post toot screen");
         hideLoading();
@@ -206,7 +206,7 @@ public class MainWindowController implements WindowController {
     void performSearch() {
         listViewItems.clear();
         if (searchQuery.getText().isEmpty()) {
-            String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error1");
+            String error = TxipironClient.s("Error1");
             listViewItems.add(new Generic(Generic.of.ERROR, error));
             logger.error("User tried to type a null search query");
             return;
@@ -222,7 +222,7 @@ public class MainWindowController implements WindowController {
         }, res -> {
             hideLoading();
             if (res == null) {
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error2");
+                String error = TxipironClient.s("Error2");
                 listViewItems.add(new Generic(Generic.of.ERROR, error));
                 logger.error("Error downloading search results. Please check your connection and try again.");
                 return;
@@ -232,18 +232,18 @@ public class MainWindowController implements WindowController {
             status.put(view.SEARCH, null);
             listViewItems.remove(0);
             if (res.accounts.size() == 0) {
-                String noAcc = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoAcc");
+                String noAcc = TxipironClient.s("NoAcc");
                 listViewItems.add(new Generic(Generic.of.MESSAGE, noAcc));
             } else {
-                String acc = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Acc");
+                String acc = TxipironClient.s("Acc");
                 listViewItems.add(new Generic(Generic.of.MESSAGE, acc));
                 listViewItems.addAll(res.accounts);
             }
             if (res.statuses.size() == 0) {
-                String noStat = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoStat");
+                String noStat = TxipironClient.s("NoStat");
                 listViewItems.add(new Generic(Generic.of.MESSAGE, noStat));
             } else {
-                String stat = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Stat");
+                String stat = TxipironClient.s("Stat");
                 listViewItems.add(new Generic(Generic.of.MESSAGE, stat));
                 listViewItems.addAll(res.statuses);
             }
@@ -268,32 +268,32 @@ public class MainWindowController implements WindowController {
         }, notifications -> {
             listViewItems.clear();
             if (notifications == null) {
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error19");
+                String error = TxipironClient.s("Error19");
                 listViewItems.add(new Generic(Generic.of.ERROR, error));
                 return;
             }
             hideLoading();
             status.clear();
             status.put(view.NOTIFICATION, null);
-            String notif = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Notification");
+            String notif = TxipironClient.s("Notification");
             listViewItems.add(new Generic(Generic.of.MESSAGE, notif));
             lastNotification = notifications.get(0).id;
             logger.info("Downloaded " + notifications.size() + " notifications");
             for (Notification element : notifications) {
                 if (element.type.equals("mention")) {
-                    String mention = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Mention");
+                    String mention = TxipironClient.s("Mention");
                     listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + mention));
                     listViewItems.add(element.status);
                 } else if (element.type.equals("status")) {
-                    String status = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Status");
+                    String status = TxipironClient.s("Status");
                     listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + status));
                     listViewItems.add(element.status);
                 } else if (element.type.equals("follow")) {
-                    String follow = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FollowNotif");
+                    String follow = TxipironClient.s("FollowNotif");
                     listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + follow));
                     listViewItems.add(element.account);
                 } else if (element.type.equals("favorite")) {
-                    String fav = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FavNotif");
+                    String fav = TxipironClient.s("FavNotif");
                     listViewItems.add(new Generic(Generic.of.MESSAGE, element.account.acct + fav));
                     listViewItems.add(element.status);
                 }
@@ -318,7 +318,7 @@ public class MainWindowController implements WindowController {
             return toot;
         }, toot -> {
             if (toot == null) {
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error3");
+                String error = TxipironClient.s("Error3");
                 listViewItems.add(new Generic(Generic.of.ERROR, error));
                 logger.error("Error downloading bookmarked toots. Please check your connection and try again.");
                 return;
@@ -326,12 +326,12 @@ public class MainWindowController implements WindowController {
             hideLoading();
             logger.info("Downloaded " + toot.size() + " bookmarked toots");
             if (toot.size() == 0) {
-                String noBook = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoBook");
+                String noBook = TxipironClient.s("NoBook");
                 listViewItems.add(new Generic(Generic.of.MESSAGE, noBook));
                 return;
             }
             listViewItems.remove(0);
-            String book = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Bookmark");
+            String book = TxipironClient.s("Bookmark");
             listViewItems.add(new Generic(Generic.of.MESSAGE, book));
             listViewItems.addAll(toot);
             status.clear();
@@ -369,7 +369,7 @@ public class MainWindowController implements WindowController {
             return toots;
         }, toots -> {
             if (toots == null) {
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error4");
+                String error = TxipironClient.s("Error4");
                 listViewItems.add(new Generic(Generic.of.ERROR, error));
                 logger.error("Error downloading home toots from user id: " + authenticatedId);
                 return;
@@ -378,7 +378,7 @@ public class MainWindowController implements WindowController {
             logger.info("Downloaded " + toots.size() + " home toots from user id: " + authenticatedId);
             if (max_id == null) {
                 listViewItems.remove(0);
-                String home = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Home");
+                String home = TxipironClient.s("Home");
                 listViewItems.add(new Generic(Generic.of.MESSAGE, home));
             }
             listViewItems.addAll(toots);
@@ -405,7 +405,7 @@ public class MainWindowController implements WindowController {
             return toots;
         }, toots -> {
             if (toots == null) {
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error5");
+                String error = TxipironClient.s("Error5");
                 listViewItems.add(new Generic(Generic.of.ERROR, error));
                 logger.error("Error downloading liked toots from user id: " + authenticatedId);
                 return;
@@ -413,12 +413,12 @@ public class MainWindowController implements WindowController {
             hideLoading();
             logger.info("Downloaded " + toots.size() + " liked toots from user id" + authenticatedId);
             if (toots.size() == 0) {
-                String noLike = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("NoLike");
+                String noLike = TxipironClient.s("NoLike");
                 listViewItems.add(new Generic(Generic.of.MESSAGE, noLike));
                 return;
             }
             listViewItems.remove(0);
-            String like = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Like");
+            String like = TxipironClient.s("Like");
             listViewItems.add(new Generic(Generic.of.MESSAGE, like));            listViewItems.addAll(toots);
             status.clear();
             status.put(view.FAVOURITES, authenticatedId);
@@ -462,13 +462,13 @@ public class MainWindowController implements WindowController {
             return toots;
         }, toots -> {
             if (toots == null) {
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error7");
+                String error = TxipironClient.s("Error7");
                 listViewItems.add(new Generic(Generic.of.ERROR, error));
                 logger.error("Error downloading profile toots from user id" + id);
                 return;
             }
             listViewItems.remove(listViewItems.size() - 1);
-            String tr = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("TootReply");
+            String tr = TxipironClient.s("TootReply");
             listViewItems.add(new Generic(Generic.of.MESSAGE, tr));
             listViewItems.addAll(toots);
             logger.info("Downloaded " + toots.size() + " toots from user id: " + id);
@@ -510,7 +510,7 @@ public class MainWindowController implements WindowController {
             status.clear();
             status.put(view.PROFILETOOT, id);
             if (max_id == null) {
-                String tootreply = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("TootReply");
+                String tootreply = TxipironClient.s("TootReply");
                 listViewItems.add(new Generic(Generic.of.MESSAGE, tootreply));
             }
             listViewItems.addAll(toots);
@@ -549,7 +549,7 @@ public class MainWindowController implements WindowController {
         }, account -> {
             listViewItems.clear();
             if (account == null) {
-                String profileerr = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error6");
+                String profileerr = TxipironClient.s("Error6");
                 listViewItems.add(new Generic(Generic.of.ERROR, profileerr));
                 logger.error("Error downloading profile from user id: " + id);
                 return;
@@ -569,7 +569,7 @@ public class MainWindowController implements WindowController {
             }
             status.clear();
             status.put(view.PROFILEFOLLOWERS, id);
-            String followtxt = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Followers");
+            String followtxt = TxipironClient.s("Followers");
             listViewItems.add(new Generic(Generic.of.MESSAGE, followtxt));
             listViewItems.addAll(follower);
             logger.info("Downloaded " + follower.size() + " followers from user id: " + id);
@@ -600,7 +600,7 @@ public class MainWindowController implements WindowController {
         }, account -> {
             listViewItems.clear();
             if (account == null) {
-                String profileerr = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error6");
+                String profileerr = TxipironClient.s("Error6");
                 listViewItems.add(new Generic(Generic.of.ERROR, profileerr));
                 logger.error("Error downloading profile from user id: " + id);
                 return;
@@ -620,7 +620,7 @@ public class MainWindowController implements WindowController {
             }
             status.clear();
             status.put(view.PROFILEFOLLOWING, id);
-            String following = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Following");
+            String following = TxipironClient.s("Following");
             listViewItems.add(new Generic(Generic.of.MESSAGE, following));
             listViewItems.addAll(follower);
             logger.info("Downloaded " + follower.size() + " followings from user id: " + id);
@@ -706,7 +706,7 @@ public class MainWindowController implements WindowController {
             return id;
         }, id -> {
             if (id == null) {
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error8");
+                String error = TxipironClient.s("Error8");
                 listViewItems.add(new Generic(Generic.of.ERROR, error));
                 logger.error("Error getting id from account: " + username);
                 return;

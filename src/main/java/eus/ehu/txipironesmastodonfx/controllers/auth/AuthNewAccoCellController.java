@@ -70,7 +70,7 @@ public class AuthNewAccoCellController {
      * @param authCode (String) - The auth code to be checked.
      */
     private void oauthAuthentication(String authCode) {
-        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        String load = TxipironClient.s("Load");
         mstdTokenTxt.setText(load);
         logger.info("Starting oauth authentication...");
         addAccBtn.setDisable(true);
@@ -78,11 +78,11 @@ public class AuthNewAccoCellController {
             String token = null;
             if (!NetworkUtils.hasInternet()) {
                 logger.error("No internet connection / Mastodon API Unreachable");
-                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error10");
+                return TxipironClient.s("Error10");
             }
             if (authCode.isEmpty()) {
                 logger.warn("Auth code is empty");
-                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error11");
+                return TxipironClient.s("Error11");
             }
 
             token = APIAccessManager.getTokenFromAuthCode(authCode);
@@ -94,7 +94,7 @@ public class AuthNewAccoCellController {
         }, param -> {
             mstdTokenTxt.setText("");
             if (param == null) {
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error12");
+                String error = TxipironClient.s("Error12");
                 errorTxt.setText(error);
                 addAccBtn.setDisable(false);
             } else if (param.toLowerCase().contains("error")) {
@@ -111,7 +111,7 @@ public class AuthNewAccoCellController {
      * Access token authentication process.
      */
     private void accessTokenAuthentication(String token) {
-        String validTk = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Token");
+        String validTk = TxipironClient.s("Token");
         mstdTokenTxt.setText(validTk);
         logger.info("Starting access token authentication...");
         errorTxt.setText("");
@@ -119,31 +119,31 @@ public class AuthNewAccoCellController {
         AsyncUtils.asyncTask(() -> {
             // Check for internet connection
             if (!NetworkUtils.hasInternet()) {
-                 return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error10");
+                 return TxipironClient.s("Error10");
             }
             // verify token present
             if (token.isEmpty()) {
-                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error13");
+                return TxipironClient.s("Error13");
             }
             // check if token is valid
             String id = APIAccessManager.verifyAndGetId(token);
             if (id == null) {
-                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error14");
+                return TxipironClient.s("Error14");
             }
             // check if account is not in database
             try {
                 if (DBAccessManager.isAccountInDb(id)) {
                     // If the account is in the database, stop the process
-                    return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error15");
+                    return TxipironClient.s("Error15");
                 }
             } catch (SQLException e) {
-                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error16");
+                return TxipironClient.s("Error16");
             }
             // add account to database
             try {
                 DBAccessManager.addAccount(id, token);
             } catch (SQLException e) {
-                return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error17");
+                return TxipironClient.s("Error17");
             }
             return null;
         }, errorMsg -> {
@@ -188,10 +188,9 @@ public class AuthNewAccoCellController {
             logger.info("Switching to access token authentication");
             oauth = false;
             oauthBtn.setVisible(false);
-            String mToken = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MastodonToken");
+            String mToken = TxipironClient.s("MastodonToken");
             mstdTokenTxt.setPromptText(mToken);
-            String back = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Back");
-            accessTokenAuthLink.setText(back);
+            accessTokenAuthLink.setText(TxipironClient.s("Back"));
             addAccBtn.setVisible(true);
             mstdTokenTxt.setVisible(true);
         } else {
@@ -199,7 +198,7 @@ public class AuthNewAccoCellController {
             logger.info("Cancelling authentication");
             oauthBtn.setVisible(true);
             errorTxt.setText("");
-            String pToken = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("PasteTk");
+            String pToken = TxipironClient.s("PasteTk");
             accessTokenAuthLink.setText(pToken);
             addAccBtn.setVisible(false);
             mstdTokenTxt.setVisible(false);
@@ -218,10 +217,10 @@ public class AuthNewAccoCellController {
         oauth = true;
         NetworkUtils.openWebPage("https://mastodon.social/oauth/authorize?response_type=code&client_id=" + TxipironClient.MASTODON_APP_ID + "&scope=read+write+follow+push&redirect_uri=urn:ietf:wg:oauth:2.0:oob&force_login=true");
         oauthBtn.setVisible(false);
-        String back = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Back");
+        String back = TxipironClient.s("Back");
         accessTokenAuthLink.setText(back);
         addAccBtn.setVisible(true);
-        String pAuth = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("PasteAuth");
+        String pAuth = TxipironClient.s("PasteAuth");
         mstdTokenTxt.setPromptText(pAuth);
         mstdTokenTxt.setVisible(true);
     }

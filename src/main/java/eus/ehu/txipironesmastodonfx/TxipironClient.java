@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
  * It will call the FXML files and load the controllers.
  * Also, starts by default with the "Account Manager" scene.
  * It will have the "Window" class to contain all JavaFX windows we create.
+ * All methods call by default this class in order to get translations.
  *
  * @author Nicolás Aguado
  * @author Haizea Bermejo
@@ -76,6 +77,7 @@ public class TxipironClient extends Application {
     private Window load(String fxmlFile) throws IOException {
         color="dark";
         Window window = new Window();
+        // Load the FXML file with language pack "strings", being the default language "lang"
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile),
                 ResourceBundle.getBundle("strings", lang));
         window.ui = fxmlLoader.load();
@@ -116,12 +118,22 @@ public class TxipironClient extends Application {
     }
 
     /**
+     * Given a key string, it returns the
+     * value of the string in the current language
+     *
+     * @param key (String) - Key of the string
+     * @return (String) - Value of the string
+     */
+    public static String s(String key) {
+        return ResourceBundle.getBundle("strings", lang).getString(key);
+    }
+
+    /**
      * Loading point of the application.
      * Starts by loading all windows and setting the "acccount manager" to be shown.
      * Will set the title for the application and also the icon.
      *
      * @param stage (Stage) - Automatically Passes it
-     *
      * @throws IOException - When the FXML/Image file is not found
      */
     @Override
@@ -138,7 +150,7 @@ public class TxipironClient extends Application {
 
         scene.getStylesheets().add(getClass().getResource("styles/DarkTheme.css").toExternalForm());
         logger.debug("Stylesheet loaded");
-        String authTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("AuthTitle");
+        String authTitle = s("AuthTitle");
         setStageTitle(authTitle);
         stage.getIcons().add(new Image(getClass().getResource("/eus/ehu/txipironesmastodonfx/logos/dark_filled_1000.jpg").toExternalForm()));
         logger.debug("Icon loaded");
@@ -178,8 +190,7 @@ public class TxipironClient extends Application {
     public void changeScene(String sceneName, List<Object> result) {
         switch (sceneName) {
             case "Auth" -> {
-                String authTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("AuthTitle");
-                setStageTitle(authTitle);
+                setStageTitle(s("AuthTitle"));
                 logger.info("Changed scene to Auth");
                 scene.setRoot(authWindow.ui);
                 if (color.equals("dark")){
@@ -197,8 +208,7 @@ public class TxipironClient extends Application {
                 }
             }
             case "Main" -> {
-                String mainTitle = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("MainTitle");
-                setStageTitle(mainTitle);
+                setStageTitle(s("MainTitle"));
                 scene.setRoot(mainWindow.ui);
                 logger.info("Changed scene to Main");
                 mainWindow.controller.setRefTokenId(result);

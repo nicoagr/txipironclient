@@ -90,7 +90,7 @@ public class MediaViewController {
         mediaView.setVisible(false);
         imageView.setVisible(false);
         mediaBar.setVisible(false);
-        String view = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("ViewMd");
+        String view = TxipironClient.s("ViewMd");
         mediaCounterTxt.setText(view +" "+ (i + 1) + "/" + media.size() + ".");
         logger.info("Loading media " + (i + 1) + " of " + media.size() + ".");
         AsyncUtils.asyncTask(() -> {

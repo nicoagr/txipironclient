@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-import java.util.ResourceBundle;
 
 import static java.lang.Thread.sleep;
 
@@ -34,7 +33,6 @@ public class NotificationSystem {
      */
     public void activateNotifications(MainWindowController master) {
         this.master = master;
-        String mention;
         WindowNotificationSystem = new WindowNotificationSystem(this);
         AsyncUtils.asyncTask(() -> {
             List<Notification> notifications;
@@ -62,17 +60,17 @@ public class NotificationSystem {
                     }
                     switch (notifications.get(0).type) {
                         case "mention" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Mention"));
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + TxipironClient.s("Mention"));
                         case "status" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Status"));
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + TxipironClient.s("Status"));
                         case "reblog" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Reboot"));
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + TxipironClient.s("Reboot"));
                         case "follow" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FollowNotif"));
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + TxipironClient.s("FollowNotif"));
                         case "favourite" ->
-                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + ResourceBundle.getBundle("strings", TxipironClient.lang).getString("FavNotif"));
+                                WindowNotificationSystem.trowNotificationWindow(notifications.get(0).account.acct + TxipironClient.s("FavNotif"));
                         default ->
-                                WindowNotificationSystem.trowNotificationWindow(ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Notif"));
+                                WindowNotificationSystem.trowNotificationWindow(TxipironClient.s("Notif"));
                     }
                     master.lastNotification = notifications.get(0).id;
                     logger.debug("Set last notification: id=" + master.lastNotification);

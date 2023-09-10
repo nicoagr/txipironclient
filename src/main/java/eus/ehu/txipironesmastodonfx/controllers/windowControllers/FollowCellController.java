@@ -49,11 +49,11 @@ public class FollowCellController {
      */
     @FXML
     void onClickFollowButton() {
-        String foll = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
-        String unfoll = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
+        String foll = TxipironClient.s("Follow");
+        String unfoll = TxipironClient.s("Unfollow");
         followButton.setDisable(true);
         if (followButton.getText().equals(foll)) {
-            String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+            String load = TxipironClient.s("Load");
             followButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.follow(master.token, idauxi), param -> {
                 if (param == null) {
@@ -66,7 +66,7 @@ public class FollowCellController {
                 }
             });
         } else if (followButton.getText().equals(unfoll)) {
-            String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+            String load = TxipironClient.s("Load");
             followButton.setText(load);
             AsyncUtils.asyncTask(() -> APIAccessManager.unfollow(master.token, idauxi), param -> {
                 if (param == null) {
@@ -107,7 +107,7 @@ public class FollowCellController {
             e.printStackTrace();
         }
         this.setReference(master);
-        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        String load = TxipironClient.s("Load");
         followButton.setText(load);
         // set the values for the follow button
         AsyncUtils.asyncTask(() -> {
@@ -116,10 +116,10 @@ public class FollowCellController {
             if (following == null) return "Error!";
             for (Follow f : following) {
                 if (f.id.equals(follow.id)) {
-                    return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Unfollow");
+                    return TxipironClient.s("Unfollow");
                 }
             }
-            return ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Follow");
+            return TxipironClient.s("Follow");
         }, param -> {
             if (param.equals("Self")) followButton.setVisible(false);
             if (!param.equals("Error!")) followButton.setDisable(false);

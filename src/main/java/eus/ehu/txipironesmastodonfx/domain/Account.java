@@ -3,7 +3,6 @@ package eus.ehu.txipironesmastodonfx.domain;
 import eus.ehu.txipironesmastodonfx.controllers.main.MainWindowController;
 import eus.ehu.txipironesmastodonfx.controllers.windowControllers.ProfileCellControllers;
 import javafx.scene.Node;
-import javafx.scene.control.Cell;
 
 /**
  * Represents a Mastodon account.
@@ -67,7 +66,7 @@ public class Account implements CellController {
     }
 
     public Account(String id, String acct, String avatar) {
-        this.id = id;
+        this(id);
         this.acct = acct;
         this.avatar = avatar;
     }
@@ -103,7 +102,7 @@ public class Account implements CellController {
      * @return (boolean) True if the accounts are the same, false otherwise
      */
     public boolean equals(Account a) {
-        return this.id == a.id;
+        return this.id.equals(a.id);
     }
 
     /**

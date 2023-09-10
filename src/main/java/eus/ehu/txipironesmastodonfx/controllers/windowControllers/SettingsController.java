@@ -65,7 +65,7 @@ public class SettingsController {
     @FXML
     private void applyBtnAction() {
         applyBtn.setDisable(true);
-        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        String load = TxipironClient.s("Load");
         applyBtn.setText(load);
         autoplaycheck.setDisable(true);
         logger.info("Applying selected settings...");
@@ -81,11 +81,11 @@ public class SettingsController {
         }, res -> {
             if (res != null) {
                 logger.error("Error applying settings: " + res);
-                String again = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Again");
+                String again = TxipironClient.s("Again");
                 infoLabel.setText("Error: " + res + again);
             } else {
                 logger.info("Settings applied successfully.");
-                String success = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Success");
+                String success = TxipironClient.s("Success");
                 infoLabel.setText(success);
             }
         });
@@ -138,7 +138,7 @@ public class SettingsController {
                 }
             }
         applyBtn.setDisable(false);
-        applyBtn.setText(ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Apply"));
+        applyBtn.setText(TxipironClient.s("Apply"));
         autoplaycheck.setDisable(false);
         if (comboLanguages.getValue() == null) {
             return;
@@ -224,10 +224,10 @@ public class SettingsController {
     @FXML
     void initialize() {
         comboStyles.getItems().addAll("Dark", "Light", "Halloween", "Summer");
-        spanish = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Spanish");
-        english = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("English");
-        basque = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Basque");
-        french = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("French");
+        spanish = TxipironClient.s("Spanish");
+        english = TxipironClient.s("English");
+        basque = TxipironClient.s("Basque");
+        french = TxipironClient.s("French");
         comboLanguages.getItems().addAll(spanish, english, basque, french);
     }
 }

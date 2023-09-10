@@ -42,6 +42,7 @@ public class WindowNotificationSystem {
         PopupMenu popupMenu = new PopupMenu();
         MenuItem closeItem = new MenuItem("Close Application");
         closeItem.addActionListener(e -> {
+            logger.info("Clicked on tray icon close button");
             noti.deactivateNotification();
             System.exit(0);
         });
@@ -55,6 +56,11 @@ public class WindowNotificationSystem {
     public void trowNotificationWindow(String mainText) throws IOException {
         String os = System.getProperty("os.name");
         logger.info("Throwing notification with text: " + mainText);
+        // Our dear friend Marcos didn't like the Java Tray Icon Pop-ups
+        // on Linux, so this console invokation to zenity is just for him.
+        // Please note that on NON debian based systems zenity is not pre-installed;
+        // detecting this would need MORE shell execution, so we'll just let it slip
+        // and assume the linux-person is a debian user.
         if (os.contains("Linux")) {
             ProcessBuilder builder = new ProcessBuilder(
                     "zenity",

@@ -91,7 +91,7 @@ public class AuthWindowController implements WindowController {
         logger.debug("Attempting login...");
         loginBtn.setVisible(false);
         accountListView.setVisible(false);
-        String ld  = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("LoadData");
+        String ld  = TxipironClient.s("LoadData");
         errorLabel.setText(ld);
 
         // execute database and API access tasks asynchronously
@@ -106,7 +106,7 @@ public class AuthWindowController implements WindowController {
                 mainApp.changeScene("Main", result);
             } else {
                 logger.error("Error when getting ref token from database.");
-                String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error18");
+                String error = TxipironClient.s("Error18");
                 errorLabel.setText(error);
             }
         });
@@ -180,13 +180,13 @@ public class AuthWindowController implements WindowController {
     @FXML
     void initialize() {
         logger.debug("Starting auth initial tasks...");
-        String load = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Load");
+        String load = TxipironClient.s("Load");
         errorLabel.setText(load);
         AsyncUtils.asyncTask(() -> {
                     // Check for internet connection
                     if (!NetworkUtils.hasInternet()) {
                         logger.warn("No internet connection / Mastodon API Unreachable");
-                        String noCon = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error10");
+                        String noCon = TxipironClient.s("Error10");
                         Platform.runLater(() -> errorLabel.setText(noCon));
                     }
                     // Check if db file exists
@@ -195,7 +195,7 @@ public class AuthWindowController implements WindowController {
                             logger.info("Database file not found - Creating new one...");
                             DBAccessManager.createDbFile();
                         } catch (IOException io) {
-                            String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error20");
+                            String error = TxipironClient.s("Error20");
                             return error + io.getMessage();
                         }
                     }
@@ -204,7 +204,7 @@ public class AuthWindowController implements WindowController {
                         logger.debug("Checking if db tables exist...");
                         DBAccessManager.checkAndCreateTables();
                     } catch (SQLException e) {
-                        String error = ResourceBundle.getBundle("strings", TxipironClient.lang).getString("Error21");
+                        String error = TxipironClient.s("Error21");
                         return error + e.getMessage();
                     }
                     return null;
